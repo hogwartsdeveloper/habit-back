@@ -1,5 +1,9 @@
+using System.Text;
 using HabitServer.Entities;
+using HabitServer.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace HabitServer.Extensions;
 
@@ -11,5 +15,31 @@ public static class DependencyInjectionExtension
         {
             opt.UseNpgsql(configuration.GetConnectionString("Database"));
         });
+    }
+
+    public static void ApplicationConfigureServices(this IServiceCollection service, IConfiguration configuration)
+    {
+        var jwtIssuer = configuration.GetSection("Jwt:Issuer").Get<string>();
+        var jwtKey = configuration.GetSection("Jwt:Key").Get<string>();
+        
+        service.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtIssuer,
+                    ValidAudience = jwtIssuer,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+                };
+            });
+
+        service.AddControllers();
+        service.AddEndpointsApiExplorer();
+        service.AddSwaggerGen();
+        service.AddSingleton<SecurityTokenService>();
     }
 }
