@@ -1,15 +1,17 @@
-using HabitServer.Services;
+using HabitServer.Models;
+using HabitServer.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HabitServer.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(SecurityTokenService tokenService) : ControllerBase
+public class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost]
-    public IActionResult Registration()
+    [ProducesResponseType(typeof(AuthViewModel), 200)]
+    public Task<AuthViewModel> Registration([FromBody] LoginViewModel viewModel)
     {
-        return Ok(tokenService.GenerateToken());
+        return authService.RegistrationAsync(viewModel);
     }
 }

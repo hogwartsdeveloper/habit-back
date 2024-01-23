@@ -1,14 +1,15 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using HabitServer.Services.Abstractions;
 using Microsoft.IdentityModel.Tokens;
 
 namespace HabitServer.Services;
 
-public class SecurityTokenService
+public class SecurityService : ISecurityService
 {
     private readonly IConfiguration _configuration;
 
-    public SecurityTokenService(IConfiguration configuration)
+    public SecurityService(IConfiguration configuration)
     {
         _configuration = configuration;
     }
@@ -26,5 +27,15 @@ public class SecurityTokenService
             signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(jwt);
+    }
+
+    public string HashPassword(string password)
+    {
+        return BCrypt.Net.BCrypt.EnhancedHashPassword(password, 12);
+    }
+
+    public bool VerifyPassword(string password, string passwordHash)
+    {
+        return BCrypt.Net.BCrypt.EnhancedVerify(password, passwordHash);
     }
 }

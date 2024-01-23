@@ -1,6 +1,7 @@
 using System.Text;
 using HabitServer.Entities;
 using HabitServer.Services;
+using HabitServer.Services.Abstractions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -40,6 +41,7 @@ public static class DependencyInjectionExtension
         service.AddControllers();
         service.AddEndpointsApiExplorer();
         service.AddSwaggerGen();
-        service.AddSingleton<SecurityTokenService>();
+        service.AddSingleton<ISecurityService, SecurityService>();
+        service.AddSingleton<IAuthService, AuthService>();
     }
 }
