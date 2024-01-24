@@ -1,5 +1,6 @@
 using System.Text;
 using HabitServer.Entities;
+using HabitServer.MapperProfiles;
 using HabitServer.Services;
 using HabitServer.Services.Abstractions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,7 +42,8 @@ public static class DependencyInjectionExtension
         service.AddControllers();
         service.AddEndpointsApiExplorer();
         service.AddSwaggerGen();
+        service.AddAutoMapper(typeof(RegistrationViewModelProfile).Assembly);
         service.AddSingleton<ISecurityService, SecurityService>();
-        service.AddSingleton<IAuthService, AuthService>();
+        service.AddScoped<IAuthService, AuthService>();
     }
 }

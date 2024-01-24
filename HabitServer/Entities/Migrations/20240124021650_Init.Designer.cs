@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HabitServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240121103309_Init")]
+    [Migration("20240124021650_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -32,7 +32,7 @@ namespace HabitServer.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("BirthDay")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -43,6 +43,10 @@ namespace HabitServer.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("text");
 

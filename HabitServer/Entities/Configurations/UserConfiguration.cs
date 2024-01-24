@@ -9,5 +9,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.HasKey("Id");
         builder.ToTable("Users");
+        builder
+            .Property(e => e.BirthDay)
+            .HasColumnType("timestamp without time zone");
     }
 }

@@ -4,5 +4,5 @@ namespace HabitServer.Services.Abstractions;
 
 public interface IAuthService
 {
-    Task<AuthViewModel> RegistrationAsync(LoginViewModel viewModel);
+    Task<AuthViewModel> RegistrationAsync(RegistrationViewModel viewModel);
 }

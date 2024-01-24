@@ -1,15 +1,19 @@
+using AutoMapper;
 using HabitServer.Entities;
 using HabitServer.Models;
 using HabitServer.Services.Abstractions;
 
 namespace HabitServer.Services;
 
-public class AuthService(ApplicationDbContext dbContext, ISecurityService securityService) : IAuthService
+public class AuthService(ApplicationDbContext dbContext, IMapper mapper, ISecurityService securityService) : IAuthService
 {
-    public Task<AuthViewModel> RegistrationAsync(LoginViewModel viewModel)
+    public async Task<AuthViewModel> RegistrationAsync(RegistrationViewModel viewModel)
     {
-        var passwordHash = securityService.HashPassword(viewModel.Password);
-
-        return Task.FromResult(new AuthViewModel { Token = securityService.GenerateToken() });
+        var entity = mapper.Map<User>(viewModel);
+        entity.PasswordHash = securityService.HashPassword(viewModel.Password);
+        await dbContext.Users.AddAsync(entity);
+        await dbContext.SaveChangesAsync();
+        
+        return new AuthViewModel { Token = securityService.GenerateToken() };
     }
 }
