@@ -13,9 +13,10 @@ public class AuthService(
     IMapper mapper,
     ISecurityService securityService) : IAuthService
 {
-    public async Task<AuthViewModel> RegistrationAsync(RegistrationViewModel viewModel)
+    public async Task<AuthViewModel> SignUpAsync(RegistrationViewModel viewModel)
     {
-        await ValidateRegistration(viewModel.Email);
+        await ValidateUserNotExists(viewModel.Email);
+        
         var entity = mapper.Map<User>(viewModel);
         entity.PasswordHash = securityService.HashPassword(viewModel.Password);
         
@@ -25,7 +26,24 @@ public class AuthService(
         return new AuthViewModel { Token = securityService.GenerateToken() };
     }
 
-    private async Task ValidateRegistration(string email)
+    public async Task<AuthViewModel> SignInAsync(LoginViewModel viewModel)
+    {
+        var user = await dbContext.Users.FirstOrDefaultAsync(e => e.Email == viewModel.Email);
+        if (user is null)
+        {
+            throw new HttpException(HttpStatusCode.BadRequest, "Email or password wrong");
+        }
+        
+        var isPassValid = securityService.VerifyPassword(viewModel.Password, user.PasswordHash);
+        if (!isPassValid)
+        {
+            throw new HttpException(HttpStatusCode.BadRequest, "Email or password wrong");
+        }
+        
+        return new AuthViewModel { Token = securityService.GenerateToken() };
+    }
+
+    private async Task ValidateUserNotExists(string email)
     {
         if (await dbContext.Users.AnyAsync(user => user.Email == email))
         {

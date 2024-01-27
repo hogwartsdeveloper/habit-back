@@ -8,10 +8,17 @@ namespace HabitServer.Controllers;
 [Route("api/[controller]")]
 public class AuthController(IAuthService authService) : ControllerBase
 {
-    [HttpPost]
+    [HttpPost("SignUp")]
     [ProducesResponseType(typeof(AuthViewModel), 200)]
-    public Task<AuthViewModel> Registration([FromBody] RegistrationViewModel viewModel)
+    public Task<AuthViewModel> SignUp([FromBody] RegistrationViewModel viewModel)
     {
-        return authService.RegistrationAsync(viewModel);
+        return authService.SignUpAsync(viewModel);
+    }
+    
+    [HttpPost("SignIn")]
+    [ProducesResponseType(typeof(AuthViewModel), 200)]
+    public Task<AuthViewModel> SignIn([FromBody] LoginViewModel viewModel)
+    {
+        return authService.SignInAsync(viewModel);
     }
 }
