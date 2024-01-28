@@ -1,11 +1,14 @@
+using HabitServer.Entities.Abstractions;
+
 namespace HabitServer.Entities;
 
-public class User
+public class User : Entity
 {
-    public Guid Id { get; set; }
     public required string FirstName { get; set; }
+    
     public required string LastName { get; set; }
     public required string Email { get; set; }
     public DateTime? BirthDay { get; set; }
-    public string PasswordHash { get; set; }
+    public required string PasswordHash { get; set; }
+    public List<Habit>? Habits { get; set; }
 }
