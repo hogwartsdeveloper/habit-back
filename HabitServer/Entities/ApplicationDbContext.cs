@@ -6,6 +6,8 @@ namespace HabitServer.Entities;
 public class ApplicationDbContext : DbContext
 {
     public DbSet<User> Users { get; set; }
+    
+    public DbSet<Habit> Habits { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
@@ -15,5 +17,6 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new HabitConfiguration());
     }
 }

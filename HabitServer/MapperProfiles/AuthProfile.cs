@@ -4,9 +4,9 @@ using HabitServer.Models;
 
 namespace HabitServer.MapperProfiles;
 
-public class RegistrationViewModelProfile : Profile
+public class AuthProfile : Profile
 {
-    public RegistrationViewModelProfile()
+    public AuthProfile()
     {
         CreateMap<RegistrationViewModel, User>()
             .ForMember(dst => dst.Id, opt => opt.Ignore())

@@ -70,8 +70,9 @@ public static class DependencyInjectionExtension
                 }
             });
         });
-        service.AddAutoMapper(typeof(RegistrationViewModelProfile).Assembly);
+        service.AddAutoMapper(typeof(AuthProfile).Assembly);
         service.AddSingleton<ISecurityService, SecurityService>();
         service.AddScoped<IAuthService, AuthService>();
+        service.AddScoped<IHabitService, HabitService>();
     }
 }

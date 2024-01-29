@@ -1,17 +1,16 @@
-using HabitServer.Entities.Abstractions;
+using HabitServer.Models.Base;
 
-namespace HabitServer.Entities;
+namespace HabitServer.Models.Habits;
 
-public class Habit : Entity
+public class HabitViewModel : EntityViewModel
 {
-    public Guid UserId { get; set; }
-    public User? User { get; set; }
-    
     public required string Title { get; set; }
     
     public string? Description { get; set; }
 
     public bool IsOverdue { get; set; }
+    
     public required DateTime StartDate { get; set; }
+    
     public required DateTime EndDate { get; set; }
 }
