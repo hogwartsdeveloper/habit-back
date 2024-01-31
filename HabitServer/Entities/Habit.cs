@@ -14,4 +14,6 @@ public class Habit : Entity
     public bool IsOverdue { get; set; }
     public required DateTime StartDate { get; set; }
     public required DateTime EndDate { get; set; }
+    
+    public HabitCalendar? Calendar { get; set; }
 }

@@ -3,6 +3,8 @@ using HabitServer.Entities;
 using HabitServer.MapperProfiles;
 using HabitServer.Services;
 using HabitServer.Services.Abstractions;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -18,6 +20,13 @@ public static class DependencyInjectionExtension
         {
             opt.UseNpgsql(configuration.GetConnectionString("Database"));
         });
+
+        service.AddHangfire(opt =>
+        {
+            opt.UsePostgreSqlStorage(c => c.UseNpgsqlConnection(configuration.GetConnectionString("HangfireDb")));
+        });
+
+        service.AddHangfireServer();
     }
 
     public static void ApplicationConfigureServices(this IServiceCollection service, IConfiguration configuration)
