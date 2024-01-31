@@ -11,9 +11,10 @@ public class HabitService(
     ApplicationDbContext dbContext,
     IMapper mapper) : IHabitService
 {
-    public async Task<Guid> AddAsync(AddHabitModel viewModel, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddAsync(Guid userId, AddHabitModel viewModel, CancellationToken cancellationToken = default)
     {
-        var entity = mapper.Map<Habit>(mapper.ConfigurationProvider);
+        var entity = mapper.Map<Habit>(viewModel);
+        entity.UserId = userId;
 
         var addedEntity = await dbContext.Habits.AddAsync(entity, cancellationToken);
 
@@ -37,9 +38,10 @@ public class HabitService(
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task UpdateAsync(Guid id, UpdateHabitModel viewModel, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(Guid userId, Guid id, UpdateHabitModel viewModel, CancellationToken cancellationToken = default)
     {
-        var entity = mapper.Map<Habit>(mapper.ConfigurationProvider);
+        var entity = mapper.Map<Habit>(viewModel);
+        entity.UserId = userId;
         dbContext.Habits.Update(entity);
         
         await dbContext.SaveChangesAsync(cancellationToken);

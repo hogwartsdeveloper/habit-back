@@ -1,8 +1,10 @@
+using HabitServer.Entities;
+
 namespace HabitServer.Services.Abstractions;
 
 public interface ISecurityService
 {
-    string GenerateToken();
+    string GenerateToken(User user);
 
     string HashPassword(string password);
 

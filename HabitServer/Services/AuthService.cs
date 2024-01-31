@@ -20,10 +20,10 @@ public class AuthService(
         var entity = mapper.Map<User>(viewModel);
         entity.PasswordHash = securityService.HashPassword(viewModel.Password);
         
-        await dbContext.Users.AddAsync(entity);
+        var addedEntity = await dbContext.Users.AddAsync(entity);
         await dbContext.SaveChangesAsync();
         
-        return new AuthViewModel { Token = securityService.GenerateToken() };
+        return new AuthViewModel { Token = securityService.GenerateToken(addedEntity.Entity) };
     }
 
     public async Task<AuthViewModel> SignInAsync(LoginViewModel viewModel)
@@ -40,7 +40,7 @@ public class AuthService(
             throw new HttpException(HttpStatusCode.BadRequest, "Email or password wrong");
         }
         
-        return new AuthViewModel { Token = securityService.GenerateToken() };
+        return new AuthViewModel { Token = securityService.GenerateToken(user) };
     }
 
     private async Task ValidateUserNotExists(string email)

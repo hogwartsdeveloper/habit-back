@@ -1,5 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
+using HabitServer.Entities;
 using HabitServer.Services.Abstractions;
 using Microsoft.IdentityModel.Tokens;
 
@@ -14,15 +16,21 @@ public class SecurityService : ISecurityService
         _configuration = configuration;
     }
 
-    public string GenerateToken()
+    public string GenerateToken(User user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Email, user.Email)
+        };
+        
         var jwt = new JwtSecurityToken(
             _configuration["Jwt:Issuer"],
             _configuration["Jwt:Issuer"],
-            claims: null,
+            claims: claims,
             expires: DateTime.Now.AddMinutes(15),
             signingCredentials: credentials);
 

@@ -14,7 +14,7 @@ public class HabitConfiguration : IEntityTypeConfiguration<Habit>
         builder
             .HasOne(e => e.User)
             .WithMany(e => e.Habits)
-            .HasForeignKey(e => e.Id);
+            .HasForeignKey(e => e.UserId);
         
         builder
             .Property(e => e.StartDate)
