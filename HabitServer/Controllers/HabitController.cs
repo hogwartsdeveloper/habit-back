@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using HabitServer.Models;
 using HabitServer.Models.Habits;
 using HabitServer.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
@@ -40,5 +41,11 @@ public class HabitController(IHabitService service) : ControllerBase
     {
         var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         return service.UpdateAsync(Guid.Parse(userId), id, viewModel, cancellationToken);
+    }
+
+    [HttpPatch("{id:guid}")]
+    public Task AddRecordAsync(Guid id, [FromBody] List<AddHabitCalendarModel> models, CancellationToken cancellationToken)
+    {
+        return service.AddRecords(id, models, cancellationToken);
     }
 }
