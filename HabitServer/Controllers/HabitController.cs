@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using HabitServer.Models;
 using HabitServer.Models.Habits;
 using HabitServer.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
@@ -39,7 +38,14 @@ public class HabitController(IHabitService service) : ControllerBase
     [ProducesResponseType(typeof(IResult), 200)]
     public Task UpdateAsync(Guid id, [FromBody] UpdateHabitModel viewModel, CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        return service.UpdateAsync(Guid.Parse(userId), id, viewModel, cancellationToken);
+        return service.UpdateAsync(id, viewModel, cancellationToken);
+    }
+
+    [HttpPatch("AddRecord/{habitId:guid}")]
+    [ProducesResponseType(typeof(IResult), 200)]
+    public Task AddRecord(Guid habitId, [FromBody] List<AddHabitRecordModel> models,
+        CancellationToken cancellationToken)
+    {
+        return service.AddRecord(habitId, models, cancellationToken);
     }
 }
