@@ -15,5 +15,5 @@ public class Habit : Entity
     public required DateTime StartDate { get; set; }
     public required DateTime EndDate { get; set; }
     
-    public HabitCalendar[]? Calendar { get; set; }
+    public List<HabitRecord>? HabitRecords { get; set; }
 }

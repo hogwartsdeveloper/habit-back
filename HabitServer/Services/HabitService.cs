@@ -61,7 +61,7 @@ public class HabitService(
             throw new HttpException(HttpStatusCode.BadRequest, "There is already a record on the selected dates");
         }
 
-        var habitCalendars = mapper.Map<List<HabitCalendar>>(models);
+        var habitCalendars = mapper.Map<List<HabitRecord>>(models);
 
         if (habit.Calendar == null)
         {

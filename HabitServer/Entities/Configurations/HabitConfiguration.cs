@@ -23,8 +23,5 @@ public class HabitConfiguration : IEntityTypeConfiguration<Habit>
         builder
             .Property(e => e.EndDate)
             .HasColumnType("timestamp without time zone");
-
-        builder
-            .OwnsOne(e => e.Calendar, b => b.ToJson());
     }
 }

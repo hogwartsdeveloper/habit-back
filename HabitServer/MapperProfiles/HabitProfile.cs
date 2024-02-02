@@ -22,6 +22,6 @@ public class HabitProfile : Profile
             .ForMember(dst => dst.UserId, opt => opt.Ignore())
             .ForMember(dst => dst.User, opt => opt.Ignore());
 
-        CreateMap<AddHabitCalendarModel, HabitCalendar>();
+        CreateMap<AddHabitCalendarModel, HabitRecord>();
     }
 }
