@@ -7,8 +7,6 @@ public interface IHabitService
 {
     Task<Guid> AddAsync(Guid userId, AddHabitModel viewModel, CancellationToken cancellationToken = default);
 
-    Task AddRecords(Guid id, List<AddHabitCalendarModel> models, CancellationToken cancellationToken = default);
-
     Task<List<HabitViewModel>> GetListAsync(CancellationToken cancellationToken = default);
 
     Task<HabitViewModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
