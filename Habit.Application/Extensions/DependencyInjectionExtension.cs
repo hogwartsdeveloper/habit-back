@@ -2,6 +2,8 @@ using System.Text;
 using Habit.Application.Auth;
 using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Services;
+using Habit.Application.BackgroundJobs;
+using Habit.Application.BackgroundJobs.Interfaces;
 using Habit.Application.Habit.Interfaces;
 using Habit.Application.Habit.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,6 +21,7 @@ public static class DependencyInjectionExtension
         service.AddSingleton<ISecurityService, SecurityService>();
         service.AddScoped<IAuthService, AuthService>();
         service.AddScoped<IHabitService, HabitService>();
+        service.AddScoped<IHabitJob, HabitJob>();
     }
 
     public static void ApplicationAuthenticationConfigure(this IServiceCollection service, IConfiguration configuration)

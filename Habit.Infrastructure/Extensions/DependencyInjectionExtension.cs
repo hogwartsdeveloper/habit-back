@@ -20,6 +20,10 @@ public static class DependencyInjectionExtension
     {
         service.AddHangfire(opt =>
         {
+            opt.SetDataCompatibilityLevel(CompatibilityLevel.Version_170);
+            opt.UseSimpleAssemblyNameTypeSerializer();
+            opt.UseRecommendedSerializerSettings();
+            opt.UseColouredConsoleLogProvider();
             opt.UsePostgreSqlStorage(c => c.UseNpgsqlConnection(connectionString));
         });
 

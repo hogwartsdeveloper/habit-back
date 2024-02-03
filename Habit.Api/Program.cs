@@ -1,5 +1,7 @@
 using Habit.Api.Extensions;
 using Habit.Api.Middleware;
+using Habit.Application.Extensions;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,4 +22,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
+app.UseHangfireDashboard();
+app.AddBackgroundJobs();
 app.Run();
