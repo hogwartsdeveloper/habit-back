@@ -2,7 +2,7 @@ using Habit.Application.BackgroundJobs.Interfaces;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 
-namespace Habit.Application.Extensions;
+namespace Infrastructure.Extensions;
 
 public static class ApplicationBuilderExtension
 {

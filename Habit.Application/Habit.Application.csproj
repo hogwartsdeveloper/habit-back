@@ -10,7 +10,6 @@
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
         <PackageReference Include="AutoMapper" Version="12.0.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-        <PackageReference Include="Hangfire" Version="1.8.9" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
         <ProjectReference Include="..\Habit.Core\Habit.Core.csproj" />
