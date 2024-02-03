@@ -1,6 +1,8 @@
+using Habit.Core.Interfaces;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Infrastructure.Data;
+using Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,5 +30,10 @@ public static class DependencyInjectionExtension
         });
 
         service.AddHangfireServer();
+    }
+
+    public static void AddRepositories(this IServiceCollection service)
+    {
+        service.AddScoped<IRepository<Habit.Core.Entities.Habit>, Repository<Habit.Core.Entities.Habit>>();
     }
 }

@@ -5,6 +5,7 @@ using Habit.Application.Habit.Interfaces;
 using Habit.Application.Habit.Models;
 using Habit.Core.Entities;
 using Habit.Core.Exceptions;
+using Habit.Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,60 +13,44 @@ namespace Habit.Application.Habit.Services;
 
 public class HabitService(
     ApplicationDbContext dbContext,
+    IRepository<Core.Entities.Habit> habitRepository,
     IMapper mapper) : IHabitService
 {
-    public async Task<Guid> AddAsync(Guid userId, AddHabitModel model, CancellationToken cancellationToken = default)
+    public Task<Guid> AddAsync(Guid userId, AddHabitModel model, CancellationToken cancellationToken = default)
     {
         var entity = mapper.Map<Core.Entities.Habit>(model);
         entity.UserId = userId;
 
-        var addedEntity = await dbContext.Habits.AddAsync(entity, cancellationToken);
-
-        await dbContext.SaveChangesAsync(cancellationToken);
-
-        return addedEntity.Entity.Id;
+        return habitRepository.AddAsync(entity, cancellationToken);
     }
 
     public async Task<List<HabitViewModel>> GetListAsync(CancellationToken cancellationToken = default)
     {
-        return await dbContext.Habits
+        return await habitRepository
+            .GetListAsync()
             .ProjectTo<HabitViewModel>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
     }
 
     public Task<HabitViewModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return dbContext.Habits
-            .Where(entity => entity.Id == id)
+        return habitRepository
+            .GetByIdAsync(id)
             .ProjectTo<HabitViewModel>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task UpdateAsync(Guid id, UpdateHabitModel model, CancellationToken cancellationToken = default)
     {
-        var entity = await dbContext.HabitRecords
-            .Where(e => e.HabitId == id)
-            .AsTracking()
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (entity is null)
-        {
-            throw new HttpException(HttpStatusCode.NotFound, "Habit not found");
-        }
-
-        mapper.Map(model, entity);
+        var entity = await GetAndValidateHabitAsync(id, cancellationToken);
         
-        await dbContext.SaveChangesAsync(cancellationToken);
+        mapper.Map(model, entity);
+        await habitRepository.UpdateAsync(entity, cancellationToken);
     }
 
     public async Task AddRecord(Guid habitId, List<HabitRecordViewModel> models, CancellationToken cancellationToken = default)
     {
-        var habit = await dbContext.Habits.Where(h => h.Id == habitId).FirstOrDefaultAsync(cancellationToken);
-
-        if (habit is null)
-        {
-            throw new HttpException(HttpStatusCode.NotFound, "Habit not found");
-        }
+        var habit = await GetAndValidateHabitAsync(habitId, cancellationToken);
 
         models = models.OrderBy(m => m.Date).ToList();
         var first = models.FirstOrDefault();
@@ -106,5 +91,19 @@ public class HabitService(
         habit.IsOverdue = isOverdue;
 
         await dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    private async Task<Core.Entities.Habit> GetAndValidateHabitAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var entity = await habitRepository
+            .GetByIdAsync(id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (entity is null)
+        {
+            throw new HttpException(HttpStatusCode.NotFound, "Habit not found");
+        }
+
+        return entity;
     }
 }

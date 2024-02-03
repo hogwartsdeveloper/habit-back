@@ -2,7 +2,7 @@ using Habit.Core.Entities.Abstraction;
 
 namespace Habit.Core.Entities;
 
-public class HabitRecord : BaseEntity
+public class HabitRecord : EntityBase
 {
     public required Guid HabitId { get; set; }
     
