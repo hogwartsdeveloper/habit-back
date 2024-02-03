@@ -37,5 +37,6 @@ public static class DependencyInjectionExtension
     {
         service.AddScoped<IRepository<Habit.Core.Entities.Habit>, Repository<Habit.Core.Entities.Habit>>();
         service.AddScoped<IRepository<HabitRecord>, Repository<HabitRecord>>();
+        service.AddScoped<IRepository<User>, Repository<User>>();
     }
 }

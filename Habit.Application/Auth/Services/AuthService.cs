@@ -4,13 +4,13 @@ using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Models;
 using Habit.Core.Entities;
 using Habit.Core.Exceptions;
-using Infrastructure.Data;
+using Habit.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Habit.Application.Auth.Services;
 
 public class AuthService(
-    ApplicationDbContext dbContext,
+    IRepository<User> userRepository,
     IMapper mapper,
     ISecurityService securityService) : IAuthService
 {
@@ -20,16 +20,19 @@ public class AuthService(
         
         var entity = mapper.Map<User>(model);
         entity.PasswordHash = securityService.HashPassword(model.Password);
+
+        var addedUserId = await userRepository.AddAsync(entity);
+        entity.Id = addedUserId;
         
-        var addedEntity = await dbContext.Users.AddAsync(entity);
-        await dbContext.SaveChangesAsync();
-        
-        return new AuthViewModel { AccessToken = securityService.GenerateToken(addedEntity.Entity) };
+        return new AuthViewModel { AccessToken = securityService.GenerateToken(entity) };
     }
 
     public async Task<AuthViewModel> SignInAsync(LoginModel model)
     {
-        var user = await dbContext.Users.FirstOrDefaultAsync(e => e.Email == model.Email);
+        var user = await userRepository
+            .GetListAsync(e => e.Email == model.Email)
+            .FirstOrDefaultAsync();
+        
         if (user is null)
         {
             throw new HttpException(HttpStatusCode.BadRequest, "Email or password wrong");
@@ -46,7 +49,7 @@ public class AuthService(
     
     private async Task ValidateUserNotExists(string email)
     {
-        if (await dbContext.Users.AnyAsync(user => user.Email == email))
+        if (await userRepository.AnyAsync(user => user.Email == email))
         {
             throw new HttpException(HttpStatusCode.BadRequest, "User already exists");
         }

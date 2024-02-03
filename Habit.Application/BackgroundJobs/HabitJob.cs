@@ -1,17 +1,20 @@
 using Habit.Application.BackgroundJobs.Interfaces;
-using Infrastructure.Data;
+using Habit.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Habit.Application.BackgroundJobs;
 
-public class HabitJob(ApplicationDbContext dbContext) : IHabitJob
+public class HabitJob(IRepository<Core.Entities.Habit> habitRepository) : IHabitJob
 {
     public async Task CheckIsOverdueAsync()
     {
-        var habits = await dbContext.Habits
-            .Where(e => !e.IsOverdue)
-            .Include(habit => habit.HabitRecords)
+        
+        var habits = await habitRepository
+            .GetListAsync(e => !e.IsOverdue)
+            .Include(h => h.HabitRecords)
             .ToListAsync();
+
+        var updateHabits = new List<Core.Entities.Habit>();
 
         foreach (var habit in habits)
         {
@@ -20,9 +23,10 @@ public class HabitJob(ApplicationDbContext dbContext) : IHabitJob
             if (last is null || last?.Date < DateTime.UtcNow)
             {
                 habit.IsOverdue = true;
+                updateHabits.Add(habit);
             }
         }
 
-        await dbContext.SaveChangesAsync();
+        await habitRepository.UpdateRangeAsync(updateHabits);
     }
 }

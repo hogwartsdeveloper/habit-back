@@ -14,7 +14,6 @@ public class Repository<T>(ApplicationDbContext dbContext) : IRepository<T> wher
             .Where(e => e.Id == id)
             .AsNoTracking()
             .AsQueryable();
-
     }
 
     public IQueryable<T> GetListAsync()
@@ -32,6 +31,13 @@ public class Repository<T>(ApplicationDbContext dbContext) : IRepository<T> wher
             .Where(predicate)
             .AsNoTracking()
             .AsQueryable();
+    }
+
+    public Task<bool> AnyAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        return dbContext
+            .Set<T>()
+            .AnyAsync(predicate, cancellationToken);
     }
 
     public async Task<Guid> AddAsync(T entity, CancellationToken cancellationToken = default)
@@ -57,9 +63,17 @@ public class Repository<T>(ApplicationDbContext dbContext) : IRepository<T> wher
     {
         dbContext
             .Set<T>()
-            .Entry(entity)
-            .State = EntityState.Modified;
-        
+            .Update(entity);
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+    {
+        dbContext
+            .Set<T>()
+            .UpdateRange(entities);
+
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 }
