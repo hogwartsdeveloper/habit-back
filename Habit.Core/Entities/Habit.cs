@@ -1,0 +1,19 @@
+using Habit.Core.Entities.Abstraction;
+
+namespace Habit.Core.Entities;
+
+public class Habit : BaseEntity
+{
+    public Guid UserId { get; set; }
+    public User? User { get; set; }
+    
+    public required string Title { get; set; }
+    
+    public string? Description { get; set; }
+
+    public bool IsOverdue { get; set; }
+    public required DateTime StartDate { get; set; }
+    public required DateTime EndDate { get; set; }
+    
+    public List<HabitRecord>? HabitRecords { get; set; }
+}
