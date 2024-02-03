@@ -6,14 +6,13 @@ using Habit.Application.Habit.Models;
 using Habit.Core.Entities;
 using Habit.Core.Exceptions;
 using Habit.Core.Interfaces;
-using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Habit.Application.Habit.Services;
 
 public class HabitService(
-    ApplicationDbContext dbContext,
     IRepository<Core.Entities.Habit> habitRepository,
+    IRepository<HabitRecord> habitRecordRepository,
     IMapper mapper) : IHabitService
 {
     public Task<Guid> AddAsync(Guid userId, AddHabitModel model, CancellationToken cancellationToken = default)
@@ -68,7 +67,10 @@ public class HabitService(
                 "The date of the entries cannot be greater than today");
         }
 
-        var habitRecords = await dbContext.HabitRecords.Where(h => h.HabitId == habitId).ToListAsync(cancellationToken);
+        
+        var habitRecords = await habitRecordRepository
+            .GetListAsync(h => h.HabitId == habitId)
+            .ToListAsync(cancellationToken);
 
         if (habitRecords.LastOrDefault()?.Date > first?.Date)
         {
@@ -86,11 +88,10 @@ public class HabitService(
                 isOverdue = true;
             }
         });
-
-        await dbContext.HabitRecords.AddRangeAsync(entities, cancellationToken);
+        await habitRecordRepository.AddRangeAsync(entities, cancellationToken);
         habit.IsOverdue = isOverdue;
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        await habitRepository.UpdateAsync(habit, cancellationToken);
     }
 
     private async Task<Core.Entities.Habit> GetAndValidateHabitAsync(Guid id, CancellationToken cancellationToken)
