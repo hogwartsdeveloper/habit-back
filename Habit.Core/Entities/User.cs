@@ -11,4 +11,5 @@ public class User : EntityBase
     public DateTime? BirthDay { get; set; }
     public required string PasswordHash { get; set; }
     public List<Habit>? Habits { get; set; }
+    public string? RefreshToken { get; set; }
 }

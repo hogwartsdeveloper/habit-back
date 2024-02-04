@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Habit.Application.Auth.Interfaces;
+using Habit.Application.Auth.Models;
 using Habit.Core.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -17,9 +18,9 @@ public class SecurityService : ISecurityService
         _configuration = configuration;
     }
     
-    public string GenerateToken(User user)
+    public TokenViewModel GenerateToken(User user)
     {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim>
@@ -35,7 +36,13 @@ public class SecurityService : ISecurityService
             expires: DateTime.Now.AddMinutes(15),
             signingCredentials: credentials);
 
-        return new JwtSecurityTokenHandler().WriteToken(jwt);
+        var refreshJwt = new JwtSecurityToken(expires: DateTime.Now.AddDays(15), signingCredentials: credentials);
+
+        return new TokenViewModel
+        {
+            AccessToken = new JwtSecurityTokenHandler().WriteToken(jwt),
+            RefreshToken = refreshJwt.ToString()
+        };
     }
 
     public string HashPassword(string password)
@@ -46,5 +53,31 @@ public class SecurityService : ISecurityService
     public bool VerifyPassword(string password, string passwordHash)
     {
         return BCrypt.Net.BCrypt.EnhancedVerify(password, passwordHash);
+    }
+
+    public async Task<bool> ValidateTokenAsync(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var validationParam = GetTokenValidationParameters(_configuration["Jwt:Key"]!);
+
+        try
+        {
+            await tokenHandler.ValidateTokenAsync(token, validationParam);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    private TokenValidationParameters GetTokenValidationParameters(string secretKey)
+    {
+        return new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+            ClockSkew = TimeSpan.Zero,
+        };
     }
 }
