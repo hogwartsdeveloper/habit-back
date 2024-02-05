@@ -28,12 +28,14 @@ public static class DependencyInjectionExtension
     {
         var jwtIssuer = configuration.GetSection("Jwt:Issuer").Get<string>();
         var jwtKey = configuration.GetSection("Jwt:Key").Get<string>();
-        
+
+        service.AddAuthorization();
         service.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opt =>
             {
                 opt.TokenValidationParameters = new TokenValidationParameters()
                 {
+                    RequireExpirationTime = true,
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,

@@ -33,7 +33,7 @@ public class SecurityService : ISecurityService
             _configuration["Jwt:Issuer"],
             _configuration["Jwt:Issuer"],
             claims: claims,
-            expires: DateTime.Now.AddMinutes(15),
+            expires: DateTime.UtcNow.AddMinutes(1),
             signingCredentials: credentials);
 
         var refreshJwt = new JwtSecurityToken(expires: DateTime.Now.AddDays(15), signingCredentials: credentials);
@@ -41,7 +41,7 @@ public class SecurityService : ISecurityService
         return new TokenViewModel
         {
             AccessToken = new JwtSecurityTokenHandler().WriteToken(jwt),
-            RefreshToken = refreshJwt.ToString()
+            RefreshToken = new JwtSecurityTokenHandler().WriteToken(refreshJwt)
         };
     }
 

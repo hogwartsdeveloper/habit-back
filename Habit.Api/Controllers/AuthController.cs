@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -20,5 +21,13 @@ public class AuthController(IAuthService authService) : ControllerBase
     public Task<AuthViewModel> SignIn([FromBody] LoginModel viewModel)
     {
         return authService.SignInAsync(viewModel);
+    }
+
+    [HttpGet("Refresh")]
+    [ProducesResponseType(typeof(AuthViewModel), 200)]
+    public Task<AuthViewModel> Refresh()
+    {
+        var userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+        return authService.RefreshSession(userEmail!);
     }
 }

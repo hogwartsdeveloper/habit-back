@@ -54,7 +54,33 @@ public class AuthService(
         
         return new AuthViewModel { AccessToken = tokens.AccessToken };
     }
-    
+
+    public async Task<AuthViewModel> RefreshSession(string email)
+    {
+        var user = await userRepository
+            .GetListAsync(e => e.Email == email)
+            .FirstOrDefaultAsync();
+        
+        if (user is null)
+        {
+            throw new HttpException(HttpStatusCode.Unauthorized, "User not found!");
+        }
+
+        var tokenIsValid = await securityService.ValidateTokenAsync(user.RefreshToken!);
+
+        if (!tokenIsValid)
+        {
+            throw new HttpException(HttpStatusCode.Unauthorized, "Token invalid");
+        }
+
+        var tokens = securityService.GenerateToken(user);
+        
+        user.RefreshToken = tokens.RefreshToken;
+        await userRepository.UpdateAsync(user);
+
+        return new AuthViewModel { AccessToken = tokens.AccessToken };
+    }
+
     private async Task ValidateUserNotExists(string email)
     {
         if (await userRepository.AnyAsync(user => user.Email == email))
