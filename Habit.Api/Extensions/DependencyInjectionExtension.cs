@@ -16,7 +16,7 @@ public static class DependencyInjectionExtension
     public static void ApplicationConfigureServices(this IServiceCollection service, IConfiguration configuration)
     {
         service.ApplicationAuthenticationConfigure(configuration);
-        service.AddApplicationServices();
+        service.AddApplicationServices(configuration);
         service.AddControllers();
         service.AddEndpointsApiExplorer();
         
