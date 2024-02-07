@@ -1,5 +1,5 @@
 using Habit.Application.BackgroundJobs.Interfaces;
-using Habit.Core.Interfaces;
+using Habit.Application.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Habit.Application.BackgroundJobs;

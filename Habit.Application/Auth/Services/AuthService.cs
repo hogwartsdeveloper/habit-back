@@ -2,9 +2,9 @@ using System.Net;
 using AutoMapper;
 using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Models;
+using Habit.Application.Repositories;
 using Habit.Core.Entities;
 using Habit.Core.Exceptions;
-using Habit.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Habit.Application.Auth.Services;

@@ -3,9 +3,9 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Habit.Application.Habit.Interfaces;
 using Habit.Application.Habit.Models;
+using Habit.Application.Repositories;
 using Habit.Core.Entities;
 using Habit.Core.Exceptions;
-using Habit.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Habit.Application.Habit.Services;

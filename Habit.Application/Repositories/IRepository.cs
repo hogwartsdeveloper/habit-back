@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using Habit.Core.Entities.Abstraction;
 
-namespace Habit.Core.Interfaces;
+namespace Habit.Application.Repositories;
 
 public interface IRepository<T> where T : EntityBase
 {

@@ -1,10 +1,13 @@
+using Habit.Application.BrokerMessage;
+using Habit.Application.Repositories;
 using Habit.Core.Entities;
-using Habit.Core.Interfaces;
 using Hangfire;
 using Hangfire.PostgreSql;
+using Infrastructure.BrokerMessage;
 using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Extensions;
@@ -38,5 +41,11 @@ public static class DependencyInjectionExtension
         service.AddScoped<IRepository<Habit.Core.Entities.Habit>, Repository<Habit.Core.Entities.Habit>>();
         service.AddScoped<IRepository<HabitRecord>, Repository<HabitRecord>>();
         service.AddScoped<IRepository<User>, Repository<User>>();
+    }
+
+    public static void AddBrokerMessageService(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<IBrokerMessageService>(configuration);
+        services.AddSingleton<IBrokerMessageService, BrokerMessageService>();
     }
 }
