@@ -2,6 +2,7 @@ using System.Net;
 using AutoMapper;
 using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Models;
+using Habit.Application.BrokerMessage;
 using Habit.Application.Repositories;
 using Habit.Core.Entities;
 using Habit.Core.Exceptions;
@@ -12,7 +13,8 @@ namespace Habit.Application.Auth.Services;
 public class AuthService(
     IRepository<User> userRepository,
     IMapper mapper,
-    ISecurityService securityService) : IAuthService
+    ISecurityService securityService,
+    IBrokerMessageService brokerMessageService) : IAuthService
 {
     public async Task<AuthViewModel> SignUpAsync(RegistrationModel model)
     {
@@ -26,6 +28,8 @@ public class AuthService(
 
         var addedUserId = await userRepository.AddAsync(entity);
         entity.Id = addedUserId;
+        
+        brokerMessageService.SendMessage(entity);
         
         return new AuthViewModel { AccessToken = tokens.AccessToken };
     }

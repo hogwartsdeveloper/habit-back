@@ -3,6 +3,8 @@ using Habit.Application.Repositories;
 using Habit.Core.Entities;
 using Hangfire;
 using Hangfire.PostgreSql;
+using Infrastructure.BackgroundJobs;
+using Infrastructure.BackgroundJobs.Interfaces;
 using Infrastructure.BrokerMessage;
 using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
@@ -45,7 +47,13 @@ public static class DependencyInjectionExtension
 
     public static void AddBrokerMessageService(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<IBrokerMessageService>(configuration);
+        services.Configure<BrokerMessageSettings>(configuration.GetSection("RabbitMQ"));
         services.AddSingleton<IBrokerMessageService, BrokerMessageService>();
+    }
+
+    public static void AddBackgroundJobs(this IServiceCollection services)
+    {
+        services.AddScoped<IHabitJob, HabitJob>();
+        services.AddScoped<IBrokerMessageListenerJob, BrokerMessageListenerJob>();
     }
 }

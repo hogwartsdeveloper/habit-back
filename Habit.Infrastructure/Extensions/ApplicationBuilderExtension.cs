@@ -1,5 +1,5 @@
-using Habit.Application.BackgroundJobs.Interfaces;
 using Hangfire;
+using Infrastructure.BackgroundJobs.Interfaces;
 using Microsoft.AspNetCore.Builder;
 
 namespace Infrastructure.Extensions;
@@ -16,5 +16,8 @@ public static class ApplicationBuilderExtension
             {
                 TimeZone = TimeZoneInfo.Utc
             });
+
+        BackgroundJob
+            .Enqueue<IBrokerMessageListenerJob>(listener => listener.StartListening());
     }
 }

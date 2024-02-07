@@ -1,4 +1,4 @@
-namespace Habit.Application.BackgroundJobs.Interfaces;
+namespace Infrastructure.BackgroundJobs.Interfaces;
 
 public interface IHabitJob
 {

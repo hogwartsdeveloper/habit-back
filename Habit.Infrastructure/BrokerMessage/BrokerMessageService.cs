@@ -34,18 +34,16 @@ public class BrokerMessageService : IBrokerMessageService
 
     public void SendMessage(string message)
     {
-        using (var connection = _connectionFactory.CreateConnection())
-        using (var channel = connection.CreateModel())
-        {
-            channel.QueueDeclare(queue: _settings.Queue, false, false, false, null);
+        using var connection = _connectionFactory.CreateConnection();
+        using var channel = connection.CreateModel();
+        channel.QueueDeclare(queue: _settings.Queue, true, false, false, null);
 
-            var body = Encoding.UTF8.GetBytes(message);
+        var body = Encoding.UTF8.GetBytes(message);
             
-            channel.BasicPublish(
-                exchange: _settings.Exchange,
-                routingKey: _settings.RoutingKey,
-                basicProperties: null,
-                body);
-        }    
+        channel.BasicPublish(
+            exchange: _settings.Exchange,
+            routingKey: _settings.RoutingKey,
+            basicProperties: null,
+            body);
     }
 }

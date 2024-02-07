@@ -2,8 +2,6 @@ using System.Text;
 using Habit.Application.Auth;
 using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Services;
-using Habit.Application.BackgroundJobs;
-using Habit.Application.BackgroundJobs.Interfaces;
 using Habit.Application.Habit.Interfaces;
 using Habit.Application.Habit.Services;
 using Habit.Application.Mail.Interfaces;
@@ -24,7 +22,6 @@ public static class DependencyInjectionExtension
         service.AddSingleton<ISecurityService, SecurityService>();
         service.AddScoped<IAuthService, AuthService>();
         service.AddScoped<IHabitService, HabitService>();
-        service.AddScoped<IHabitJob, HabitJob>();
         service.AddSingleton<IMailService, MailService>();
         service.Configure<MailSettings>(configuration.GetSection("MailSettings"));
     }

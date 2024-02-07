@@ -12,6 +12,7 @@ public static class DependencyInjectionExtension
         service.AddTaskManager(configuration.GetConnectionString("HangfireDb"));
         service.AddRepositories();
         service.AddBrokerMessageService(configuration);
+        service.AddBackgroundJobs();
     }
 
     public static void ApplicationConfigureServices(this IServiceCollection service, IConfiguration configuration)
