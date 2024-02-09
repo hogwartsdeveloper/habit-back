@@ -3,6 +3,7 @@ using Habit.Application.Mail.Models;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using MimeKit.Text;
 
 namespace Habit.Application.Mail.Services;
 
@@ -29,7 +30,10 @@ public class MailService : IMailService
 
                 message.Subject = mailData.Subject;
 
-                mailData.Body = mailData.Body;
+                message.Body = new TextPart(TextFormat.Plain)
+                {
+                    Text = mailData.Body
+                };
                 
                 using (SmtpClient mailClient = new SmtpClient())
                 {

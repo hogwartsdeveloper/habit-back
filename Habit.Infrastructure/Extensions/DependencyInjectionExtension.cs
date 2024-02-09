@@ -43,6 +43,7 @@ public static class DependencyInjectionExtension
         service.AddScoped<IRepository<Habit.Core.Entities.Habit>, Repository<Habit.Core.Entities.Habit>>();
         service.AddScoped<IRepository<HabitRecord>, Repository<HabitRecord>>();
         service.AddScoped<IRepository<User>, Repository<User>>();
+        service.AddScoped<IRepository<UserVerify>, Repository<UserVerify>>();
     }
 
     public static void AddBrokerMessageService(this IServiceCollection services, IConfiguration configuration)

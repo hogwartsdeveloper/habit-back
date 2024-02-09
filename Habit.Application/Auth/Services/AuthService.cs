@@ -6,6 +6,7 @@ using Habit.Application.BrokerMessage;
 using Habit.Application.Mail.Models;
 using Habit.Application.Repositories;
 using Habit.Core.Entities;
+using Habit.Core.Enums;
 using Habit.Core.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,7 @@ namespace Habit.Application.Auth.Services;
 
 public class AuthService(
     IRepository<User> userRepository,
+    IRepository<UserVerify> userVerifyRepository,
     IMapper mapper,
     ISecurityService securityService,
     IBrokerMessageService brokerMessageService) : IAuthService
@@ -29,14 +31,8 @@ public class AuthService(
 
         var addedUserId = await userRepository.AddAsync(entity);
         entity.Id = addedUserId;
-        
-        brokerMessageService.SendMessage(new MailData
-        {
-            Email = entity.Email,
-            Name = entity.FirstName,
-            Subject = "Confirm email",
-            Body = "1909"
-        });
+
+        await SendVerifyEmailAsync(entity);
         
         return new AuthViewModel { AccessToken = tokens.AccessToken };
     }
@@ -98,5 +94,27 @@ public class AuthService(
         {
             throw new HttpException(HttpStatusCode.BadRequest, "User already exists");
         }
+    }
+
+    private async Task SendVerifyEmailAsync(User user)
+    {
+        var code = new Random().Next(1000, 9999).ToString();
+
+        await userVerifyRepository.AddAsync(new UserVerify
+        {
+            UserId = user.Id,
+            Code = code,
+            Exp = DateTime.UtcNow.AddMinutes(15),
+            VerifyType = UserVerifyType.Email
+        });
+        
+        brokerMessageService.SendMessage(
+            new MailData
+            {
+                Email = user.Email,
+                Name = $"{user.FirstName} {user.LastName}",
+                Subject = "Confirm email",
+                Body = code
+            });
     }
 }
