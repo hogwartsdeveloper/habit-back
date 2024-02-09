@@ -1,9 +1,12 @@
 using System.Text;
+using Habit.Application.Mail.Interfaces;
+using Habit.Application.Mail.Models;
 using Infrastructure.BackgroundJobs.Interfaces;
 using Infrastructure.BrokerMessage;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Infrastructure.BackgroundJobs;
 
@@ -11,10 +14,12 @@ public class BrokerMessageListenerJob : IBrokerMessageListenerJob
 {
     private readonly BrokerMessageSettings _settings;
     private readonly IModel _channel;
+    private readonly IMailService _mailService;
 
-    public BrokerMessageListenerJob(IOptions<BrokerMessageSettings> options)
+    public BrokerMessageListenerJob(IOptions<BrokerMessageSettings> options, IMailService mailService)
     {
         _settings = options.Value;
+        _mailService = mailService;
 
         var connectionFactory = new ConnectionFactory()
         {
@@ -28,20 +33,25 @@ public class BrokerMessageListenerJob : IBrokerMessageListenerJob
         var connection = connectionFactory.CreateConnection();
         _channel = connection.CreateModel();
     }
-    
-    public void StartListening()
+
+    public void UserVerifyStartListening()
     {
         var consumer = new EventingBasicConsumer(_channel);
-        consumer.Received += Consume;
+        consumer.Received += UserVerifyConsume;
 
-        _channel.BasicConsume(_settings.Queue, false, consumer);
+        _channel.BasicConsume("AuthQue", false, consumer);
     }
 
-    private void Consume(object? _, BasicDeliverEventArgs eventArgs)
+    private void UserVerifyConsume(object? _, BasicDeliverEventArgs eventArgs)
     {
         var content = Encoding.UTF8.GetString(eventArgs.Body.ToArray());
 
-        Console.WriteLine($"Message: {content}");
+        var mailData = JsonSerializer.Deserialize<MailData>(content);
+
+        if (mailData is not null)
+        {
+            _mailService.SendMail(mailData);
+        }
         
         _channel.BasicAck(eventArgs.DeliveryTag, false);
     }

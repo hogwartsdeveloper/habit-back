@@ -10,6 +10,7 @@ public class AuthMapperProfile : Profile
     {
         CreateMap<RegistrationModel, User>()
             .ForMember(dst => dst.Id, opt => opt.Ignore())
+            .ForMember(dst => dst.UserVerification, opt => opt.Ignore())
             .ForMember(dst => dst.PasswordHash, opt => opt.Ignore());
     }
 }

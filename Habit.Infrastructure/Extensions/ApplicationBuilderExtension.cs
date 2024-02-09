@@ -18,6 +18,6 @@ public static class ApplicationBuilderExtension
             });
 
         BackgroundJob
-            .Enqueue<IBrokerMessageListenerJob>(listener => listener.StartListening());
+            .Enqueue<IBrokerMessageListenerJob>(listener => listener.UserVerifyStartListening());
     }
 }

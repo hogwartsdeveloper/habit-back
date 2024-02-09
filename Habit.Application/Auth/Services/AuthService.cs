@@ -3,6 +3,7 @@ using AutoMapper;
 using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Models;
 using Habit.Application.BrokerMessage;
+using Habit.Application.Mail.Models;
 using Habit.Application.Repositories;
 using Habit.Core.Entities;
 using Habit.Core.Exceptions;
@@ -29,7 +30,13 @@ public class AuthService(
         var addedUserId = await userRepository.AddAsync(entity);
         entity.Id = addedUserId;
         
-        brokerMessageService.SendMessage(entity);
+        brokerMessageService.SendMessage(new MailData
+        {
+            Email = entity.Email,
+            Name = entity.FirstName,
+            Subject = "Confirm email",
+            Body = "1909"
+        });
         
         return new AuthViewModel { AccessToken = tokens.AccessToken };
     }
