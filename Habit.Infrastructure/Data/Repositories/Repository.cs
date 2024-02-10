@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using Habit.Application.Repositories;
-using Habit.Core.Entities.Abstraction;
+using Habit.Domain.Entities.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Repositories;

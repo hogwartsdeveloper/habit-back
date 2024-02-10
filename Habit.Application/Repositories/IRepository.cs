@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using Habit.Core.Entities.Abstraction;
+using Habit.Domain.Entities.Abstraction;
 
 namespace Habit.Application.Repositories;
 

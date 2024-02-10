@@ -1,6 +1,6 @@
 using Habit.Application.BrokerMessage;
 using Habit.Application.Repositories;
-using Habit.Core.Entities;
+using Habit.Domain.Entities;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Infrastructure.BackgroundJobs;
@@ -40,7 +40,7 @@ public static class DependencyInjectionExtension
 
     public static void AddRepositories(this IServiceCollection service)
     {
-        service.AddScoped<IRepository<Habit.Core.Entities.Habit>, Repository<Habit.Core.Entities.Habit>>();
+        service.AddScoped<IRepository<Habit.Domain.Entities.Habit>, Repository<Habit.Domain.Entities.Habit>>();
         service.AddScoped<IRepository<HabitRecord>, Repository<HabitRecord>>();
         service.AddScoped<IRepository<User>, Repository<User>>();
         service.AddScoped<IRepository<UserVerify>, Repository<UserVerify>>();

@@ -1,4 +1,4 @@
-using Habit.Core.Entities;
+using Habit.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -25,7 +25,7 @@ namespace Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Habit.Core.Entities.Habit", b =>
+            modelBuilder.Entity("Habit.Domain.Entities.Habit", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,7 +57,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Habits", (string)null);
                 });
 
-            modelBuilder.Entity("Habit.Core.Entities.HabitRecord", b =>
+            modelBuilder.Entity("Habit.Domain.Entities.HabitRecord", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -81,7 +81,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("HabitRecords", (string)null);
                 });
 
-            modelBuilder.Entity("Habit.Core.Entities.User", b =>
+            modelBuilder.Entity("Habit.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -117,7 +117,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Habit.Core.Entities.UserVerify", b =>
+            modelBuilder.Entity("Habit.Domain.Entities.UserVerify", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -143,9 +143,9 @@ namespace Infrastructure.Migrations
                     b.ToTable("UserVerify");
                 });
 
-            modelBuilder.Entity("Habit.Core.Entities.Habit", b =>
+            modelBuilder.Entity("Habit.Domain.Entities.Habit", b =>
                 {
-                    b.HasOne("Habit.Core.Entities.User", "User")
+                    b.HasOne("Habit.Domain.Entities.User", "User")
                         .WithMany("Habits")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -154,9 +154,9 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Habit.Core.Entities.HabitRecord", b =>
+            modelBuilder.Entity("Habit.Domain.Entities.HabitRecord", b =>
                 {
-                    b.HasOne("Habit.Core.Entities.Habit", "Habit")
+                    b.HasOne("Habit.Domain.Entities.Habit", "Habit")
                         .WithMany("HabitRecords")
                         .HasForeignKey("HabitId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -165,9 +165,9 @@ namespace Infrastructure.Migrations
                     b.Navigation("Habit");
                 });
 
-            modelBuilder.Entity("Habit.Core.Entities.UserVerify", b =>
+            modelBuilder.Entity("Habit.Domain.Entities.UserVerify", b =>
                 {
-                    b.HasOne("Habit.Core.Entities.User", "User")
+                    b.HasOne("Habit.Domain.Entities.User", "User")
                         .WithMany("UserVerification")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -176,12 +176,12 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Habit.Core.Entities.Habit", b =>
+            modelBuilder.Entity("Habit.Domain.Entities.Habit", b =>
                 {
                     b.Navigation("HabitRecords");
                 });
 
-            modelBuilder.Entity("Habit.Core.Entities.User", b =>
+            modelBuilder.Entity("Habit.Domain.Entities.User", b =>
                 {
                     b.Navigation("Habits");
 

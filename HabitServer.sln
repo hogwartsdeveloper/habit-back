@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Habit.Infrastructure", "Habit.Infrastructure\Habit.Infrastructure.csproj", "{25DE7613-A4F9-4FAD-A040-B50998DFAD80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Habit.Core", "Habit.Core\Habit.Core.csproj", "{08E1B9DB-E743-42BB-A551-99B0361B4AC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Habit.Domain", "Habit.Domain\Habit.Domain.csproj", "{08E1B9DB-E743-42BB-A551-99B0361B4AC2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Habit.Api", "Habit.Api\Habit.Api.csproj", "{F5972C18-41AA-488B-AD53-04E99D4B73B6}"
 EndProject

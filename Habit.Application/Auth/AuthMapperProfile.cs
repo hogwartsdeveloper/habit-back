@@ -1,6 +1,6 @@
 using AutoMapper;
 using Habit.Application.Auth.Models;
-using Habit.Core.Entities;
+using Habit.Domain.Entities;
 
 namespace Habit.Application.Auth;
 

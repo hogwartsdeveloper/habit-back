@@ -1,4 +1,4 @@
-namespace Habit.Core.Entities.Abstraction;
+namespace Habit.Domain.Entities.Abstraction;
 
 public abstract class EntityBase
 {

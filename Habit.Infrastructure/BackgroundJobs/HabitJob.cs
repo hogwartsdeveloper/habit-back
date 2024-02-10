@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.BackgroundJobs;
 
-public class HabitJob(IRepository<Habit.Core.Entities.Habit> habitRepository) : IHabitJob
+public class HabitJob(IRepository<Habit.Domain.Entities.Habit> habitRepository) : IHabitJob
 {
     public async Task CheckIsOverdueAsync()
     {
@@ -14,7 +14,7 @@ public class HabitJob(IRepository<Habit.Core.Entities.Habit> habitRepository) : 
             .Include(h => h.HabitRecords)
             .ToListAsync();
 
-        var updateHabits = new List<Habit.Core.Entities.Habit>();
+        var updateHabits = new List<Habit.Domain.Entities.Habit>();
 
         foreach (var habit in habits)
         {

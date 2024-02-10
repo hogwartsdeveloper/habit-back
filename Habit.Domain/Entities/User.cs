@@ -1,6 +1,6 @@
-using Habit.Core.Entities.Abstraction;
+using Habit.Domain.Entities.Abstraction;
 
-namespace Habit.Core.Entities;
+namespace Habit.Domain.Entities;
 
 public class User : EntityBase
 {
@@ -12,7 +12,7 @@ public class User : EntityBase
     public DateTime? BirthDay { get; set; }
     public required string PasswordHash { get; set; }
     public string? RefreshToken { get; set; }
-    public List<Habit>? Habits { get; set; }
+    public List<Domain.Entities.Habit>? Habits { get; set; }
     
     public List<UserVerify>? UserVerification { get; set; }
 }

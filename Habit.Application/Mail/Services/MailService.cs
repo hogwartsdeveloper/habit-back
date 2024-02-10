@@ -51,7 +51,7 @@ public class MailService : IMailService
 
             return true;
         }
-        catch (Exception e)
+        catch (Exception _)
         {
             return false;
         }

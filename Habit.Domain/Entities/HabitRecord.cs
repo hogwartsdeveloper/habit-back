@@ -1,12 +1,12 @@
-using Habit.Core.Entities.Abstraction;
+using Habit.Domain.Entities.Abstraction;
 
-namespace Habit.Core.Entities;
+namespace Habit.Domain.Entities;
 
 public class HabitRecord : EntityBase
 {
     public required Guid HabitId { get; set; }
     
-    public Habit? Habit { get; set; }
+    public Domain.Entities.Habit? Habit { get; set; }
     public required DateTime Date { get; set; }
     
     public required bool IsComplete { get; set; }

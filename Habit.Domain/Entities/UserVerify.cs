@@ -1,7 +1,7 @@
-using Habit.Core.Entities.Abstraction;
 using Habit.Core.Enums;
+using Habit.Domain.Entities.Abstraction;
 
-namespace Habit.Core.Entities;
+namespace Habit.Domain.Entities;
 
 public class UserVerify : EntityBase
 {

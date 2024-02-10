@@ -1,6 +1,6 @@
-using Habit.Core.Entities.Abstraction;
+using Habit.Domain.Entities.Abstraction;
 
-namespace Habit.Core.Entities;
+namespace Habit.Domain.Entities;
 
 public class Habit : EntityBase
 {

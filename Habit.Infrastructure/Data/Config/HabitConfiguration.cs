@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Data.Config;
 
-public class HabitConfiguration : IEntityTypeConfiguration<Habit.Core.Entities.Habit>
+public class HabitConfiguration : IEntityTypeConfiguration<Habit.Domain.Entities.Habit>
 {
-    public void Configure(EntityTypeBuilder<Habit.Core.Entities.Habit> builder)
+    public void Configure(EntityTypeBuilder<Habit.Domain.Entities.Habit> builder)
     {
         builder.HasKey("Id");
         

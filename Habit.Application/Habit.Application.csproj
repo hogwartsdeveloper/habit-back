@@ -14,7 +14,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
         <PackageReference Include="MimeKit" Version="4.3.0" />
-        <ProjectReference Include="..\Habit.Core\Habit.Core.csproj" />
+        <ProjectReference Include="..\Habit.Domain\Habit.Domain.csproj" />
     </ItemGroup>
 
 </Project>

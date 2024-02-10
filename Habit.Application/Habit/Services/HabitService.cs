@@ -4,20 +4,20 @@ using AutoMapper.QueryableExtensions;
 using Habit.Application.Habit.Interfaces;
 using Habit.Application.Habit.Models;
 using Habit.Application.Repositories;
-using Habit.Core.Entities;
 using Habit.Core.Exceptions;
+using Habit.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Habit.Application.Habit.Services;
 
 public class HabitService(
-    IRepository<Core.Entities.Habit> habitRepository,
+    IRepository<Domain.Entities.Habit> habitRepository,
     IRepository<HabitRecord> habitRecordRepository,
     IMapper mapper) : IHabitService
 {
     public Task<Guid> AddAsync(Guid userId, AddHabitModel model, CancellationToken cancellationToken = default)
     {
-        var entity = mapper.Map<Core.Entities.Habit>(model);
+        var entity = mapper.Map<Domain.Entities.Habit>(model);
         entity.UserId = userId;
 
         return habitRepository.AddAsync(entity, cancellationToken);
@@ -94,7 +94,7 @@ public class HabitService(
         await habitRepository.UpdateAsync(habit, cancellationToken);
     }
 
-    private async Task<Core.Entities.Habit> GetAndValidateHabitAsync(Guid id, CancellationToken cancellationToken)
+    private async Task<Domain.Entities.Habit> GetAndValidateHabitAsync(Guid id, CancellationToken cancellationToken)
     {
         var entity = await habitRepository
             .GetByIdAsync(id)

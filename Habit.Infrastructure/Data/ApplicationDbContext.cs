@@ -1,4 +1,4 @@
-using Habit.Core.Entities;
+using Habit.Domain.Entities;
 using Infrastructure.Data.Config;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +8,7 @@ public class ApplicationDbContext : DbContext
 {
     public DbSet<User> Users { get; set; }
     
-    public DbSet<Habit.Core.Entities.Habit> Habits { get; set; }
+    public DbSet<Habit.Domain.Entities.Habit> Habits { get; set; }
     
     public DbSet<HabitRecord> HabitRecords { get; set; }
 
