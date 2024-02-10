@@ -25,9 +25,8 @@ public class AuthService(
         
         var entity = mapper.Map<User>(model);
         var tokens = securityService.GenerateToken(entity);
-
-        entity.RefreshToken = tokens.RefreshToken;
-        entity.PasswordHash = securityService.HashPassword(model.Password);
+        
+        entity.Registration(securityService.HashPassword(model.Password), tokens.RefreshToken);
 
         var addedUserId = await userRepository.AddAsync(entity, cancellationToken);
         entity.Id = addedUserId;
@@ -55,7 +54,7 @@ public class AuthService(
         }
 
         var tokens = securityService.GenerateToken(user);
-        user.RefreshToken = tokens.RefreshToken;
+        user.UpdateRefreshToken(tokens.RefreshToken);
 
         await userRepository.UpdateAsync(user, cancellationToken);
         
@@ -82,7 +81,7 @@ public class AuthService(
 
         var tokens = securityService.GenerateToken(user);
         
-        user.RefreshToken = tokens.RefreshToken;
+        user.UpdateRefreshToken(tokens.RefreshToken);
         await userRepository.UpdateAsync(user, cancellationToken);
 
         return new AuthViewModel { AccessToken = tokens.AccessToken };
@@ -101,7 +100,7 @@ public class AuthService(
             throw new HttpException(HttpStatusCode.BadRequest, "Code is not correct");
         }
 
-        user.IsEmailConfirmed = true;
+        user.ConfirmEmail();
         await userRepository.UpdateAsync(user, cancellationToken);
     }
 

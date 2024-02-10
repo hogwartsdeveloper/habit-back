@@ -4,15 +4,47 @@ namespace Habit.Domain.Entities;
 
 public class User : EntityBase
 {
-    public required string FirstName { get; set; }
+    public User(
+        string firstName,
+        string lastName,
+        string email)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+    }
+
+    public void Registration(string passwordHash, string refreshToken)
+    {
+        PasswordHash = passwordHash;
+        UpdateRefreshToken(refreshToken);
+        IsEmailConfirmed = false;
+    }
+
+    public void UpdateRefreshToken(string refreshToken)
+    {
+        RefreshToken = refreshToken;
+    }
+
+    public void ConfirmEmail()
+    {
+        IsEmailConfirmed = true;
+    }
+
+    public void ChangePasswordHash(string passwordHash)
+    {
+        PasswordHash = passwordHash;
+    }
     
-    public required string LastName { get; set; }
-    public required string Email { get; set; }
-    public bool IsEmailConfirmed { get; set; }
-    public DateTime? BirthDay { get; set; }
-    public required string PasswordHash { get; set; }
-    public string? RefreshToken { get; set; }
-    public List<Domain.Entities.Habit>? Habits { get; set; }
+    public string FirstName { get; private set; }
     
-    public List<UserVerify>? UserVerification { get; set; }
+    public string LastName { get; private set; }
+    public string Email { get; private set; }
+    public bool IsEmailConfirmed { get; private set; }
+    public DateTime? BirthDay { get; private set; }
+    public string? PasswordHash { get; private set; }
+    public string? RefreshToken { get; private set; }
+    public List<Habit>? Habits { get; private set; }
+    
+    public List<UserVerify>? UserVerification { get; private set; }
 }
