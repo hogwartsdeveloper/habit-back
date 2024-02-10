@@ -22,7 +22,7 @@ public class HabitJob(IRepository<Habit.Domain.Entities.Habit> habitRepository) 
 
             if (last is null || last?.Date < DateTime.UtcNow)
             {
-                habit.IsOverdue = true;
+                habit.SetOverdue(true);
                 updateHabits.Add(habit);
             }
         }

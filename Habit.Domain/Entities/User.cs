@@ -4,6 +4,10 @@ namespace Habit.Domain.Entities;
 
 public class User : EntityBase
 {
+    private User()
+    {
+    }
+    
     public User(
         string firstName,
         string lastName,

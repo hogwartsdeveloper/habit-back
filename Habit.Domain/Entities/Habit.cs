@@ -4,16 +4,33 @@ namespace Habit.Domain.Entities;
 
 public class Habit : EntityBase
 {
-    public Guid UserId { get; set; }
-    public User? User { get; set; }
-    
-    public required string Title { get; set; }
-    
-    public string? Description { get; set; }
+    private Habit() {}
+    public Habit(string title, DateTime startDate, DateTime endDate)
+    {
+        Title = title;
+        StartDate = startDate;
+        EndDate = endDate;
+    }
 
-    public bool IsOverdue { get; set; }
-    public required DateTime StartDate { get; set; }
-    public required DateTime EndDate { get; set; }
+    public void SetUser(Guid userId)
+    {
+        UserId = userId;
+    }
+
+    public void SetOverdue(bool isOverdue)
+    {
+        IsOverdue = isOverdue;
+    }
     
-    public List<HabitRecord>? HabitRecords { get; set; }
+    public Guid UserId { get; private set; }
+    public User? User { get; private set; }
+    public string Title { get; private set; }
+    
+    public string? Description { get; private set; }
+
+    public bool IsOverdue { get; private set; }
+    public DateTime StartDate { get; private set; }
+    public DateTime EndDate { get; private set; }
+    
+    public List<HabitRecord>? HabitRecords { get; private set; }
 }

@@ -5,13 +5,27 @@ namespace Habit.Domain.Entities;
 
 public class UserVerify : EntityBase
 {
-    public Guid UserId { get; set; }
+    private UserVerify() {}
+
+    public UserVerify(
+        Guid userId,
+        string code,
+        DateTime exp,
+        UserVerifyType userVerifyType)
+    {
+        UserId = userId;
+        Code = code;
+        Exp = exp;
+        VerifyType = userVerifyType;
+    }
     
-    public User? User { get; set; }
+    public Guid UserId { get; private set; }
     
-    public required string Code { get; set; }
+    public User? User { get; private set; }
     
-    public required DateTime Exp { get; set; }
+    public string Code { get; private set; }
     
-    public required UserVerifyType VerifyType { get; set; }
+    public DateTime Exp { get; private set; }
+    
+    public UserVerifyType VerifyType { get; private set; }
 }

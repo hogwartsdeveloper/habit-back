@@ -18,7 +18,7 @@ public class HabitService(
     public Task<Guid> AddAsync(Guid userId, AddHabitModel model, CancellationToken cancellationToken = default)
     {
         var entity = mapper.Map<Domain.Entities.Habit>(model);
-        entity.UserId = userId;
+        entity.SetUser(userId);
 
         return habitRepository.AddAsync(entity, cancellationToken);
     }
@@ -81,7 +81,7 @@ public class HabitService(
         var entities = mapper.Map<List<HabitRecord>>(models);
         entities.ForEach(e =>
         {
-            e.HabitId = habitId;
+            e.SetHabit(habitId);
 
             if (!e.IsComplete)
             {
@@ -89,7 +89,7 @@ public class HabitService(
             }
         });
         await habitRecordRepository.AddRangeAsync(entities, cancellationToken);
-        habit.IsOverdue = isOverdue;
+        habit.SetOverdue(isOverdue);
 
         await habitRepository.UpdateAsync(habit, cancellationToken);
     }

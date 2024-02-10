@@ -129,14 +129,13 @@ public class AuthService(
     private async Task SendVerifyEmailAsync(User user)
     {
         var code = new Random().Next(1000, 9999).ToString();
-
-        await userVerifyRepository.AddAsync(new UserVerify
-        {
-            UserId = user.Id,
-            Code = code,
-            Exp = DateTime.UtcNow.AddMinutes(15),
-            VerifyType = UserVerifyType.Email
-        });
+        
+        await userVerifyRepository.AddAsync(new UserVerify(
+            user.Id,
+            code,
+            DateTime.UtcNow.AddMinutes(15),
+            UserVerifyType.Email)
+        );
         
         brokerMessageService.SendMessage(
             new MailData
