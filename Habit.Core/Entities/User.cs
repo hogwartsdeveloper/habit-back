@@ -8,6 +8,7 @@ public class User : EntityBase
     
     public required string LastName { get; set; }
     public required string Email { get; set; }
+    public bool IsEmailConfirmed { get; set; }
     public DateTime? BirthDay { get; set; }
     public required string PasswordHash { get; set; }
     public string? RefreshToken { get; set; }

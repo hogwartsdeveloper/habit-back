@@ -4,9 +4,11 @@ namespace Habit.Application.Auth.Interfaces;
 
 public interface IAuthService
 {
-    Task<AuthViewModel> SignUpAsync(RegistrationModel model);
+    Task<AuthViewModel> SignUpAsync(RegistrationModel model, CancellationToken cancellationToken);
 
-    Task<AuthViewModel> SignInAsync(LoginModel model);
+    Task<AuthViewModel> SignInAsync(LoginModel model, CancellationToken cancellationToken);
     
-    Task<AuthViewModel> RefreshSession(string email);
+    Task<AuthViewModel> RefreshSessionAsync(string email, CancellationToken cancellationToken);
+
+    Task ConfirmEmailAsync(ConfirmEmailModel model, CancellationToken cancellationToken);
 }

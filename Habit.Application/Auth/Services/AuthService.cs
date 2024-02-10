@@ -19,7 +19,7 @@ public class AuthService(
     ISecurityService securityService,
     IBrokerMessageService brokerMessageService) : IAuthService
 {
-    public async Task<AuthViewModel> SignUpAsync(RegistrationModel model)
+    public async Task<AuthViewModel> SignUpAsync(RegistrationModel model, CancellationToken cancellationToken)
     {
         await ValidateUserNotExists(model.Email);
         
@@ -29,7 +29,7 @@ public class AuthService(
         entity.RefreshToken = tokens.RefreshToken;
         entity.PasswordHash = securityService.HashPassword(model.Password);
 
-        var addedUserId = await userRepository.AddAsync(entity);
+        var addedUserId = await userRepository.AddAsync(entity, cancellationToken);
         entity.Id = addedUserId;
 
         await SendVerifyEmailAsync(entity);
@@ -37,11 +37,11 @@ public class AuthService(
         return new AuthViewModel { AccessToken = tokens.AccessToken };
     }
 
-    public async Task<AuthViewModel> SignInAsync(LoginModel model)
+    public async Task<AuthViewModel> SignInAsync(LoginModel model, CancellationToken cancellationToken)
     {
         var user = await userRepository
             .GetListAsync(e => e.Email == model.Email)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(cancellationToken);
         
         if (user is null)
         {
@@ -57,16 +57,16 @@ public class AuthService(
         var tokens = securityService.GenerateToken(user);
         user.RefreshToken = tokens.RefreshToken;
 
-        await userRepository.UpdateAsync(user);
+        await userRepository.UpdateAsync(user, cancellationToken);
         
         return new AuthViewModel { AccessToken = tokens.AccessToken };
     }
 
-    public async Task<AuthViewModel> RefreshSession(string email)
+    public async Task<AuthViewModel> RefreshSessionAsync(string email, CancellationToken cancellationToken)
     {
         var user = await userRepository
             .GetListAsync(e => e.Email == email)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(cancellationToken);
         
         if (user is null)
         {
@@ -83,9 +83,26 @@ public class AuthService(
         var tokens = securityService.GenerateToken(user);
         
         user.RefreshToken = tokens.RefreshToken;
-        await userRepository.UpdateAsync(user);
+        await userRepository.UpdateAsync(user, cancellationToken);
 
         return new AuthViewModel { AccessToken = tokens.AccessToken };
+    }
+
+    public async Task ConfirmEmailAsync(ConfirmEmailModel model, CancellationToken cancellationToken)
+    {
+        var user = await GetAndValidateUserExistsAsync(model.Email, cancellationToken);
+        
+        var userVerify = await userVerifyRepository
+            .GetListAsync(e => e.UserId == user.Id && e.Code == model.Code && e.Exp >= DateTime.UtcNow)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (userVerify is null)
+        {
+            throw new HttpException(HttpStatusCode.BadRequest, "Code is not correct");
+        }
+
+        user.IsEmailConfirmed = true;
+        await userRepository.UpdateAsync(user, cancellationToken);
     }
 
     private async Task ValidateUserNotExists(string email)
@@ -94,6 +111,20 @@ public class AuthService(
         {
             throw new HttpException(HttpStatusCode.BadRequest, "User already exists");
         }
+    }
+
+    private async Task<User> GetAndValidateUserExistsAsync(string email, CancellationToken cancellationToken)
+    {
+        var user = await userRepository
+            .GetListAsync(e => e.Email == email)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (user is null)
+        {
+            throw new HttpException(HttpStatusCode.Unauthorized, "User not found!");
+        }
+
+        return user;
     }
 
     private async Task SendVerifyEmailAsync(User user)
