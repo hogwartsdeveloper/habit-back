@@ -21,6 +21,6 @@ public class HabitRecordConfiguration : IEntityTypeConfiguration<HabitRecord>
 
         builder
             .Property(r => r.Date)
-            .HasColumnType("timestamp without time zone");
+            .HasColumnType("timestamp with time zone");
     }
 }

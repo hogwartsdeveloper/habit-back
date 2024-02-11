@@ -20,6 +20,6 @@ public class UserVerifyConfiguration : IEntityTypeConfiguration<UserVerify>
         
         builder
             .Property(e => e.Exp)
-            .HasColumnType("timestamp without time zone");
+            .HasColumnType("timestamp with time zone");
     }
 }

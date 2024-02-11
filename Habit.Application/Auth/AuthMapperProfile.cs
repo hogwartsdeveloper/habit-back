@@ -12,5 +12,7 @@ public class AuthMapperProfile : Profile
             .ForMember(dst => dst.Id, opt => opt.Ignore())
             .ForMember(dst => dst.UserVerification, opt => opt.Ignore())
             .ForMember(dst => dst.PasswordHash, opt => opt.Ignore());
+
+        CreateMap<RefreshToken, RefreshTokenModel>();
     }
 }

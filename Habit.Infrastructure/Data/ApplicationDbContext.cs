@@ -11,6 +11,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Habit.Domain.Entities.Habit> Habits { get; set; }
     
     public DbSet<HabitRecord> HabitRecords { get; set; }
+    
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
@@ -22,5 +24,6 @@ public class ApplicationDbContext : DbContext
         modelBuilder.ApplyConfiguration(new UserConfiguration());
         modelBuilder.ApplyConfiguration(new HabitConfiguration());
         modelBuilder.ApplyConfiguration(new HabitRecordConfiguration());
+        modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
     }
 }

@@ -29,7 +29,6 @@ public static class DependencyInjectionExtension
     public static void ApplicationAuthenticationConfigure(this IServiceCollection service, IConfiguration configuration)
     {
         var jwtIssuer = configuration.GetSection("Jwt:Issuer").Get<string>();
-        var jwtKey = configuration.GetSection("Jwt:Key").Get<string>();
 
         service.AddAuthorization();
         service.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -44,7 +43,7 @@ public static class DependencyInjectionExtension
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = jwtIssuer,
                     ValidAudience = jwtIssuer,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
                 };
             });
     }

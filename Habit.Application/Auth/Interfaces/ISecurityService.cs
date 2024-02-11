@@ -5,11 +5,12 @@ namespace Habit.Application.Auth.Interfaces;
 
 public interface ISecurityService
 {
-    TokenViewModel GenerateToken(User user);
+    string GenerateToken(User user);
+    RefreshTokenModel GenerateRefreshToken();
 
     string HashPassword(string password);
 
     bool VerifyPassword(string password, string passwordHash);
 
-    Task<bool> ValidateTokenAsync(string token);
+    bool VerifyRefreshToken(RefreshTokenModel model);
 }

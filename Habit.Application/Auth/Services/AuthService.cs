@@ -1,5 +1,6 @@
 using System.Net;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Models;
 using Habit.Application.BrokerMessage;
@@ -15,6 +16,7 @@ namespace Habit.Application.Auth.Services;
 public class AuthService(
     IRepository<User> userRepository,
     IRepository<UserVerify> userVerifyRepository,
+    IRepository<RefreshToken> refreshTokenRepository,
     IMapper mapper,
     ISecurityService securityService,
     IBrokerMessageService brokerMessageService) : IAuthService
@@ -24,16 +26,23 @@ public class AuthService(
         await ValidateUserNotExists(model.Email);
         
         var entity = mapper.Map<User>(model);
-        var tokens = securityService.GenerateToken(entity);
         
-        entity.Registration(securityService.HashPassword(model.Password), tokens.RefreshToken);
+        entity.Registration(securityService.HashPassword(model.Password));
 
         var addedUserId = await userRepository.AddAsync(entity, cancellationToken);
         entity.Id = addedUserId;
+        
+        var token = securityService.GenerateToken(entity);
+        var refreshToken = securityService.GenerateRefreshToken();
+        
+        await refreshTokenRepository
+            .AddAsync(
+                new RefreshToken(entity.Id, refreshToken.Token, refreshToken.Expires),
+                cancellationToken);
 
         await SendVerifyEmailAsync(entity);
         
-        return new AuthViewModel { AccessToken = tokens.AccessToken };
+        return new AuthViewModel { AccessToken = token };
     }
 
     public async Task<AuthViewModel> SignInAsync(LoginModel model, CancellationToken cancellationToken)
@@ -53,12 +62,10 @@ public class AuthService(
             throw new HttpException(HttpStatusCode.BadRequest, "Email or password wrong");
         }
 
-        var tokens = securityService.GenerateToken(user);
-        user.UpdateRefreshToken(tokens.RefreshToken);
-
         await userRepository.UpdateAsync(user, cancellationToken);
         
-        return new AuthViewModel { AccessToken = tokens.AccessToken };
+        var token = securityService.GenerateToken(user);
+        return new AuthViewModel { AccessToken = token };
     }
 
     public async Task<AuthViewModel> RefreshSessionAsync(string email, CancellationToken cancellationToken)
@@ -72,19 +79,28 @@ public class AuthService(
             throw new HttpException(HttpStatusCode.Unauthorized, "User not found!");
         }
 
-        var tokenIsValid = await securityService.ValidateTokenAsync(user.RefreshToken!);
+        var refreshToken = await refreshTokenRepository
+            .GetListAsync(e => e.UserId == user.Id)
+            .ProjectTo<RefreshTokenModel>(mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (refreshToken is null)
+        {
+            throw new HttpException(HttpStatusCode.Unauthorized, "Token invalid");
+        }
+
+        var tokenIsValid = securityService.VerifyRefreshToken(refreshToken);
 
         if (!tokenIsValid)
         {
             throw new HttpException(HttpStatusCode.Unauthorized, "Token invalid");
         }
 
-        var tokens = securityService.GenerateToken(user);
-        
-        user.UpdateRefreshToken(tokens.RefreshToken);
-        await userRepository.UpdateAsync(user, cancellationToken);
 
-        return new AuthViewModel { AccessToken = tokens.AccessToken };
+        await userRepository.UpdateAsync(user, cancellationToken);
+        
+        var token = securityService.GenerateToken(user);
+        return new AuthViewModel { AccessToken = token };
     }
 
     public async Task ConfirmEmailAsync(ConfirmEmailModel model, CancellationToken cancellationToken)

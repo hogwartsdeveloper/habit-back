@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Models;
@@ -18,7 +19,7 @@ public class SecurityService : ISecurityService
         _configuration = configuration;
     }
     
-    public TokenViewModel GenerateToken(User user)
+    public string GenerateToken(User user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -36,12 +37,15 @@ public class SecurityService : ISecurityService
             expires: DateTime.UtcNow.AddMinutes(1),
             signingCredentials: credentials);
 
-        var refreshJwt = new JwtSecurityToken(expires: DateTime.Now.AddDays(15), signingCredentials: credentials);
+        return new JwtSecurityTokenHandler().WriteToken(jwt);
+    }
 
-        return new TokenViewModel
+    public RefreshTokenModel GenerateRefreshToken()
+    {
+        return new RefreshTokenModel
         {
-            AccessToken = new JwtSecurityTokenHandler().WriteToken(jwt),
-            RefreshToken = new JwtSecurityTokenHandler().WriteToken(refreshJwt)
+            Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+            Expires = DateTime.UtcNow.AddDays(7)
         };
     }
 
@@ -53,6 +57,11 @@ public class SecurityService : ISecurityService
     public bool VerifyPassword(string password, string passwordHash)
     {
         return BCrypt.Net.BCrypt.EnhancedVerify(password, passwordHash);
+    }
+
+    public bool VerifyRefreshToken(RefreshTokenModel model)
+    {
+        return model.Expires >= DateTime.UtcNow;
     }
 
     public async Task<bool> ValidateTokenAsync(string token)

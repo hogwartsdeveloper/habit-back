@@ -44,6 +44,7 @@ public static class DependencyInjectionExtension
         service.AddScoped<IRepository<HabitRecord>, Repository<HabitRecord>>();
         service.AddScoped<IRepository<User>, Repository<User>>();
         service.AddScoped<IRepository<UserVerify>, Repository<UserVerify>>();
+        service.AddScoped<IRepository<RefreshToken>, Repository<RefreshToken>>();
     }
 
     public static void AddBrokerMessageService(this IServiceCollection services, IConfiguration configuration)
