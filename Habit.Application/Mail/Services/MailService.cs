@@ -1,5 +1,7 @@
+using System.Net;
 using Habit.Application.Mail.Interfaces;
 using Habit.Application.Mail.Models;
+using Habit.Core.Exceptions;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
@@ -53,7 +55,7 @@ public class MailService : IMailService
         }
         catch (Exception _)
         {
-            return false;
+            throw new HttpException(HttpStatusCode.InternalServerError, "Internal server error");
         }
     }
 }
