@@ -106,16 +106,8 @@ public class AuthService(
     public async Task ConfirmEmailAsync(ConfirmEmailModel model, CancellationToken cancellationToken)
     {
         var user = await GetAndValidateUserExistsAsync(model.Email, cancellationToken);
+        await ValidateUserVerifyAsync(user.Id, model.Code, UserVerifyType.Email, cancellationToken);
         
-        var userVerify = await userVerifyRepository
-            .GetListAsync(e => e.UserId == user.Id && e.Code == model.Code && e.Exp >= DateTime.UtcNow)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (userVerify is null)
-        {
-            throw new HttpException(HttpStatusCode.BadRequest, "Code is not correct");
-        }
-
         user.ConfirmEmail();
         await userRepository.UpdateAsync(user, cancellationToken);
     }
@@ -144,6 +136,15 @@ public class AuthService(
         }
     }
 
+    public async Task RecoveryPasswordAsync(RecoveryPasswordModel model, CancellationToken cancellationToken)
+    {
+        var user = await GetAndValidateUserExistsAsync(model.Email, cancellationToken);
+        await ValidateUserVerifyAsync(user.Id, model.Code, UserVerifyType.PasswordRecovery, cancellationToken);
+        
+        user.ChangePasswordHash(securityService.HashPassword(model.Password));
+        await userRepository.UpdateAsync(user, cancellationToken);
+    }
+
     private async Task ValidateUserNotExists(string email)
     {
         if (await userRepository.AnyAsync(user => user.Email == email))
@@ -164,6 +165,23 @@ public class AuthService(
         }
 
         return user;
+    }
+
+    private async Task ValidateUserVerifyAsync(
+        Guid userId,
+        string code,
+        UserVerifyType verifyType,
+        CancellationToken cancellationToken)
+    {
+        var isVerify = await userVerifyRepository
+            .AnyAsync(e =>
+                e.UserId == userId && e.Code == code && e.VerifyType == verifyType && e.Exp >= DateTime.UtcNow,
+                cancellationToken);
+
+        if (!isVerify)
+        {
+            throw new HttpException(HttpStatusCode.BadRequest, "Code is not correct");
+        }
     }
 
     private async Task SendVerifyMessage(User user, UserVerifyType userVerifyType, string subject)

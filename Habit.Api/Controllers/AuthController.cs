@@ -25,8 +25,8 @@ public class AuthController(IAuthService authService) : ControllerBase
         return authService.SignInAsync(viewModel, cancellationToken);
     }
 
-    [HttpGet("Refresh")]
     [Authorize]
+    [HttpGet("Refresh")]
     [ProducesResponseType(typeof(AuthViewModel), 200)]
     public Task<AuthViewModel> Refresh(CancellationToken cancellationToken)
     {
@@ -46,5 +46,12 @@ public class AuthController(IAuthService authService) : ControllerBase
     public Task RequestForRecoveryPassword([FromBody] RequestModel model, CancellationToken cancellationToken)
     {
         return authService.RequestForChangeAsync(model.Email, UserVerifyType.PasswordRecovery, cancellationToken);
+    }
+
+    [HttpPost("RecoveryPassword")]
+    [ProducesResponseType(200)]
+    public Task RecoveryPassword([FromBody] RecoveryPasswordModel model, CancellationToken cancellationToken)
+    {
+        return authService.RecoveryPasswordAsync(model, cancellationToken);
     }
 }

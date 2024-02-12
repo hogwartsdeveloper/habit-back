@@ -14,4 +14,6 @@ public interface IAuthService
     Task ConfirmEmailAsync(ConfirmEmailModel model, CancellationToken cancellationToken);
 
     Task RequestForChangeAsync(string email, UserVerifyType verifyType, CancellationToken cancellationToken);
+
+    Task RecoveryPasswordAsync(RecoveryPasswordModel model, CancellationToken cancellationToken);
 }
