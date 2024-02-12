@@ -1,6 +1,8 @@
 using System.Security.Claims;
 using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Models;
+using Habit.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Habit.Api.Controllers;
@@ -24,6 +26,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     }
 
     [HttpGet("Refresh")]
+    [Authorize]
     [ProducesResponseType(typeof(AuthViewModel), 200)]
     public Task<AuthViewModel> Refresh(CancellationToken cancellationToken)
     {
@@ -36,5 +39,12 @@ public class AuthController(IAuthService authService) : ControllerBase
     public Task ConfirmEmailAsync([FromBody] ConfirmEmailModel model, CancellationToken cancellationToken)
     {
         return authService.ConfirmEmailAsync(model, cancellationToken);
+    }
+
+    [HttpPost("RequestForRecoveryPassword")]
+    [ProducesResponseType(200)]
+    public Task RequestForRecoveryPassword([FromBody] RequestModel model, CancellationToken cancellationToken)
+    {
+        return authService.RequestForChangeAsync(model.Email, UserVerifyType.PasswordRecovery, cancellationToken);
     }
 }

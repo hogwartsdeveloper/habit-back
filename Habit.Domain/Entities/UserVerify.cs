@@ -1,5 +1,5 @@
-using Habit.Core.Enums;
 using Habit.Domain.Entities.Abstraction;
+using Habit.Domain.Enums;
 
 namespace Habit.Domain.Entities;
 

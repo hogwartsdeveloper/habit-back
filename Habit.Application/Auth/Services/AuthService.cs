@@ -6,9 +6,9 @@ using Habit.Application.Auth.Models;
 using Habit.Application.BrokerMessage;
 using Habit.Application.Mail.Models;
 using Habit.Application.Repositories;
-using Habit.Core.Enums;
 using Habit.Core.Exceptions;
 using Habit.Domain.Entities;
+using Habit.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Habit.Application.Auth.Services;
@@ -40,7 +40,7 @@ public class AuthService(
                 new RefreshToken(entity.Id, refreshToken.Token, refreshToken.Expires),
                 cancellationToken);
 
-        await SendVerifyEmailAsync(entity);
+        await SendVerifyMessage(entity, UserVerifyType.Email, "Confirm email");
         
         return new AuthViewModel { AccessToken = token };
     }
@@ -120,6 +120,30 @@ public class AuthService(
         await userRepository.UpdateAsync(user, cancellationToken);
     }
 
+    public async Task RequestForChangeAsync(
+        string email,
+        UserVerifyType verifyType,
+        CancellationToken cancellationToken)
+    {
+        var user = await GetAndValidateUserExistsAsync(email, cancellationToken);
+        
+        string? messageSubject = null;
+        switch (verifyType)
+        {
+            case UserVerifyType.Email:
+                messageSubject = "Confirm email";
+                break;
+            case UserVerifyType.PasswordRecovery:
+                messageSubject = "Request for change password";
+                break;
+        }
+
+        if (messageSubject is not null)
+        {
+            await SendVerifyMessage(user, verifyType, messageSubject);
+        }
+    }
+
     private async Task ValidateUserNotExists(string email)
     {
         if (await userRepository.AnyAsync(user => user.Email == email))
@@ -142,23 +166,22 @@ public class AuthService(
         return user;
     }
 
-    private async Task SendVerifyEmailAsync(User user)
+    private async Task SendVerifyMessage(User user, UserVerifyType userVerifyType, string subject)
     {
         var code = new Random().Next(1000, 9999).ToString();
-        
+
         await userVerifyRepository.AddAsync(new UserVerify(
             user.Id,
             code,
             DateTime.UtcNow.AddMinutes(15),
-            UserVerifyType.Email)
-        );
+            userVerifyType));
         
         brokerMessageService.SendMessage(
             new MailData
             {
                 Email = user.Email,
                 Name = $"{user.FirstName} {user.LastName}",
-                Subject = "Confirm email",
+                Subject = subject,
                 Body = code
             });
     }
