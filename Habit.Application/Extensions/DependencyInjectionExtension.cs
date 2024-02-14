@@ -1,13 +1,17 @@
 using System.Text;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Habit.Application.Auth;
 using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Services;
+using Habit.Application.Auth.Validators;
 using Habit.Application.Habit.Interfaces;
 using Habit.Application.Habit.Services;
 using Habit.Application.Mail.Interfaces;
 using Habit.Application.Mail.Models;
 using Habit.Application.Mail.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -46,5 +50,11 @@ public static class DependencyInjectionExtension
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
                 };
             });
+    }
+
+    public static void AddApplicationValidations(this IServiceCollection services)
+    {
+        services.AddFluentValidationAutoValidation();
+        services.AddValidatorsFromAssembly(typeof(LoginModelValidator).Assembly);
     }
 }

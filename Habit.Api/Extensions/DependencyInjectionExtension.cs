@@ -19,6 +19,7 @@ public static class DependencyInjectionExtension
     {
         service.ApplicationAuthenticationConfigure(configuration);
         service.AddApplicationServices(configuration);
+        service.AddApplicationValidations();
         service.AddControllers();
         service.AddEndpointsApiExplorer();
         
