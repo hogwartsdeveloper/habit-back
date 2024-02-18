@@ -33,6 +33,14 @@ public class User : EntityBase
     {
         PasswordHash = passwordHash;
     }
+
+    public void ChangeBirthDay(DateTime? birthDay)
+    {
+        if (birthDay is not null)
+        {
+            BirthDay = birthDay;
+        }
+    }
     
     public string FirstName { get; private set; }
     

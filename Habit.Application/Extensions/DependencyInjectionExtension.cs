@@ -10,8 +10,9 @@ using Habit.Application.Habit.Services;
 using Habit.Application.Mail.Interfaces;
 using Habit.Application.Mail.Models;
 using Habit.Application.Mail.Services;
+using Habit.Application.Users.Interfaces;
+using Habit.Application.Users.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -25,6 +26,7 @@ public static class DependencyInjectionExtension
         service.AddAutoMapper(typeof(AuthMapperProfile).Assembly);
         service.AddSingleton<ISecurityService, SecurityService>();
         service.AddScoped<IAuthService, AuthService>();
+        service.AddScoped<IUserService, UserService>();
         service.AddScoped<IHabitService, HabitService>();
         service.AddSingleton<IMailService, MailService>();
         service.Configure<MailSettings>(configuration.GetSection("MailSettings"));
