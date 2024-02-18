@@ -10,8 +10,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="897eaa73-9982-4e0c-ba68-47663f71915e" name="Changes" comment="Project name change">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="897eaa73-9982-4e0c-ba68-47663f71915e" name="Changes" comment="git ignore">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.HabitServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.HabitServer/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Habit.Api/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/Habit.Api/appsettings.Development.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -224,7 +224,7 @@
       <workItem from="1707823333090" duration="3203000" />
       <workItem from="1707975745182" duration="1013000" />
       <workItem from="1707989250437" duration="655000" />
-      <workItem from="1708261471631" duration="1261000" />
+      <workItem from="1708261471631" duration="1350000" />
     </task>
     <task id="LOCAL-00001" summary="InitProjectAndEntity">
       <option name="closed" value="true" />
@@ -562,7 +562,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708261559362</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="git ignore">
+      <option name="closed" value="true" />
+      <created>1708262805596</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1708262805596</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -571,7 +579,6 @@
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="HabitRecord" />
     <MESSAGE value="Add Records" />
     <MESSAGE value="CleanArchitecture" />
     <MESSAGE value="HabitCheckBackgroundJob" />
@@ -596,7 +603,8 @@
     <MESSAGE value="Validation" />
     <MESSAGE value="Add validators" />
     <MESSAGE value="Project name change" />
-    <option name="LAST_COMMIT_MESSAGE" value="Project name change" />
+    <MESSAGE value="git ignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="git ignore" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
