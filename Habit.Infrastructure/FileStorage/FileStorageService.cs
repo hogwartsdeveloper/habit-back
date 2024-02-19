@@ -19,7 +19,6 @@ public class FileStorageService : IFileStorageService
         _client = new MinioClient()
             .WithEndpoint(settings.Endpoint)
             .WithCredentials(settings.AccessKey, settings.SecretKey)
-            .WithSSL()
             .Build();
     }
 
@@ -30,9 +29,9 @@ public class FileStorageService : IFileStorageService
             await using var stream = file.OpenReadStream();
             var args = new PutObjectArgs()
                 .WithBucket(bucketName)
-                .WithStreamData(stream)
-                .WithFileName(file.FileName)
+                .WithObject(file.FileName)
                 .WithContentType(file.ContentType)
+                .WithStreamData(stream)
                 .WithObjectSize(file.Length);
 
             await _client.PutObjectAsync(args, cancellationToken);
