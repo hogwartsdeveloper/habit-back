@@ -4,5 +4,5 @@ namespace Habit.Application.FileStorage;
 
 public interface IFileStorageService
 {
-    Task UploadAsync(IFormFile file, CancellationToken cancellationToken);
+    Task UploadAsync(string bucketName, IFormFile file, CancellationToken cancellationToken);
 }
