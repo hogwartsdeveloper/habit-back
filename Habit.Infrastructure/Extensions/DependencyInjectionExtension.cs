@@ -1,4 +1,5 @@
 using Habit.Application.BrokerMessage;
+using Habit.Application.FileStorage;
 using Habit.Application.Repositories;
 using Habit.Domain.Entities;
 using Hangfire;
@@ -8,6 +9,7 @@ using Infrastructure.BackgroundJobs.Interfaces;
 using Infrastructure.BrokerMessage;
 using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
+using Infrastructure.FileStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -57,5 +59,11 @@ public static class DependencyInjectionExtension
     {
         services.AddScoped<IHabitJob, HabitJob>();
         services.AddScoped<IBrokerMessageListenerJob, BrokerMessageListenerJob>();
+    }
+
+    public static void AddFileStorageServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<FileStorageSettings>(configuration.GetSection("MinIO"));
+        services.AddSingleton<IFileStorageService, FileStorageService>();
     }
 }

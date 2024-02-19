@@ -13,6 +13,7 @@ public static class DependencyInjectionExtension
         service.AddRepositories();
         service.AddBrokerMessageService(configuration);
         service.AddBackgroundJobs();
+        service.AddFileStorageServices(configuration);
     }
 
     public static void ApplicationConfigureServices(this IServiceCollection service, IConfiguration configuration)
