@@ -24,6 +24,8 @@ public class FileStorageService : IFileStorageService
 
     public async Task UploadAsync(string bucketName, IFormFile file, CancellationToken cancellationToken)
     {
+        await CheckAndCreateBucketAsync(bucketName, cancellationToken);
+        
         try
         {
             await using var stream = file.OpenReadStream();
@@ -35,6 +37,42 @@ public class FileStorageService : IFileStorageService
                 .WithObjectSize(file.Length);
 
             await _client.PutObjectAsync(args, cancellationToken);
+        }
+        catch (Exception e)
+        {
+            throw new HttpException(HttpStatusCode.InternalServerError, e.Message);
+        }
+    }
+
+    private async Task CheckAndCreateBucketAsync(string bucketName, CancellationToken cancellationToken)
+    {
+        var found = await CheckBucketExistsAsync(bucketName, cancellationToken);
+        
+        if (!found)
+        {
+            await CreateBucketAsync(bucketName, cancellationToken);
+        }
+    }
+
+    private async Task<bool> CheckBucketExistsAsync(string bucketName, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var args = new BucketExistsArgs().WithBucket(bucketName);
+            return await _client.BucketExistsAsync(args, cancellationToken);
+        }
+        catch (Exception e)
+        {
+            throw new HttpException(HttpStatusCode.InternalServerError, e.Message);
+        }
+    }
+
+    private async Task CreateBucketAsync(string bucketName, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var args = new MakeBucketArgs().WithBucket(bucketName);
+            await _client.MakeBucketAsync(args, cancellationToken);
         }
         catch (Exception e)
         {
