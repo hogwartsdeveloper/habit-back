@@ -22,7 +22,7 @@ public class FileStorageService : IFileStorageService
             .Build();
     }
 
-    public async Task UploadAsync(string bucketName, IFormFile file, CancellationToken cancellationToken)
+    public async Task UploadAsync(string bucketName, IFormFile file, CancellationToken cancellationToken = default)
     {
         await CheckAndCreateBucketAsync(bucketName, cancellationToken);
         
@@ -37,6 +37,22 @@ public class FileStorageService : IFileStorageService
                 .WithObjectSize(file.Length);
 
             await _client.PutObjectAsync(args, cancellationToken);
+        }
+        catch (Exception e)
+        {
+            throw new HttpException(HttpStatusCode.InternalServerError, e.Message);
+        }
+    }
+
+    public async Task RemoveAsync(string bucketName, string fileName, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var args = new RemoveObjectArgs()
+                .WithBucket(bucketName)
+                .WithObject(fileName);
+
+            await _client.RemoveObjectAsync(args, cancellationToken);
         }
         catch (Exception e)
         {
