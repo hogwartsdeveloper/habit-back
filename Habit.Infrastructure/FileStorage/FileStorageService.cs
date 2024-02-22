@@ -8,6 +8,7 @@ using Minio.DataModel.Args;
 
 namespace Infrastructure.FileStorage;
 
+/// <inheritdoc />
 public class FileStorageService : IFileStorageService
 {
     private readonly IMinioClient _client;
@@ -21,7 +22,8 @@ public class FileStorageService : IFileStorageService
             .WithCredentials(settings.AccessKey, settings.SecretKey)
             .Build();
     }
-
+    
+    /// <inheritdoc />
     public async Task UploadAsync(string bucketName, IFormFile file, CancellationToken cancellationToken = default)
     {
         await CheckAndCreateBucketAsync(bucketName, cancellationToken);
@@ -43,7 +45,8 @@ public class FileStorageService : IFileStorageService
             throw new HttpException(HttpStatusCode.InternalServerError, e.Message);
         }
     }
-
+    
+    /// <inheritdoc />
     public async Task RemoveAsync(string bucketName, string fileName, CancellationToken cancellationToken = default)
     {
         try
@@ -53,6 +56,41 @@ public class FileStorageService : IFileStorageService
                 .WithObject(fileName);
 
             await _client.RemoveObjectAsync(args, cancellationToken);
+        }
+        catch (Exception e)
+        {
+            throw new HttpException(HttpStatusCode.InternalServerError, e.Message);
+        }
+    }
+    
+    /// <inheritdoc />
+    public async Task<IFormFile?> GetAsync(string bucketName, string fileName, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            Stream? fileStream = null;
+            var args = new GetObjectArgs()
+                .WithBucket(bucketName)
+                .WithObject(fileName)
+                .WithCallbackStream(stream =>
+                {
+                    fileStream = new MemoryStream();
+                    stream.CopyTo(fileStream);
+                    fileStream.Position = 0;
+                });
+
+            var stat = await _client.GetObjectAsync(args, cancellationToken);
+            if (fileStream != null)
+            {
+                return new FormFile(
+                    fileStream,
+                    fileStream.Position,
+                    stat.Size,
+                    stat.ObjectName,
+                    stat.ObjectName);
+            }
+
+            return null;
         }
         catch (Exception e)
         {
