@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Habit.Application.FileStorage.Models;
 using Habit.Application.Users.Interfaces;
 using Habit.Application.Users.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,7 @@ public class UserController(IUserService service) : ControllerBase
 {
     [HttpPost("image")]
     [ProducesResponseType(typeof(IResult), 200)]
-    public Task AddImage([FromForm] AddUserImageModel model, CancellationToken cancellationToken)
+    public Task AddImage([FromForm] FileModel model, CancellationToken cancellationToken)
     {
         var userIdData = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         Guid.TryParse(userIdData, out var userId);

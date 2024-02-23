@@ -13,7 +13,7 @@ public class HabitController(IHabitService service) : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(typeof(List<HabitViewModel>), 200)]
-    public Task<List<HabitViewModel?>> GetListAsync(CancellationToken cancellationToken)
+    public Task<List<HabitViewModel>> GetListAsync(CancellationToken cancellationToken)
     {
         return service.GetListAsync(cancellationToken);
     }

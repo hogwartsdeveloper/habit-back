@@ -1,3 +1,4 @@
+using Habit.Application.FileStorage.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace Habit.Application.FileStorage;
@@ -32,5 +33,5 @@ public interface IFileStorageService
     /// <param name="fileName">Имя запрашиваемого файла.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Задача, представляющая асинхронную операцию получения файла. Возвращает null, если файл не найден.</returns>
-    Task<IFormFile?> GetAsync(string bucketName, string fileName, CancellationToken cancellationToken = default);
+    Task<FileModel?> GetAsync(string bucketName, string fileName, CancellationToken cancellationToken = default);
 }

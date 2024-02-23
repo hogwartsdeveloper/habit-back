@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Http;
 
-namespace Habit.Application.Users.Models;
+namespace Habit.Application.FileStorage.Models;
 
-public class AddUserImageModel
+public class FileModel
 {
     public required IFormFile File { get; set; }
 }
