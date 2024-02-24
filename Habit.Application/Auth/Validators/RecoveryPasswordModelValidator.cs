@@ -3,8 +3,14 @@ using Habit.Application.Auth.Models;
 
 namespace Habit.Application.Auth.Validators;
 
+/// <summary>
+/// Валидатор модели восстановления пароля.
+/// </summary>
 public class RecoveryPasswordModelValidator : AbstractValidator<RecoveryPasswordModel>
 {
+    /// <summary>
+    /// Инициализирует новый экземпляр класса RecoveryPasswordModelValidator.
+    /// </summary>
     public RecoveryPasswordModelValidator()
     {
         RuleFor(m => m.Email)

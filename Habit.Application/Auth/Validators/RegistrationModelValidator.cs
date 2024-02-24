@@ -3,8 +3,14 @@ using Habit.Application.Auth.Models;
 
 namespace Habit.Application.Auth.Validators;
 
+/// <summary>
+/// Валидатор модели регистрации пользователя.
+/// </summary>
 public class RegistrationModelValidator : AbstractValidator<RegistrationModel>
 {
+    /// <summary>
+    /// Инициализирует новый экземпляр класса RegistrationModelValidator.
+    /// </summary>
     public RegistrationModelValidator()
     {
         RuleFor(m => m.Email)

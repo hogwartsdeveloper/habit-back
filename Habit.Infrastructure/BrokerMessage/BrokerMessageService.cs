@@ -6,6 +6,7 @@ using RabbitMQ.Client;
 
 namespace Infrastructure.BrokerMessage;
 
+/// <inheritdoc />
 public class BrokerMessageService : IBrokerMessageService
 {
     private readonly BrokerMessageSettings _settings;
@@ -25,6 +26,7 @@ public class BrokerMessageService : IBrokerMessageService
         };
     }
 
+    /// <inheritdoc />
     public void SendMessage(object obj)
     {
         var message = JsonSerializer.Serialize(obj);
@@ -32,6 +34,7 @@ public class BrokerMessageService : IBrokerMessageService
         SendMessage(message);
     }
 
+    /// <inheritdoc />
     public void SendMessage(string message)
     {
         using var connection = _connectionFactory.CreateConnection();

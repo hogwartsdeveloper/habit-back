@@ -4,8 +4,14 @@ using Habit.Domain.Entities;
 
 namespace Habit.Application.Users;
 
+/// <summary>
+/// Профиль маппинга для модели пользователя.
+/// </summary>
 public class UserMapperProfile : Profile
 {
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="UserMapperProfile"/>.
+    /// </summary>
     public UserMapperProfile()
     {
         CreateMap<UpdateUserModel, User>()

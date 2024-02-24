@@ -13,6 +13,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Habit.Application.Auth.Services;
 
+/// <summary>
+/// Сервис аутентификации.
+/// </summary>
 public class AuthService(
     IRepository<User> userRepository,
     IRepository<UserVerify> userVerifyRepository,
@@ -21,6 +24,7 @@ public class AuthService(
     ISecurityService securityService,
     IBrokerMessageService brokerMessageService) : IAuthService
 {
+    /// <inheritdoc />
     public async Task<AuthViewModel> SignUpAsync(RegistrationModel model, CancellationToken cancellationToken)
     {
         await ValidateUserNotExists(model.Email);
@@ -45,6 +49,7 @@ public class AuthService(
         return new AuthViewModel { AccessToken = token };
     }
 
+    /// <inheritdoc />
     public async Task<AuthViewModel> SignInAsync(LoginModel model, CancellationToken cancellationToken)
     {
         var user = await userRepository
@@ -68,6 +73,7 @@ public class AuthService(
         return new AuthViewModel { AccessToken = token };
     }
 
+    /// <inheritdoc />
     public async Task<AuthViewModel> RefreshSessionAsync(string email, CancellationToken cancellationToken)
     {
         var user = await userRepository
@@ -103,6 +109,7 @@ public class AuthService(
         return new AuthViewModel { AccessToken = token };
     }
 
+    /// <inheritdoc />
     public async Task ConfirmEmailAsync(ConfirmEmailModel model, CancellationToken cancellationToken)
     {
         var user = await GetAndValidateUserExistsAsync(model.Email, cancellationToken);
@@ -112,6 +119,7 @@ public class AuthService(
         await userRepository.UpdateAsync(user, cancellationToken);
     }
 
+    /// <inheritdoc />
     public async Task RequestForChangeAsync(
         string email,
         UserVerifyType verifyType,
@@ -135,7 +143,8 @@ public class AuthService(
             await SendVerifyMessage(user, verifyType, messageSubject);
         }
     }
-
+    
+    /// <inheritdoc />
     public async Task RecoveryPasswordAsync(RecoveryPasswordModel model, CancellationToken cancellationToken)
     {
         var user = await GetAndValidateUserExistsAsync(model.Email, cancellationToken);
@@ -145,6 +154,7 @@ public class AuthService(
         await userRepository.UpdateAsync(user, cancellationToken);
     }
 
+    
     private async Task ValidateUserNotExists(string email)
     {
         if (await userRepository.AnyAsync(user => user.Email == email))

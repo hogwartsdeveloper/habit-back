@@ -4,8 +4,14 @@ using Habit.Domain.Entities;
 
 namespace Habit.Application.Habit;
 
+/// <summary>
+/// Профиль сопоставления для привычек.
+/// </summary>
 public class HabitMapperProfile : Profile
 {
+    /// <summary>
+    /// Конструктор профиля сопоставления для привычек.
+    /// </summary>
     public HabitMapperProfile()
     {
         CreateMap<Domain.Entities.Habit, HabitViewModel>()

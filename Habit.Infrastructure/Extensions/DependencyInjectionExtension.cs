@@ -1,5 +1,6 @@
 using Habit.Application.BrokerMessage;
 using Habit.Application.FileStorage;
+using Habit.Application.FileStorage.Interfaces;
 using Habit.Application.Repositories;
 using Habit.Domain.Entities;
 using Hangfire;

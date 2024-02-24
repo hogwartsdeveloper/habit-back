@@ -1,7 +1,7 @@
 using Habit.Application.FileStorage.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace Habit.Application.FileStorage;
+namespace Habit.Application.FileStorage.Interfaces;
 
 /// <summary>
 /// Сервис файлового хранилища.

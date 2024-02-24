@@ -9,6 +9,7 @@ using MimeKit.Text;
 
 namespace Habit.Application.Mail.Services;
 
+/// <inheritdoc />
 public class MailService : IMailService
 {
     private readonly MailSettings _mailSettings;
@@ -18,6 +19,7 @@ public class MailService : IMailService
         _mailSettings = mailSettingsOptions.Value;
     }
     
+    /// <inheritdoc />
     public bool SendMail(MailData mailData)
     {
         try

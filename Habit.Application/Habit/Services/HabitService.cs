@@ -10,11 +10,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Habit.Application.Habit.Services;
 
+/// <inheritdoc />
 public class HabitService(
     IRepository<Domain.Entities.Habit> habitRepository,
     IRepository<HabitRecord> habitRecordRepository,
     IMapper mapper) : IHabitService
 {
+    /// <inheritdoc />
     public Task<Guid> AddAsync(Guid userId, AddHabitModel model, CancellationToken cancellationToken = default)
     {
         var entity = mapper.Map<Domain.Entities.Habit>(model);
@@ -23,6 +25,7 @@ public class HabitService(
         return habitRepository.AddAsync(entity, cancellationToken);
     }
 
+    /// <inheritdoc />
     public async Task<List<HabitViewModel>> GetListAsync(CancellationToken cancellationToken = default)
     {
         return await habitRepository
@@ -31,6 +34,7 @@ public class HabitService(
             .ToListAsync(cancellationToken);
     }
 
+    /// <inheritdoc />
     public Task<HabitViewModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return habitRepository
@@ -39,6 +43,7 @@ public class HabitService(
             .FirstOrDefaultAsync(cancellationToken);
     }
 
+    /// <inheritdoc />
     public async Task UpdateAsync(Guid id, UpdateHabitModel model, CancellationToken cancellationToken = default)
     {
         var entity = await GetAndValidateHabitAsync(id, cancellationToken);
@@ -47,6 +52,7 @@ public class HabitService(
         await habitRepository.UpdateAsync(entity, cancellationToken);
     }
 
+    /// <inheritdoc />
     public async Task AddRecord(Guid habitId, List<HabitRecordViewModel> models, CancellationToken cancellationToken = default)
     {
         var habit = await GetAndValidateHabitAsync(habitId, cancellationToken);

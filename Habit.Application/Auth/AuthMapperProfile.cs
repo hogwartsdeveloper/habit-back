@@ -4,8 +4,14 @@ using Habit.Domain.Entities;
 
 namespace Habit.Application.Auth;
 
+/// <summary>
+/// Профиль маппера аутентификации.
+/// </summary>
 public class AuthMapperProfile : Profile
 {
+    /// <summary>
+    /// Инициализирует новый экземпляр класса AuthMapperProfile.
+    /// </summary>
     public AuthMapperProfile()
     {
         CreateMap<RegistrationModel, User>()

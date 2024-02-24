@@ -1,4 +1,5 @@
 using Habit.Application.FileStorage;
+using Habit.Application.FileStorage.Interfaces;
 using Habit.Application.FileStorage.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

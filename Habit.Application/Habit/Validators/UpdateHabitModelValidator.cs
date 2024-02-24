@@ -3,8 +3,14 @@ using Habit.Application.Habit.Models;
 
 namespace Habit.Application.Habit.Validators;
 
+/// <summary>
+/// Валидатор модели для обновления привычки.
+/// </summary>
 public class UpdateHabitModelValidator : AbstractValidator<UpdateHabitModel>
 {
+    /// <summary>
+    /// Конструктор валидатора модели для обновления привычки.
+    /// </summary>
     public UpdateHabitModelValidator()
     {
         RuleFor(m => m.Title)

@@ -19,8 +19,16 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Habit.Application.Extensions;
 
+/// <summary>
+/// Расширение для внедрения зависимостей.
+/// </summary>
 public static class DependencyInjectionExtension
 {
+    /// <summary>
+    /// Добавляет службы приложения.
+    /// </summary>
+    /// <param name="service">Коллекция служб.</param>
+    /// <param name="configuration">Конфигурация приложения.</param>
     public static void AddApplicationServices(this IServiceCollection service, IConfiguration configuration)
     {
         service.AddAutoMapper(typeof(AuthMapperProfile).Assembly);
@@ -32,6 +40,11 @@ public static class DependencyInjectionExtension
         service.Configure<MailSettings>(configuration.GetSection("MailSettings"));
     }
 
+    /// <summary>
+    /// Конфигурирует аутентификацию приложения.
+    /// </summary>
+    /// <param name="service">Коллекция служб.</param>
+    /// <param name="configuration">Конфигурация приложения.</param>
     public static void ApplicationAuthenticationConfigure(this IServiceCollection service, IConfiguration configuration)
     {
         var jwtIssuer = configuration.GetSection("Jwt:Issuer").Get<string>();
@@ -54,6 +67,10 @@ public static class DependencyInjectionExtension
             });
     }
 
+    /// <summary>
+    /// Добавляет валидацию приложения.
+    /// </summary>
+    /// <param name="services">Коллекция служб.</param>
     public static void AddApplicationValidations(this IServiceCollection services)
     {
         services.AddFluentValidationAutoValidation();
