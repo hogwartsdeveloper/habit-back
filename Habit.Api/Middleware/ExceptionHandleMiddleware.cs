@@ -1,5 +1,5 @@
 using System.Net;
-using Habit.Core.Exceptions;
+using Habit.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Habit.Api.Middleware;

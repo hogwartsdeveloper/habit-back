@@ -4,8 +4,8 @@ using Habit.Application.FileStorage;
 using Habit.Application.Repositories;
 using Habit.Application.Users.Interfaces;
 using Habit.Application.Users.Models;
-using Habit.Core.Exceptions;
 using Habit.Domain.Entities;
+using Habit.Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
