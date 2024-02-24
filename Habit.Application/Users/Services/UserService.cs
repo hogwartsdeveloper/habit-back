@@ -1,6 +1,5 @@
 using System.Net;
 using AutoMapper;
-using Habit.Application.FileStorage;
 using Habit.Application.FileStorage.Interfaces;
 using Habit.Application.Repositories;
 using Habit.Application.Users.Interfaces;
@@ -23,7 +22,23 @@ public class UserService(
     /// <inheritdoc />
     public async Task AddImageAsync(Guid id, IFormFile file, CancellationToken cancellationToken = default)
     {
+        var user = await userRepository
+            .GetByIdAsync(id)
+            .FirstOrDefaultAsync(cancellationToken);
+        
+        if (user is null)
+        {
+            throw new HttpException(HttpStatusCode.NotFound, "User not found");
+        }
+
+        if (user.ImageUrl != null)
+        {
+            var userImageData = user.ImageUrl.Split("/");
+            await fileStorageService.RemoveAsync(userImageData[0], userImageData[1], cancellationToken);
+        }
+        
         await fileStorageService.UploadAsync(BucketName, file, cancellationToken);
+        user.ChangeImage($"{BucketName}/{file.FileName}");
     }
 
     /// <inheritdoc />
