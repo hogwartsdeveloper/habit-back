@@ -10,12 +10,18 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Infrastructure.BackgroundJobs;
 
+/// <inheritdoc />
 public class BrokerMessageListenerJob : IBrokerMessageListenerJob
 {
     private readonly BrokerMessageSettings _settings;
     private readonly IModel _channel;
     private readonly IMailService _mailService;
 
+    /// <summary>
+    /// Конструктор для создания экземпляра слушателя сообщений брокера.
+    /// </summary>
+    /// <param name="options">Настройки сообщений брокера.</param>
+    /// <param name="mailService">Сервис отправки почты.</param>
     public BrokerMessageListenerJob(IOptions<BrokerMessageSettings> options, IMailService mailService)
     {
         _settings = options.Value;
@@ -34,6 +40,7 @@ public class BrokerMessageListenerJob : IBrokerMessageListenerJob
         _channel = connection.CreateModel();
     }
 
+    /// <inheritdoc />
     public void UserVerifyStartListening()
     {
         var consumer = new EventingBasicConsumer(_channel);

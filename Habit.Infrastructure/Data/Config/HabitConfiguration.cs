@@ -3,8 +3,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Data.Config;
 
+/// <summary>
+/// Конфигурация сущности Habit.
+/// </summary>
 public class HabitConfiguration : IEntityTypeConfiguration<Habit.Domain.Entities.Habit>
 {
+    /// <summary>
+    /// Настройка сущности Habit.
+    /// </summary>
+    /// <param name="builder">Построитель сущности.</param>
     public void Configure(EntityTypeBuilder<Habit.Domain.Entities.Habit> builder)
     {
         builder.HasKey("Id");

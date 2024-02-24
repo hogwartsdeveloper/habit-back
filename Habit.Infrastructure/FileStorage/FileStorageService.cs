@@ -15,6 +15,10 @@ public class FileStorageService : IFileStorageService
 {
     private readonly IMinioClient _client;
     
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="FileStorageService"/>.
+    /// </summary>
+    /// <param name="options">Настройки хранения файлов.</param>
     public FileStorageService(IOptions<FileStorageSettings> options)
     {
         var settings = options.Value;

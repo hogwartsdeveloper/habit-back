@@ -4,8 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Data.Config;
 
+/// <summary>
+/// Конфигурация сущности HabitRecord.
+/// </summary>
 public class HabitRecordConfiguration : IEntityTypeConfiguration<HabitRecord>
 {
+    /// <summary>
+    /// Настройка сущности HabitRecord.
+    /// </summary>
+    /// <param name="builder">Построитель сущности.</param>
     public void Configure(EntityTypeBuilder<HabitRecord> builder)
     {
         builder.HasKey("Id");

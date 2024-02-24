@@ -1,5 +1,4 @@
 using Habit.Application.BrokerMessage;
-using Habit.Application.FileStorage;
 using Habit.Application.FileStorage.Interfaces;
 using Habit.Application.Repositories;
 using Habit.Domain.Entities;
@@ -17,19 +16,32 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Extensions;
 
+/// <summary>
+/// Расширение для настройки зависимостей приложения.
+/// </summary>
 public static class DependencyInjectionExtension
 {
-    public static void AddApplicationDbContext(this IServiceCollection service, string? connectionString)
+    /// <summary>
+    /// Добавляет контекст базы данных приложения.
+    /// </summary>
+    /// <param name="services">Коллекция сервисов приложения.</param>
+    /// <param name="connectionString">Строка подключения к базе данных.</param>
+    public static void AddApplicationDbContext(this IServiceCollection services, string? connectionString)
     {
-        service.AddDbContext<ApplicationDbContext>(opt =>
+        services.AddDbContext<ApplicationDbContext>(options =>
         {
-            opt.UseNpgsql(connectionString);
+            options.UseNpgsql(connectionString);
         });
     }
 
-    public static void AddTaskManager(this IServiceCollection service, string? connectionString)
+    /// <summary>
+    /// Добавляет менеджер задач.
+    /// </summary>
+    /// <param name="services">Коллекция сервисов приложения.</param>
+    /// <param name="connectionString">Строка подключения к базе данных.</param>
+    public static void AddTaskManager(this IServiceCollection services, string? connectionString)
     {
-        service.AddHangfire(opt =>
+        services.AddHangfire(opt =>
         {
             opt.SetDataCompatibilityLevel(CompatibilityLevel.Version_170);
             opt.UseSimpleAssemblyNameTypeSerializer();
@@ -38,30 +50,48 @@ public static class DependencyInjectionExtension
             opt.UsePostgreSqlStorage(c => c.UseNpgsqlConnection(connectionString));
         });
 
-        service.AddHangfireServer();
+        services.AddHangfireServer();
     }
 
-    public static void AddRepositories(this IServiceCollection service)
+    /// <summary>
+    /// Добавляет репозитории в коллекцию сервисов приложения.
+    /// </summary>
+    /// <param name="services">Коллекция сервисов приложения.</param>
+    public static void AddRepositories(this IServiceCollection services)
     {
-        service.AddScoped<IRepository<Habit.Domain.Entities.Habit>, Repository<Habit.Domain.Entities.Habit>>();
-        service.AddScoped<IRepository<HabitRecord>, Repository<HabitRecord>>();
-        service.AddScoped<IRepository<User>, Repository<User>>();
-        service.AddScoped<IRepository<UserVerify>, Repository<UserVerify>>();
-        service.AddScoped<IRepository<RefreshToken>, Repository<RefreshToken>>();
+        services.AddScoped<IRepository<Habit.Domain.Entities.Habit>, Repository<Habit.Domain.Entities.Habit>>();
+        services.AddScoped<IRepository<HabitRecord>, Repository<HabitRecord>>();
+        services.AddScoped<IRepository<User>, Repository<User>>();
+        services.AddScoped<IRepository<UserVerify>, Repository<UserVerify>>();
+        services.AddScoped<IRepository<RefreshToken>, Repository<RefreshToken>>();
     }
 
+    /// <summary>
+    /// Добавляет сервис для работы с сообщениями брокера.
+    /// </summary>
+    /// <param name="services">Коллекция сервисов приложения.</param>
+    /// <param name="configuration">Конфигурация приложения.</param>
     public static void AddBrokerMessageService(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<BrokerMessageSettings>(configuration.GetSection("RabbitMQ"));
         services.AddSingleton<IBrokerMessageService, BrokerMessageService>();
     }
 
+    /// <summary>
+    /// Добавляет фоновые задачи в коллекцию сервисов приложения.
+    /// </summary>
+    /// <param name="services">Коллекция сервисов приложения.</param>
     public static void AddBackgroundJobs(this IServiceCollection services)
     {
         services.AddScoped<IHabitJob, HabitJob>();
         services.AddScoped<IBrokerMessageListenerJob, BrokerMessageListenerJob>();
     }
 
+    /// <summary>
+    /// Добавляет сервисы хранилища файлов в коллекцию сервисов приложения.
+    /// </summary>
+    /// <param name="services">Коллекция сервисов приложения.</param>
+    /// <param name="configuration">Конфигурация приложения.</param>
     public static void AddFileStorageServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<FileStorageSettings>(configuration.GetSection("MinIO"));

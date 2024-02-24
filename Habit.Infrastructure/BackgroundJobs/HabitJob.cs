@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.BackgroundJobs;
 
+/// <inheritdoc />
 public class HabitJob(IRepository<Habit.Domain.Entities.Habit> habitRepository) : IHabitJob
 {
+    /// <inheritdoc />
     public async Task CheckIsOverdueAsync()
     {
         

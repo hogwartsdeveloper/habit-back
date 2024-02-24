@@ -12,6 +12,10 @@ public class BrokerMessageService : IBrokerMessageService
     private readonly BrokerMessageSettings _settings;
     private readonly ConnectionFactory _connectionFactory;
     
+    /// <summary>
+    /// Инициализирует новый экземпляр класса BrokerMessageService.
+    /// </summary>
+    /// <param name="options">Настройки для подключения к брокеру сообщений.</param>
     public BrokerMessageService(IOptions<BrokerMessageSettings> options)
     {
         _settings = options.Value;
