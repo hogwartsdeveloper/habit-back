@@ -4,11 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Habit.Api.Middleware;
 
+/// <summary>
+/// Промежуточное ПО для обработки исключений.
+/// </summary>
 public class ExceptionHandleMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionHandleMiddleware> _logger;
 
+    /// <summary>
+    /// Инициализирует новый экземпляр класса ExceptionHandleMiddleware.
+    /// </summary>
+    /// <param name="next">Следующий делегат запроса.</param>
+    /// <param name="logger">Логгер.</param>
     public ExceptionHandleMiddleware(
         RequestDelegate next,
         ILogger<ExceptionHandleMiddleware> logger)
@@ -17,6 +25,10 @@ public class ExceptionHandleMiddleware
         _logger = logger;
     }
 
+    /// <summary>
+    /// Вызывает промежуточное ПО для обработки запроса.
+    /// </summary>
+    /// <param name="context">Контекст HTTP-запроса.</param>
     public async Task InvokeAsync(HttpContext context)
     {
         try
