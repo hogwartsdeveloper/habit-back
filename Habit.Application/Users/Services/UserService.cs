@@ -58,4 +58,20 @@ public class UserService(
         user.ChangeBirthDay(model.BirthDay);
         await userRepository.UpdateAsync(user, cancellationToken);
     }
+
+    /// <inheritdoc />
+    public async Task UpdateEmailAsync(Guid id, UpdateEmailModel model, CancellationToken cancellationToken = default)
+    {
+        var user = await userRepository
+            .GetByIdAsync(id)
+            .FirstOrDefaultAsync(cancellationToken);
+        
+        if (user is null)
+        {
+            throw new HttpException(HttpStatusCode.NotFound, "User not found");
+        }
+        
+        user.ChangeEmail(model.Email);
+        await userRepository.UpdateAsync(user, cancellationToken);
+    }
 }

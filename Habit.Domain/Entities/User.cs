@@ -46,6 +46,16 @@ public class User : EntityBase
     }
 
     /// <summary>
+    /// Изменяет адрес электронной почты.
+    /// </summary>
+    /// <param name="email">Новый адрес электронной почты.</param>
+    public void ChangeEmail(string email)
+    {
+        IsEmailConfirmed = false;
+        Email = email;
+    }
+
+    /// <summary>
     /// Изменяет хэш пароля пользователя.
     /// </summary>
     /// <param name="passwordHash">Новый хэш пароля пользователя.</param>
