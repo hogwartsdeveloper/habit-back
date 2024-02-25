@@ -1,5 +1,6 @@
 using System.Net;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Habit.Application.FileStorage.Interfaces;
 using Habit.Application.Repositories;
 using Habit.Application.Users.Interfaces;
@@ -73,5 +74,21 @@ public class UserService(
         
         user.ChangeEmail(model.Email);
         await userRepository.UpdateAsync(user, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async Task<UserViewModel> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var user = await userRepository
+            .GetByIdAsync(id)
+            .ProjectTo<UserViewModel>(mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(cancellationToken);
+        
+        if (user is null)
+        {
+            throw new HttpException(HttpStatusCode.NotFound, "User not found");
+        }
+
+        return user;
     }
 }

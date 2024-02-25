@@ -53,7 +53,7 @@ public class UserController(IUserService service) : ControllerBase
     /// <param name="model">Модель обновления адреса электронной почты.</param>
     /// <param name="cancellationToken">Токен отмены для отмены операции.</param>
     /// <returns>Задача, представляющая асинхронную операцию.</returns>
-    [HttpPut]
+    [HttpPut("UpdateEmail")]
     [ProducesResponseType(typeof(IResult), 200)]
     public Task UpdateEmailAsync([FromBody] UpdateEmailModel model, CancellationToken cancellationToken)
     {
@@ -61,5 +61,20 @@ public class UserController(IUserService service) : ControllerBase
         Guid.TryParse(userIdData, out var userId);
 
         return service.UpdateEmailAsync(userId, model, cancellationToken);
+    }
+
+    /// <summary>
+    /// Получает данные пользователя асинхронно по идентификатору.
+    /// </summary>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Задача, представляющая получение данных пользователя.</returns>
+    [HttpGet]
+    [ProducesResponseType(typeof(UserViewModel), 200)]
+    public Task<UserViewModel> GetByIdAsync(CancellationToken cancellationToken)
+    {
+        var userIdData = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        Guid.TryParse(userIdData, out var userId);
+
+        return service.GetByIdAsync(userId, cancellationToken);
     }
 }

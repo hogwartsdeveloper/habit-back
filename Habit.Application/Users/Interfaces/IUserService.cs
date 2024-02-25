@@ -34,4 +34,13 @@ public interface IUserService
     /// <param name="cancellationToken">Токен отмены для отмены операции.</param>
     /// <returns>Задача, представляющая асинхронную операцию.</returns>
     Task UpdateEmailAsync(Guid id, UpdateEmailModel model, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Получает данные пользователя по его идентификатору асинхронно.
+    /// </summary>
+    /// <param name="id">Идентификатор пользователя.</param>
+    /// <param name="viewModel">Модель представления пользователя.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Задача, представляющая получение данных пользователя.</returns>
+    Task<UserViewModel> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 }

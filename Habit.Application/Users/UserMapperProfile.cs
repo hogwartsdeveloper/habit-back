@@ -22,5 +22,7 @@ public class UserMapperProfile : Profile
             .ForMember(dst => dst.Habits, opt => opt.Ignore())
             .ForMember(dst => dst.UserVerification, opt => opt.Ignore())
             .ForMember(dst => dst.RefreshToken, opt => opt.Ignore());
+
+        CreateMap<User, UserViewModel>();
     }
 }
