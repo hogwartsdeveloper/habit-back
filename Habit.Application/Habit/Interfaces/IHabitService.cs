@@ -19,9 +19,18 @@ public interface IHabitService
     /// <summary>
     /// Возвращает список всех привычек.
     /// </summary>
+    /// /// <param name="userId">Идентификатор пользователя.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Список моделей привычек.</returns>
-    Task<List<HabitViewModel>> GetListAsync(CancellationToken cancellationToken = default);
+    Task<List<HabitViewModel>> GetListAsync(Guid userId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Возвращает список привычек, сгруппированных.
+    /// </summary>
+    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Список моделей привычек, сгруппированных.</returns>
+    Task<HabitGroupViewsModel> GetListGroupAsync(Guid userId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Возвращает привычку по идентификатору.

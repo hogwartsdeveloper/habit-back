@@ -21,7 +21,19 @@ public class HabitController(IHabitService service) : BaseController
     [ProducesResponseType(typeof(List<HabitViewModel>), 200)]
     public Task<List<HabitViewModel>> GetListAsync(CancellationToken cancellationToken)
     {
-        return service.GetListAsync(cancellationToken);
+        return service.GetListAsync(GetCurrentUserId()!.Value, cancellationToken);
+    }
+
+    /// <summary>
+    /// Получает группу привычек асинхронно.
+    /// </summary>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Задача, представляющая группу привычек.</returns>
+    [HttpGet("Group")]
+    [ProducesResponseType(typeof(HabitGroupViewsModel), 200)]
+    public Task<HabitGroupViewsModel> GetListGroupAsync(CancellationToken cancellationToken)
+    {
+        return service.GetListGroupAsync(GetCurrentUserId()!.Value, cancellationToken);
     }
     
     /// <summary>

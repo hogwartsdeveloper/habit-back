@@ -26,12 +26,39 @@ public class HabitService(
     }
 
     /// <inheritdoc />
-    public async Task<List<HabitViewModel>> GetListAsync(CancellationToken cancellationToken = default)
+    public async Task<List<HabitViewModel>> GetListAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         return await habitRepository
             .GetListAsync()
+            .Where(h => h.UserId == userId)
             .ProjectTo<HabitViewModel>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async Task<HabitGroupViewsModel> GetListGroupAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var habits = await GetListAsync(userId, cancellationToken);
+        
+        var active = new List<HabitViewModel>();
+        var overdue = new List<HabitViewModel>();
+
+        foreach (var habit in habits)
+        {
+            if (habit.IsOverdue)
+            {
+                overdue.Add(habit);
+                continue;
+            }
+            
+            active.Add(habit);
+        }
+
+        return new HabitGroupViewsModel
+        {
+            Active = active,
+            Overdue = overdue
+        };
     }
 
     /// <inheritdoc />
