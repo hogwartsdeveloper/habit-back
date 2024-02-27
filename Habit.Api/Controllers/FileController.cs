@@ -1,3 +1,4 @@
+using Habit.Api.Controllers.Abstractions;
 using Habit.Application.FileStorage.Interfaces;
 using Habit.Application.FileStorage.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -9,9 +10,7 @@ namespace Habit.Api.Controllers;
 /// Контроллер для работы с файлами.
 /// </summary>
 [Authorize]
-[ApiController]
-[Route("api/[controller]")]
-public class FileController(IFileStorageService fileStorageService) : ControllerBase
+public class FileController(IFileStorageService fileStorageService) : BaseController
 {
     /// <summary>
     /// Получает файл по указанному пути.

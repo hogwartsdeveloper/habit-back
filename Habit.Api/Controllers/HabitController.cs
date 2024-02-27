@@ -1,4 +1,4 @@
-using System.Security.Claims;
+using Habit.Api.Controllers.Abstractions;
 using Habit.Application.Habit.Interfaces;
 using Habit.Application.Habit.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -10,9 +10,7 @@ namespace Habit.Api.Controllers;
 /// Контроллер для управления привычками.
 /// </summary>
 [Authorize]
-[ApiController]
-[Route("api/[controller]")]
-public class HabitController(IHabitService service) : ControllerBase
+public class HabitController(IHabitService service) : BaseController
 {
     /// <summary>
     /// Получает список привычек.
@@ -49,9 +47,7 @@ public class HabitController(IHabitService service) : ControllerBase
     [ProducesResponseType(typeof(Guid), 200)]
     public Task<Guid> AddAsync([FromBody] AddHabitModel viewModel, CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        
-        return service.AddAsync(Guid.Parse(userId), viewModel, cancellationToken);
+        return service.AddAsync(GetCurrentUserId()!.Value, viewModel, cancellationToken);
     }
     
     /// <summary>

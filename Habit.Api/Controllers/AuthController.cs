@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Habit.Api.Controllers.Abstractions;
 using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Models;
 using Habit.Domain.Enums;
@@ -10,9 +11,7 @@ namespace Habit.Api.Controllers;
 /// <summary>
 /// Контроллер для аутентификации и авторизации пользователей.
 /// </summary>
-[ApiController]
-[Route("api/[controller]")]
-public class AuthController(IAuthService authService) : ControllerBase
+public class AuthController(IAuthService authService) : BaseController
 {
     /// <summary>
     /// Регистрация нового пользователя.

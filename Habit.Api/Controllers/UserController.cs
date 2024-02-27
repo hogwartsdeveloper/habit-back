@@ -1,4 +1,4 @@
-using System.Security.Claims;
+using Habit.Api.Controllers.Abstractions;
 using Habit.Application.FileStorage.Models;
 using Habit.Application.Users.Interfaces;
 using Habit.Application.Users.Models;
@@ -11,9 +11,7 @@ namespace Habit.Api.Controllers;
 /// Контроллер для управления пользователями.
 /// </summary>
 [Authorize]
-[ApiController]
-[Route("api/[controller]")]
-public class UserController(IUserService service) : ControllerBase
+public class UserController(IUserService service) : BaseController
 {
     /// <summary>
     /// Добавляет изображение пользователю.
@@ -25,10 +23,7 @@ public class UserController(IUserService service) : ControllerBase
     [ProducesResponseType(typeof(IResult), 200)]
     public Task AddImage([FromForm] FileModel model, CancellationToken cancellationToken)
     {
-        var userIdData = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        Guid.TryParse(userIdData, out var userId);
-
-        return service.AddImageAsync(userId, model.File, cancellationToken);
+        return service.AddImageAsync(GetCurrentUserId()!.Value, model.File, cancellationToken);
     }
     
     /// <summary>
@@ -41,10 +36,7 @@ public class UserController(IUserService service) : ControllerBase
     [ProducesResponseType(typeof(IResult), 200)]
     public Task UpdateAsync([FromBody] UpdateUserModel model, CancellationToken cancellationToken)
     {
-        var userIdData = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        Guid.TryParse(userIdData, out var userId);
-        
-        return service.UpdateAsync(userId, model, cancellationToken);
+        return service.UpdateAsync(GetCurrentUserId()!.Value, model, cancellationToken);
     }
 
     /// <summary>
@@ -57,10 +49,7 @@ public class UserController(IUserService service) : ControllerBase
     [ProducesResponseType(typeof(IResult), 200)]
     public Task UpdateEmailAsync([FromBody] UpdateEmailModel model, CancellationToken cancellationToken)
     {
-        var userIdData = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        Guid.TryParse(userIdData, out var userId);
-
-        return service.UpdateEmailAsync(userId, model, cancellationToken);
+        return service.UpdateEmailAsync(GetCurrentUserId()!.Value, model, cancellationToken);
     }
 
     /// <summary>
@@ -72,9 +61,6 @@ public class UserController(IUserService service) : ControllerBase
     [ProducesResponseType(typeof(UserViewModel), 200)]
     public Task<UserViewModel> GetByIdAsync(CancellationToken cancellationToken)
     {
-        var userIdData = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        Guid.TryParse(userIdData, out var userId);
-
-        return service.GetByIdAsync(userId, cancellationToken);
+        return service.GetByIdAsync(GetCurrentUserId()!.Value, cancellationToken);
     }
 }
