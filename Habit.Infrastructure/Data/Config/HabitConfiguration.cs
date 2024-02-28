@@ -25,10 +25,10 @@ public class HabitConfiguration : IEntityTypeConfiguration<Habit.Domain.Entities
         
         builder
             .Property(e => e.StartDate)
-            .HasColumnType("timestamp with time zone");
+            .HasColumnType("timestamp without time zone");
         
         builder
             .Property(e => e.EndDate)
-            .HasColumnType("timestamp with time zone");
+            .HasColumnType("timestamp without time zone");
     }
 }
