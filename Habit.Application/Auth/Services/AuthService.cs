@@ -1,6 +1,7 @@
 using System.Net;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Habit.Application.Auth.Constants;
 using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Models;
 using Habit.Application.BrokerMessage;
@@ -44,7 +45,7 @@ public class AuthService(
                 new RefreshToken(entity.Id, refreshToken.Token, refreshToken.Expires),
                 cancellationToken);
 
-        await SendVerifyMessage(entity, UserVerifyType.Email, "Confirm email");
+        await SendVerifyMessage(entity, UserVerifyType.Email, AuthConstants.ConfirmEmail);
         
         return new AuthViewModel { AccessToken = token };
     }
@@ -58,13 +59,13 @@ public class AuthService(
         
         if (user is null)
         {
-            throw new HttpException(HttpStatusCode.BadRequest, "Email or password wrong");
+            throw new HttpException(HttpStatusCode.BadRequest, AuthConstants.EmailOrPasswordWrong);
         }
         
         var isPassValid = securityService.VerifyPassword(model.Password, user.PasswordHash);
         if (!isPassValid)
         {
-            throw new HttpException(HttpStatusCode.BadRequest, "Email or password wrong");
+            throw new HttpException(HttpStatusCode.BadRequest, AuthConstants.EmailOrPasswordWrong);
         }
 
         await userRepository.UpdateAsync(user, cancellationToken);
@@ -82,7 +83,7 @@ public class AuthService(
         
         if (user is null)
         {
-            throw new HttpException(HttpStatusCode.Unauthorized, "User not found!");
+            throw new HttpException(HttpStatusCode.Unauthorized, AuthConstants.UserNotFound);
         }
 
         var refreshToken = await refreshTokenRepository
@@ -92,14 +93,14 @@ public class AuthService(
 
         if (refreshToken is null)
         {
-            throw new HttpException(HttpStatusCode.Unauthorized, "Token invalid");
+            throw new HttpException(HttpStatusCode.Unauthorized, AuthConstants.TokenInvalid);
         }
 
         var tokenIsValid = securityService.VerifyRefreshToken(refreshToken);
 
         if (!tokenIsValid)
         {
-            throw new HttpException(HttpStatusCode.Unauthorized, "Token invalid");
+            throw new HttpException(HttpStatusCode.Unauthorized, AuthConstants.TokenInvalid);
         }
 
 
@@ -131,10 +132,10 @@ public class AuthService(
         switch (verifyType)
         {
             case UserVerifyType.Email:
-                messageSubject = "Confirm email";
+                messageSubject = AuthConstants.ConfirmEmail;
                 break;
             case UserVerifyType.PasswordRecovery:
-                messageSubject = "Request for change password";
+                messageSubject = AuthConstants.RequestForChangePassword;
                 break;
         }
 
@@ -159,7 +160,7 @@ public class AuthService(
     {
         if (await userRepository.AnyAsync(user => user.Email == email))
         {
-            throw new HttpException(HttpStatusCode.BadRequest, "User already exists");
+            throw new HttpException(HttpStatusCode.BadRequest, AuthConstants.UserAlreadyExists);
         }
     }
 
@@ -171,7 +172,7 @@ public class AuthService(
 
         if (user is null)
         {
-            throw new HttpException(HttpStatusCode.Unauthorized, "User not found!");
+            throw new HttpException(HttpStatusCode.Unauthorized, AuthConstants.UserNotFound);
         }
 
         return user;
@@ -190,7 +191,7 @@ public class AuthService(
 
         if (!isVerify)
         {
-            throw new HttpException(HttpStatusCode.BadRequest, "Code is not correct");
+            throw new HttpException(HttpStatusCode.BadRequest, AuthConstants.CodeIsNotCorrect);
         }
     }
 
