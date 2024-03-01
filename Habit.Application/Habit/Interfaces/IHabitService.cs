@@ -55,4 +55,12 @@ public interface IHabitService
     /// <param name="models">Список моделей записей о выполнении привычки.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     Task AddRecord(Guid habitId, List<HabitRecordViewModel> models, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Удаляет привычку с указанным идентификатором.
+    /// </summary>
+    /// <param name="habitId">Идентификатор привычки для удаления.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Задача, представляющая операцию удаления.</returns>
+    Task DeleteAsync(Guid habitId, CancellationToken cancellationToken = default);
 }

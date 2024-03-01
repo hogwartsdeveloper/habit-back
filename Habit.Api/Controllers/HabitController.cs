@@ -90,4 +90,17 @@ public class HabitController(IHabitService service) : BaseController
     {
         return service.AddRecord(habitId, models, cancellationToken);
     }
+
+    /// <summary>
+    /// Удаляет привычку с указанным идентификатором.
+    /// </summary>
+    /// <param name="habitId">Идентификатор привычки для удаления.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Задача, представляющая операцию удаления.</returns>
+    [HttpDelete("{habitId:guid}")]
+    [ProducesResponseType(typeof(IResult), 200)]
+    public Task Delete(Guid habitId, CancellationToken cancellationToken)
+    {
+        return service.DeleteAsync(habitId, cancellationToken);
+    }
 }

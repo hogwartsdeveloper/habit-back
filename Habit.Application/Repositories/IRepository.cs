@@ -65,4 +65,12 @@ public interface IRepository<T> where T : EntityBase
     /// <param name="entities">Коллекция обновляемых сущностей.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     Task UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Асинхронно удаляет элемент по указанному идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор элемента для удаления.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Задача, представляющая асинхронную операцию удаления.</returns>
+    Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 }

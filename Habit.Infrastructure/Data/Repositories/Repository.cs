@@ -88,4 +88,13 @@ public class Repository<T>(ApplicationDbContext dbContext) : IRepository<T> wher
 
         await dbContext.SaveChangesAsync(cancellationToken);
     }
+
+    /// <inheritdoc />
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        await dbContext
+            .Set<T>()
+            .Where(x => x.Id == id)
+            .ExecuteDeleteAsync(cancellationToken);
+    }
 }

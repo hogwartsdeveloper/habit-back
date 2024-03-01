@@ -127,6 +127,12 @@ public class HabitService(
         await habitRepository.UpdateAsync(habit, cancellationToken);
     }
 
+    /// <inheritdoc />
+    public async Task DeleteAsync(Guid habitId, CancellationToken cancellationToken)
+    {
+        await habitRepository.DeleteAsync(habitId, cancellationToken);
+    }
+
     private async Task<Domain.Entities.Habit> GetAndValidateHabitAsync(Guid id, CancellationToken cancellationToken)
     {
         var entity = await habitRepository
