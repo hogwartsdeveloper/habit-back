@@ -1,4 +1,5 @@
 using FluentValidation;
+using Habit.Application.Auth.Constants;
 using Habit.Application.Auth.Models;
 
 namespace Habit.Application.Auth.Validators;
@@ -14,20 +15,20 @@ public class RecoveryPasswordModelValidator : AbstractValidator<RecoveryPassword
     public RecoveryPasswordModelValidator()
     {
         RuleFor(m => m.Email)
-            .NotEmpty().WithMessage("Email address is required.")
-            .EmailAddress().WithMessage("Invalid email address.");
+            .NotEmpty().WithMessage(AuthConstants.EmailIsRequired)
+            .EmailAddress().WithMessage(AuthConstants.EmailIsInvalid);
         
         RuleFor(m => m.Code)
-            .NotEmpty().WithMessage("Code is required")
-            .Length(4).WithMessage("The code must be 4 characters long.");
+            .NotEmpty().WithMessage(AuthConstants.CodeIsRequired)
+            .Length(4).WithMessage(AuthConstants.CodeLength);
         
         RuleFor(m => m.Password)
-            .NotEmpty().WithMessage("Password is required.")
-            .MinimumLength(5).WithMessage("Password must be at least 5 characters long.")
-            .Matches("[0-9]").WithMessage("Password must contain at least one number.");
+            .NotEmpty().WithMessage(AuthConstants.PasswordIsRequired)
+            .MinimumLength(5).WithMessage(AuthConstants.PasswordLength)
+            .Matches("[0-9]").WithMessage(AuthConstants.PasswordMustOneNumber);
 
         RuleFor(m => m.ConfirmPassword)
-            .NotEmpty().WithMessage("Confirm password is required.")
-            .Equal(m => m.Password).WithMessage("The password confirmation must match the password.");
+            .NotEmpty().WithMessage(AuthConstants.ConfirmPasswordIsRequired)
+            .Equal(m => m.Password).WithMessage(AuthConstants.ConfirmPasswordMatchPassword);
     }
 }
