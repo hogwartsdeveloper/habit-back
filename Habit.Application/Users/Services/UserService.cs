@@ -40,6 +40,7 @@ public class UserService(
         
         await fileStorageService.UploadAsync(BucketName, file, cancellationToken);
         user.ChangeImage($"{BucketName}/{file.FileName}");
+        await userRepository.UpdateAsync(user, cancellationToken);
     }
 
     /// <inheritdoc />
