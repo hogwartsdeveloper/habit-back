@@ -92,13 +92,13 @@ public class HabitService(
         if (habit.StartDate > first?.Date || last?.Date > habit.EndDate)
         {
             throw new HttpException(HttpStatusCode.BadRequest,
-                HabitConstant.HabitRecordDateInterval);
+                HabitConstant.RecordDateInterval);
         }
 
         if (last?.Date > DateTime.UtcNow)
         {
             throw new HttpException(HttpStatusCode.BadRequest,
-                HabitConstant.HabitRecordDayGreaterToday);
+                HabitConstant.RecordDayGreaterToday);
         }
 
         
@@ -108,7 +108,7 @@ public class HabitService(
 
         if (habitRecords.LastOrDefault()?.Date > first?.Date)
         {
-            throw new HttpException(HttpStatusCode.Conflict, HabitConstant.HabitRecordEditExistEntry);
+            throw new HttpException(HttpStatusCode.Conflict, HabitConstant.RecordEditExistEntry);
         }
 
         var isOverdue = false;
@@ -142,7 +142,7 @@ public class HabitService(
 
         if (entity is null)
         {
-            throw new HttpException(HttpStatusCode.NotFound, HabitConstant.HabitNotFound);
+            throw new HttpException(HttpStatusCode.NotFound, HabitConstant.NotFound);
         }
 
         return entity;

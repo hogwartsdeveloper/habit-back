@@ -1,4 +1,5 @@
 using FluentValidation;
+using Habit.Application.Habit.Constants;
 using Habit.Application.Habit.Models;
 
 namespace Habit.Application.Habit.Validators;
@@ -15,6 +16,6 @@ public class HabitRecordViewModelValidator : AbstractValidator<HabitRecordViewMo
     public HabitRecordViewModelValidator()
     {
         RuleFor(m => m.Date)
-            .NotEmpty().WithMessage("Date is required");
+            .NotEmpty().WithMessage(HabitConstant.RecordDateIsRequired);
     }
 }

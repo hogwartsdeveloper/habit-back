@@ -1,4 +1,5 @@
 using FluentValidation;
+using Habit.Application.Habit.Constants;
 using Habit.Application.Habit.Models;
 
 namespace Habit.Application.Habit.Validators;
@@ -15,12 +16,12 @@ public class AddHabitModelValidator : AbstractValidator<AddHabitModel>
     public AddHabitModelValidator()
     {
         RuleFor(m => m.Title)
-            .NotEmpty().WithMessage("Title is required");
+            .NotEmpty().WithMessage(HabitConstant.TitleIsRequired);
         
         RuleFor(m => m.StartDate)
-            .NotEmpty().WithMessage("StartDate is required");
+            .NotEmpty().WithMessage(HabitConstant.StartDateIsRequired);
 
         RuleFor(m => m.EndDate)
-            .NotEmpty().WithMessage("EndDate is required");
+            .NotEmpty().WithMessage(HabitConstant.EndDateIsRequired);
     }
 }

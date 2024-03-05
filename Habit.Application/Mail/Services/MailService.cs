@@ -1,4 +1,5 @@
 using System.Net;
+using Habit.Application.Constants;
 using Habit.Application.Mail.Interfaces;
 using Habit.Application.Mail.Models;
 using Habit.Domain.Exceptions;
@@ -57,7 +58,7 @@ public class MailService : IMailService
         }
         catch (Exception _)
         {
-            throw new HttpException(HttpStatusCode.InternalServerError, "Internal server error");
+            throw new HttpException(HttpStatusCode.InternalServerError, ApplicationConstant.InternalServerError);
         }
     }
 }
