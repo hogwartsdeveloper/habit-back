@@ -1,6 +1,7 @@
 using System.Net;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Habit.Application.Habit.Constants;
 using Habit.Application.Habit.Interfaces;
 using Habit.Application.Habit.Models;
 using Habit.Application.Repositories;
@@ -91,13 +92,13 @@ public class HabitService(
         if (habit.StartDate > first?.Date || last?.Date > habit.EndDate)
         {
             throw new HttpException(HttpStatusCode.BadRequest,
-                "The date of the entries goes beyond the habit action interval");
+                HabitConstant.HabitRecordDateInterval);
         }
 
         if (last?.Date > DateTime.UtcNow)
         {
             throw new HttpException(HttpStatusCode.BadRequest,
-                "The date of the entries cannot be greater than today");
+                HabitConstant.HabitRecordDayGreaterToday);
         }
 
         
@@ -107,7 +108,7 @@ public class HabitService(
 
         if (habitRecords.LastOrDefault()?.Date > first?.Date)
         {
-            throw new HttpException(HttpStatusCode.Conflict, "You are trying to edit an existing entry");
+            throw new HttpException(HttpStatusCode.Conflict, HabitConstant.HabitRecordEditExistEntry);
         }
 
         var isOverdue = false;
@@ -141,7 +142,7 @@ public class HabitService(
 
         if (entity is null)
         {
-            throw new HttpException(HttpStatusCode.NotFound, "Habit not found");
+            throw new HttpException(HttpStatusCode.NotFound, HabitConstant.HabitNotFound);
         }
 
         return entity;

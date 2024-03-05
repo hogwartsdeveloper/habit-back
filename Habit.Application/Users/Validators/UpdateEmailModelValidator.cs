@@ -1,4 +1,5 @@
 using FluentValidation;
+using Habit.Application.Auth.Constants;
 using Habit.Application.Users.Models;
 
 namespace Habit.Application.Users.Validators;
@@ -14,7 +15,7 @@ public class UpdateEmailModelValidator : AbstractValidator<UpdateEmailModel>
     public UpdateEmailModelValidator()
     {
         RuleFor(m => m.Email)
-            .NotEmpty().WithMessage("Email address is required.")
-            .EmailAddress().WithMessage("Invalid email address.");
+            .NotEmpty().WithMessage(AuthConstants.EmailIsRequired)
+            .EmailAddress().WithMessage(AuthConstants.EmailIsInvalid);
     }
 }

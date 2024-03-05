@@ -1,6 +1,7 @@
 using System.Net;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Habit.Application.Auth.Constants;
 using Habit.Application.FileStorage.Interfaces;
 using Habit.Application.Repositories;
 using Habit.Application.Users.Interfaces;
@@ -29,7 +30,7 @@ public class UserService(
         
         if (user is null)
         {
-            throw new HttpException(HttpStatusCode.NotFound, "User not found");
+            throw new HttpException(HttpStatusCode.NotFound, AuthConstants.UserNotFound);
         }
 
         if (user.ImageUrl != null)
@@ -52,7 +53,7 @@ public class UserService(
 
         if (user is null)
         {
-            throw new HttpException(HttpStatusCode.NotFound, "User not found");
+            throw new HttpException(HttpStatusCode.NotFound, AuthConstants.UserNotFound);
         }
 
         mapper.Map(model, user);
@@ -70,7 +71,7 @@ public class UserService(
         
         if (user is null)
         {
-            throw new HttpException(HttpStatusCode.NotFound, "User not found");
+            throw new HttpException(HttpStatusCode.NotFound, AuthConstants.UserNotFound);
         }
         
         user.ChangeEmail(model.Email);
@@ -87,7 +88,7 @@ public class UserService(
         
         if (user is null)
         {
-            throw new HttpException(HttpStatusCode.NotFound, "User not found");
+            throw new HttpException(HttpStatusCode.NotFound, AuthConstants.UserNotFound);
         }
 
         return user;
