@@ -86,6 +86,14 @@ public class User : EntityBase
     }
     
     /// <summary>
+    /// Сбрасывает ссылку на изображение, устанавливая её в значение null.
+    /// </summary>
+    public void DeleteImage()
+    {
+        ImageUrl = null;
+    }
+    
+    /// <summary>
     /// Получает имя пользователя.
     /// </summary>
     public string FirstName { get; private set; }

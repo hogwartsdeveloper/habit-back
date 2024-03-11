@@ -19,11 +19,24 @@ public class UserController(IUserService service) : BaseController
     /// <param name="model">Модель файла изображения.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Результат операции.</returns>
-    [HttpPost("image")]
+    [HttpPost("Image")]
     [ProducesResponseType(typeof(IResult), 200)]
     public Task AddImage([FromForm] FileModel model, CancellationToken cancellationToken)
     {
         return service.AddImageAsync(GetCurrentUserId()!.Value, model.File, cancellationToken);
+    }
+    
+    /// <summary>
+    /// Удаляет изображение с указанным именем файла.
+    /// </summary>
+    /// <param name="fileName">Имя файла изображения для удаления.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Задача, представляющая операцию удаления изображения.</returns>
+    [HttpDelete("Image")]
+    [ProducesResponseType(typeof(IResult), 200)]
+    public Task DeleteImage([FromQuery] string fileName, CancellationToken cancellationToken)
+    {
+        return service.DeleteImageAsync(GetCurrentUserId()!.Value, fileName, cancellationToken);
     }
     
     /// <summary>

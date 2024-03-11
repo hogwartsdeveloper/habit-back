@@ -45,6 +45,23 @@ public class UserService(
     }
 
     /// <inheritdoc />
+    public async Task DeleteImageAsync(Guid id, string fileName, CancellationToken cancellationToken = default)
+    {
+        var user = await userRepository
+            .GetByIdAsync(id)
+            .FirstOrDefaultAsync(cancellationToken);
+        
+        if (user is null)
+        {
+            throw new HttpException(HttpStatusCode.NotFound, AuthConstants.UserNotFound);
+        }
+
+        await fileStorageService.RemoveAsync(BucketName, fileName, cancellationToken);
+        user.DeleteImage();
+        await userRepository.UpdateAsync(user, cancellationToken);
+    }
+
+    /// <inheritdoc />
     public async Task UpdateAsync(Guid id, UpdateUserModel model, CancellationToken cancellationToken = default)
     {
         var user = await userRepository

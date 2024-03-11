@@ -16,6 +16,15 @@ public interface IUserService
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Задача, представляющая добавление изображения.</returns>
     Task AddImageAsync(Guid id, IFormFile file, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Асинхронно удаляет изображение с указанным идентификатором и именем файла.
+    /// </summary>
+    /// <param name="id">Идентификатор пользователя.</param>
+    /// <param name="fileName">Имя файла изображения для удаления.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Задача, представляющая операцию удаления изображения.</returns>
+    Task DeleteImageAsync(Guid id, string fileName, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Обновляет информацию о пользователе асинхронно.
