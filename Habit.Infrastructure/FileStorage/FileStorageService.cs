@@ -70,7 +70,7 @@ public class FileStorageService : IFileStorageService
     }
     
     /// <inheritdoc />
-    public async Task<FileModel?> GetAsync(string bucketName, string fileName, CancellationToken cancellationToken = default)
+    public async Task<Stream?> GetAsync(string bucketName, string fileName, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -85,20 +85,8 @@ public class FileStorageService : IFileStorageService
                     fileStream.Position = 0;
                 });
 
-            var stat = await _client.GetObjectAsync(args, cancellationToken);
-            if (fileStream != null)
-            {
-                var file = new FormFile(
-                    fileStream,
-                    fileStream.Position,
-                    stat.Size,
-                    stat.ObjectName,
-                    stat.ObjectName);
-
-                return new FileModel { File = file };
-            }
-
-            return null;
+            await _client.GetObjectAsync(args, cancellationToken);
+            return fileStream;
         }
         catch (Exception e)
         {

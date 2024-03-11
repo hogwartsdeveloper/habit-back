@@ -1,6 +1,5 @@
 using Habit.Api.Controllers.Abstractions;
 using Habit.Application.FileStorage.Interfaces;
-using Habit.Application.FileStorage.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,12 +18,18 @@ public class FileController(IFileStorageService fileStorageService) : BaseContro
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Модель файла.</returns>
     [HttpGet]
-    public Task<FileModel?> GetAsync([FromQuery] string filePath, CancellationToken cancellationToken)
+    public async Task<IActionResult?> GetAsync([FromQuery] string filePath, CancellationToken cancellationToken)
     {
         var fileData = filePath.Split("/");
         var bucketName = fileData[0];
         var fileName = fileData[1];
         
-        return fileStorageService.GetAsync(bucketName, fileName, cancellationToken);
+        var stream = await fileStorageService.GetAsync(bucketName, fileName, cancellationToken);
+        if (stream is null)
+        {
+            return NotFound();
+        }
+        
+        return File(stream, "application/octet-stream", fileName);
     }
 }
