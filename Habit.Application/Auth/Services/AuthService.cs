@@ -67,10 +67,28 @@ public class AuthService(
         {
             throw new HttpException(HttpStatusCode.BadRequest, AuthConstants.EmailOrPasswordWrong);
         }
-
-        await userRepository.UpdateAsync(user, cancellationToken);
         
         var token = securityService.GenerateToken(user);
+        var refreshToken = securityService.GenerateRefreshToken();
+        
+        var refreshTokenData = await refreshTokenRepository
+            .GetListAsync(e => e.UserId == user.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (refreshTokenData != null)
+        {
+            refreshTokenData.UpdateToken(refreshToken.Token, refreshToken.Expires);
+            await refreshTokenRepository.UpdateAsync(refreshTokenData, cancellationToken);
+        }
+        else
+        {
+            await refreshTokenRepository
+                .AddAsync(
+                    new RefreshToken(user.Id, refreshToken.Token, refreshToken.Expires),
+                    cancellationToken);
+        }
+
+            
         return new AuthViewModel { AccessToken = token };
     }
 
