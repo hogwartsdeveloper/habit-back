@@ -40,7 +40,7 @@ public class ExceptionHandleMiddleware
             _logger.LogError(e, "Exception occurred: {Message}", e.Message);
             await Handle(context, e.StatusCode, e.Message);
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
             _logger.LogError(e, "Exception occurred: {Message}", e.Message);
             await Handle(context);
