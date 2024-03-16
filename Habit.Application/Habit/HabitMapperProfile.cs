@@ -15,7 +15,10 @@ public class HabitMapperProfile : Profile
     public HabitMapperProfile()
     {
         CreateMap<Domain.Entities.Habit, HabitViewModel>()
-            .ForMember(dst => dst.Records, opt => opt.MapFrom(src => src.HabitRecords));
+            .ForMember(dst => dst.Records, opt => opt.MapFrom(src => src.HabitRecords))
+            .ForMember(dst => dst.CountComplete, opt => opt.MapFrom(src => src.HabitRecords != null
+                ? src.HabitRecords.Count(r => r.IsComplete)
+                : 0));
 
         CreateMap<AddHabitModel, Domain.Entities.Habit>()
             .ForMember(dst => dst.Id, opt => opt.Ignore())
