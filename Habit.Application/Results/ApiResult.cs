@@ -2,27 +2,19 @@ using Habit.Application.Errors;
 
 namespace Habit.Application.Results;
 
-public class ApiResult<T>
+public class ApiResult(bool isSuccess, IEnumerable<Error>? errors = null)
 {
-    private ApiResult(T? result, bool isSuccess, IEnumerable<Error>? errors = null)
+    public bool IsSuccess { get; private set; } = isSuccess;
+
+    public IEnumerable<Error> Errors { get; private set; } = errors ?? Array.Empty<Error>();
+    
+    public static ApiResult Success()
     {
-        Result = result;
-        IsSuccess = isSuccess;
-        Errors = errors ?? Array.Empty<Error>();
+        return new ApiResult(true);
     }
 
-    public static ApiResult<T> Success(T result)
+    public static ApiResult Failure(IEnumerable<Error> errors)
     {
-        return new ApiResult<T>(result, true);
-    }
-
-    public static ApiResult<T> Failure(IEnumerable<Error> errors)
-    {
-        return new ApiResult<T>(default, false, errors);
+        return new ApiResult(false, errors);
     } 
-    public T? Result { get; private set; }
-
-    public bool IsSuccess { get; private set; }
-
-    public IEnumerable<Error> Errors { get; private set; }
 }

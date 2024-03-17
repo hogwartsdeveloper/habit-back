@@ -135,17 +135,19 @@ public class AuthService(
     }
 
     /// <inheritdoc />
-    public async Task ConfirmEmailAsync(ConfirmEmailModel model, CancellationToken cancellationToken)
+    public async Task<ApiResult> ConfirmEmailAsync(ConfirmEmailModel model, CancellationToken cancellationToken)
     {
         var user = await GetAndValidateUserExistsAsync(model.Email, cancellationToken);
         await ValidateUserVerifyAsync(user.Id, model.Code, UserVerifyType.Email, cancellationToken);
         
         user.ConfirmEmail();
         await userRepository.UpdateAsync(user, cancellationToken);
+
+        return ApiResult.Success();
     }
 
     /// <inheritdoc />
-    public async Task RequestForChangeAsync(
+    public async Task<ApiResult> RequestForChangeAsync(
         string email,
         UserVerifyType verifyType,
         CancellationToken cancellationToken)
@@ -167,16 +169,20 @@ public class AuthService(
         {
             await SendVerifyMessage(user, verifyType, messageSubject);
         }
+
+        return ApiResult.Success();
     }
     
     /// <inheritdoc />
-    public async Task RecoveryPasswordAsync(RecoveryPasswordModel model, CancellationToken cancellationToken)
+    public async Task<ApiResult> RecoveryPasswordAsync(RecoveryPasswordModel model, CancellationToken cancellationToken)
     {
         var user = await GetAndValidateUserExistsAsync(model.Email, cancellationToken);
         await ValidateUserVerifyAsync(user.Id, model.Code, UserVerifyType.PasswordRecovery, cancellationToken);
         
         user.ChangePasswordHash(securityService.HashPassword(model.Password));
         await userRepository.UpdateAsync(user, cancellationToken);
+
+        return ApiResult.Success();
     }
 
     

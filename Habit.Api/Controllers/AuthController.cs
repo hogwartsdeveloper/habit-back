@@ -61,8 +61,8 @@ public class AuthController(IAuthService authService) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Код состояния HTTP.</returns>
     [HttpPost("ConfirmEmail")]
-    [ProducesResponseType(typeof(ApiResult<>), 200)]
-    public Task ConfirmEmailAsync([FromBody] ConfirmEmailModel model, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(ApiResult), 200)]
+    public Task<ApiResult> ConfirmEmailAsync([FromBody] ConfirmEmailModel model, CancellationToken cancellationToken)
     {
         return authService.ConfirmEmailAsync(model, cancellationToken);
     }
@@ -74,8 +74,8 @@ public class AuthController(IAuthService authService) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Код состояния HTTP.</returns>
     [HttpPost("RequestForRecoveryPassword")]
-    [ProducesResponseType(typeof(ApiResult<>), 200)]
-    public Task RequestForRecoveryPassword([FromBody] RequestModel model, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(ApiResult), 200)]
+    public Task<ApiResult> RequestForRecoveryPassword([FromBody] RequestModel model, CancellationToken cancellationToken)
     {
         return authService.RequestForChangeAsync(model.Email, UserVerifyType.PasswordRecovery, cancellationToken);
     }
@@ -87,8 +87,8 @@ public class AuthController(IAuthService authService) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Код состояния HTTP.</returns>
     [HttpPost("RecoveryPassword")]
-    [ProducesResponseType(typeof(ApiResult<>), 200)]
-    public Task RecoveryPassword([FromBody] RecoveryPasswordModel model, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(ApiResult), 200)]
+    public Task<ApiResult> RecoveryPassword([FromBody] RecoveryPasswordModel model, CancellationToken cancellationToken)
     {
         return authService.RecoveryPasswordAsync(model, cancellationToken);
     }
