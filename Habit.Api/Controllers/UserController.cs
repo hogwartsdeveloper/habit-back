@@ -21,10 +21,11 @@ public class UserController(IUserService service) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Результат операции.</returns>
     [HttpPost("Image")]
-    [ProducesResponseType(typeof(ApiResult<>), 200)]
-    public Task AddImage([FromForm] FileModel model, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(ApiResult), 200)]
+    public async Task<ApiResult> AddImage([FromForm] FileModel model, CancellationToken cancellationToken)
     {
-        return service.AddImageAsync(GetCurrentUserId()!.Value, model.File, cancellationToken);
+        await service.AddImageAsync(GetCurrentUserId()!.Value, model.File, cancellationToken);
+        return ApiResult.Success();
     }
     
     /// <summary>
@@ -34,10 +35,11 @@ public class UserController(IUserService service) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Задача, представляющая операцию удаления изображения.</returns>
     [HttpDelete("Image")]
-    [ProducesResponseType(typeof(ApiResult<>), 200)]
-    public Task DeleteImage([FromQuery] string fileName, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(ApiResult), 200)]
+    public async Task<ApiResult> DeleteImage([FromQuery] string fileName, CancellationToken cancellationToken)
     {
-        return service.DeleteImageAsync(GetCurrentUserId()!.Value, fileName, cancellationToken);
+        await service.DeleteImageAsync(GetCurrentUserId()!.Value, fileName, cancellationToken);
+        return ApiResult.Success();
     }
     
     /// <summary>
@@ -47,10 +49,12 @@ public class UserController(IUserService service) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Результат операции.</returns>
     [HttpPut]
-    [ProducesResponseType(typeof(ApiResult<>), 200)]
-    public Task UpdateAsync([FromBody] UpdateUserModel model, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(ApiResult), 200)]
+    public async Task<ApiResult> UpdateAsync([FromBody] UpdateUserModel model, CancellationToken cancellationToken)
     {
-        return service.UpdateAsync(GetCurrentUserId()!.Value, model, cancellationToken);
+        await service.UpdateAsync(GetCurrentUserId()!.Value, model, cancellationToken);
+        
+        return ApiResult.Success();
     }
 
     /// <summary>
@@ -60,10 +64,14 @@ public class UserController(IUserService service) : BaseController
     /// <param name="cancellationToken">Токен отмены для отмены операции.</param>
     /// <returns>Задача, представляющая асинхронную операцию.</returns>
     [HttpPut("UpdateEmail")]
-    [ProducesResponseType(typeof(ApiResult<>), 200)]
-    public Task UpdateEmailAsync([FromBody] UpdateEmailModel model, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(ApiResult), 200)]
+    public async Task<ApiResult> UpdateEmailAsync(
+        [FromBody] UpdateEmailModel model,
+        CancellationToken cancellationToken)
     {
-        return service.UpdateEmailAsync(GetCurrentUserId()!.Value, model, cancellationToken);
+        await service.UpdateEmailAsync(GetCurrentUserId()!.Value, model, cancellationToken);
+
+        return ApiResult.Success();
     }
 
     /// <summary>
@@ -73,8 +81,10 @@ public class UserController(IUserService service) : BaseController
     /// <returns>Задача, представляющая получение данных пользователя.</returns>
     [HttpGet]
     [ProducesResponseType(typeof(ApiResult<UserViewModel>), 200)]
-    public Task<UserViewModel> GetByIdAsync(CancellationToken cancellationToken)
+    public async Task<ApiResult<UserViewModel>> GetByIdAsync(CancellationToken cancellationToken)
     {
-        return service.GetByIdAsync(GetCurrentUserId()!.Value, cancellationToken);
+        var result = await service.GetByIdAsync(GetCurrentUserId()!.Value, cancellationToken);
+        
+        return ApiResult<UserViewModel>.Success(result);
     }
 }

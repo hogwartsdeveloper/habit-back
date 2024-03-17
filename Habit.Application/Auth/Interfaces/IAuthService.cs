@@ -1,5 +1,4 @@
 using Habit.Application.Auth.Models;
-using Habit.Application.Results;
 using Habit.Domain.Enums;
 
 namespace Habit.Application.Auth.Interfaces;
@@ -15,7 +14,7 @@ public interface IAuthService
     /// <param name="model">Модель регистрации.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Модель аутентификации.</returns>
-    Task<ApiResult<AuthViewModel>> SignUpAsync(RegistrationModel model, CancellationToken cancellationToken);
+    Task<AuthViewModel> SignUpAsync(RegistrationModel model, CancellationToken cancellationToken);
 
     /// <summary>
     /// Вход пользователя.
@@ -23,7 +22,7 @@ public interface IAuthService
     /// <param name="model">Модель входа.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Модель аутентификации.</returns>
-    Task<ApiResult<AuthViewModel>> SignInAsync(LoginModel model, CancellationToken cancellationToken);
+    Task<AuthViewModel> SignInAsync(LoginModel model, CancellationToken cancellationToken);
     
     /// <summary>
     /// Обновление сессии пользователя.
@@ -31,7 +30,7 @@ public interface IAuthService
     /// <param name="email">Email пользователя.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Модель аутентификации.</returns>
-    Task<ApiResult<AuthViewModel>> RefreshSessionAsync(string email, CancellationToken cancellationToken);
+    Task<AuthViewModel> RefreshSessionAsync(string email, CancellationToken cancellationToken);
 
     /// <summary>
     /// Подтверждение email пользователя.
@@ -39,7 +38,7 @@ public interface IAuthService
     /// <param name="model">Модель подтверждения email.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Задача.</returns>
-    Task<ApiResult> ConfirmEmailAsync(ConfirmEmailModel model, CancellationToken cancellationToken);
+    Task ConfirmEmailAsync(ConfirmEmailModel model, CancellationToken cancellationToken);
 
     /// <summary>
     /// Запрос на изменение данных пользователя.
@@ -48,7 +47,7 @@ public interface IAuthService
     /// <param name="verifyType">Тип верификации.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Задача.</returns>
-    Task<ApiResult> RequestForChangeAsync(string email, UserVerifyType verifyType, CancellationToken cancellationToken);
+    Task RequestForChangeAsync(string email, UserVerifyType verifyType, CancellationToken cancellationToken);
 
     /// <summary>
     /// Восстановление пароля пользователя.
@@ -56,5 +55,5 @@ public interface IAuthService
     /// <param name="model">Модель восстановления пароля.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Задача.</returns>
-    Task<ApiResult> RecoveryPasswordAsync(RecoveryPasswordModel model, CancellationToken cancellationToken);
+    Task RecoveryPasswordAsync(RecoveryPasswordModel model, CancellationToken cancellationToken);
 }

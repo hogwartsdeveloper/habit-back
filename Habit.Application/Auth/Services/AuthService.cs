@@ -7,7 +7,6 @@ using Habit.Application.Auth.Models;
 using Habit.Application.BrokerMessage;
 using Habit.Application.Mail.Models;
 using Habit.Application.Repositories;
-using Habit.Application.Results;
 using Habit.Domain.Entities;
 using Habit.Domain.Enums;
 using Habit.Domain.Exceptions;
@@ -27,7 +26,7 @@ public class AuthService(
     IBrokerMessageService brokerMessageService) : IAuthService
 {
     /// <inheritdoc />
-    public async Task<ApiResult<AuthViewModel>> SignUpAsync(RegistrationModel model, CancellationToken cancellationToken)
+    public async Task<AuthViewModel> SignUpAsync(RegistrationModel model, CancellationToken cancellationToken)
     {
         await ValidateUserNotExists(model.Email);
         
@@ -48,13 +47,11 @@ public class AuthService(
 
         await SendVerifyMessage(entity, UserVerifyType.Email, AuthConstants.ConfirmEmail);
 
-        var res = new AuthViewModel { AccessToken = token };
-        
-        return ApiResult<AuthViewModel>.Success(res);
+        return new AuthViewModel { AccessToken = token };
     }
 
     /// <inheritdoc />
-    public async Task<ApiResult<AuthViewModel>> SignInAsync(LoginModel model, CancellationToken cancellationToken)
+    public async Task<AuthViewModel> SignInAsync(LoginModel model, CancellationToken cancellationToken)
     {
         var user = await userRepository
             .GetListAsync(e => e.Email == model.Email)
@@ -91,13 +88,11 @@ public class AuthService(
                     cancellationToken);
         }
 
-        var res = new AuthViewModel { AccessToken = token };
-        
-        return ApiResult<AuthViewModel>.Success(res);
+        return new AuthViewModel { AccessToken = token };
     }
 
     /// <inheritdoc />
-    public async Task<ApiResult<AuthViewModel>> RefreshSessionAsync(string email, CancellationToken cancellationToken)
+    public async Task<AuthViewModel> RefreshSessionAsync(string email, CancellationToken cancellationToken)
     {
         var user = await userRepository
             .GetListAsync(e => e.Email == email)
@@ -129,25 +124,22 @@ public class AuthService(
         await userRepository.UpdateAsync(user, cancellationToken);
         
         var token = securityService.GenerateToken(user);
-        var res = new AuthViewModel { AccessToken = token };
-        
-        return ApiResult<AuthViewModel>.Success(res);
+
+        return new AuthViewModel { AccessToken = token };
     }
 
     /// <inheritdoc />
-    public async Task<ApiResult> ConfirmEmailAsync(ConfirmEmailModel model, CancellationToken cancellationToken)
+    public async Task ConfirmEmailAsync(ConfirmEmailModel model, CancellationToken cancellationToken)
     {
         var user = await GetAndValidateUserExistsAsync(model.Email, cancellationToken);
         await ValidateUserVerifyAsync(user.Id, model.Code, UserVerifyType.Email, cancellationToken);
         
         user.ConfirmEmail();
         await userRepository.UpdateAsync(user, cancellationToken);
-
-        return ApiResult.Success();
     }
 
     /// <inheritdoc />
-    public async Task<ApiResult> RequestForChangeAsync(
+    public async Task RequestForChangeAsync(
         string email,
         UserVerifyType verifyType,
         CancellationToken cancellationToken)
@@ -169,20 +161,18 @@ public class AuthService(
         {
             await SendVerifyMessage(user, verifyType, messageSubject);
         }
-
-        return ApiResult.Success();
+        
     }
     
     /// <inheritdoc />
-    public async Task<ApiResult> RecoveryPasswordAsync(RecoveryPasswordModel model, CancellationToken cancellationToken)
+    public async Task RecoveryPasswordAsync(RecoveryPasswordModel model, CancellationToken cancellationToken)
     {
         var user = await GetAndValidateUserExistsAsync(model.Email, cancellationToken);
         await ValidateUserVerifyAsync(user.Id, model.Code, UserVerifyType.PasswordRecovery, cancellationToken);
         
         user.ChangePasswordHash(securityService.HashPassword(model.Password));
         await userRepository.UpdateAsync(user, cancellationToken);
-
-        return ApiResult.Success();
+        
     }
 
     

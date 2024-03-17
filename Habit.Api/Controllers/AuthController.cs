@@ -22,9 +22,11 @@ public class AuthController(IAuthService authService) : BaseController
     /// <returns>Модель данных аутентификации.</returns>
     [HttpPost("SignUp")]
     [ProducesResponseType(typeof(ApiResult<AuthViewModel>), 200)]
-    public Task<ApiResult<AuthViewModel>> SignUp([FromBody] RegistrationModel viewModel, CancellationToken cancellationToken)
+    public async Task<ApiResult<AuthViewModel>> SignUp([FromBody] RegistrationModel viewModel, CancellationToken cancellationToken)
     {
-        return authService.SignUpAsync(viewModel, cancellationToken);
+        var result = await authService.SignUpAsync(viewModel, cancellationToken);
+        
+        return ApiResult<AuthViewModel>.Success(result);
     }
     
     /// <summary>
@@ -35,9 +37,11 @@ public class AuthController(IAuthService authService) : BaseController
     /// <returns>Модель данных аутентификации.</returns>
     [HttpPost("SignIn")]
     [ProducesResponseType(typeof(ApiResult<AuthViewModel>), 200)]
-    public Task<ApiResult<AuthViewModel>> SignIn([FromBody] LoginModel viewModel, CancellationToken cancellationToken)
+    public async Task<ApiResult<AuthViewModel>> SignIn([FromBody] LoginModel viewModel, CancellationToken cancellationToken)
     {
-        return authService.SignInAsync(viewModel, cancellationToken);
+        var result = await authService.SignInAsync(viewModel, cancellationToken);
+        
+        return ApiResult<AuthViewModel>.Success(result);
     }
 
     /// <summary>
@@ -48,10 +52,12 @@ public class AuthController(IAuthService authService) : BaseController
     [Authorize]
     [HttpGet("Refresh")]
     [ProducesResponseType(typeof(ApiResult<AuthViewModel>), 200)]
-    public Task<ApiResult<AuthViewModel>> Refresh(CancellationToken cancellationToken)
+    public async Task<ApiResult<AuthViewModel>> Refresh(CancellationToken cancellationToken)
     {
         var userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-        return authService.RefreshSessionAsync(userEmail!, cancellationToken);
+        var result = await authService.RefreshSessionAsync(userEmail!, cancellationToken);
+
+        return ApiResult<AuthViewModel>.Success(result);
     }
 
     /// <summary>
@@ -62,9 +68,10 @@ public class AuthController(IAuthService authService) : BaseController
     /// <returns>Код состояния HTTP.</returns>
     [HttpPost("ConfirmEmail")]
     [ProducesResponseType(typeof(ApiResult), 200)]
-    public Task<ApiResult> ConfirmEmailAsync([FromBody] ConfirmEmailModel model, CancellationToken cancellationToken)
+    public async Task<ApiResult> ConfirmEmailAsync([FromBody] ConfirmEmailModel model, CancellationToken cancellationToken)
     {
-        return authService.ConfirmEmailAsync(model, cancellationToken);
+        await authService.ConfirmEmailAsync(model, cancellationToken);
+        return ApiResult.Success();
     }
 
     /// <summary>
@@ -75,9 +82,10 @@ public class AuthController(IAuthService authService) : BaseController
     /// <returns>Код состояния HTTP.</returns>
     [HttpPost("RequestForRecoveryPassword")]
     [ProducesResponseType(typeof(ApiResult), 200)]
-    public Task<ApiResult> RequestForRecoveryPassword([FromBody] RequestModel model, CancellationToken cancellationToken)
+    public async Task<ApiResult> RequestForRecoveryPassword([FromBody] RequestModel model, CancellationToken cancellationToken)
     {
-        return authService.RequestForChangeAsync(model.Email, UserVerifyType.PasswordRecovery, cancellationToken);
+        await authService.RequestForChangeAsync(model.Email, UserVerifyType.PasswordRecovery, cancellationToken);
+        return ApiResult.Success();
     }
 
     /// <summary>
@@ -88,8 +96,9 @@ public class AuthController(IAuthService authService) : BaseController
     /// <returns>Код состояния HTTP.</returns>
     [HttpPost("RecoveryPassword")]
     [ProducesResponseType(typeof(ApiResult), 200)]
-    public Task<ApiResult> RecoveryPassword([FromBody] RecoveryPasswordModel model, CancellationToken cancellationToken)
+    public async Task<ApiResult> RecoveryPassword([FromBody] RecoveryPasswordModel model, CancellationToken cancellationToken)
     {
-        return authService.RecoveryPasswordAsync(model, cancellationToken);
+       await authService.RecoveryPasswordAsync(model, cancellationToken);
+       return ApiResult.Success();
     }
 }
