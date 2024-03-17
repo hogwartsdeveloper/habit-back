@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Habit.Api.Controllers.Abstractions;
 using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Models;
+using Habit.Application.Results;
 using Habit.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,8 +21,8 @@ public class AuthController(IAuthService authService) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Модель данных аутентификации.</returns>
     [HttpPost("SignUp")]
-    [ProducesResponseType(typeof(AuthViewModel), 200)]
-    public Task<AuthViewModel> SignUp([FromBody] RegistrationModel viewModel, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(ApiResult<AuthViewModel>), 200)]
+    public Task<ApiResult<AuthViewModel>> SignUp([FromBody] RegistrationModel viewModel, CancellationToken cancellationToken)
     {
         return authService.SignUpAsync(viewModel, cancellationToken);
     }
@@ -33,8 +34,8 @@ public class AuthController(IAuthService authService) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Модель данных аутентификации.</returns>
     [HttpPost("SignIn")]
-    [ProducesResponseType(typeof(AuthViewModel), 200)]
-    public Task<AuthViewModel> SignIn([FromBody] LoginModel viewModel, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(ApiResult<AuthViewModel>), 200)]
+    public Task<ApiResult<AuthViewModel>> SignIn([FromBody] LoginModel viewModel, CancellationToken cancellationToken)
     {
         return authService.SignInAsync(viewModel, cancellationToken);
     }
@@ -46,8 +47,8 @@ public class AuthController(IAuthService authService) : BaseController
     /// <returns>Модель данных аутентификации.</returns>
     [Authorize]
     [HttpGet("Refresh")]
-    [ProducesResponseType(typeof(AuthViewModel), 200)]
-    public Task<AuthViewModel> Refresh(CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(ApiResult<AuthViewModel>), 200)]
+    public Task<ApiResult<AuthViewModel>> Refresh(CancellationToken cancellationToken)
     {
         var userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
         return authService.RefreshSessionAsync(userEmail!, cancellationToken);
@@ -60,7 +61,7 @@ public class AuthController(IAuthService authService) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Код состояния HTTP.</returns>
     [HttpPost("ConfirmEmail")]
-    [ProducesResponseType(200)]
+    [ProducesResponseType(typeof(ApiResult<>), 200)]
     public Task ConfirmEmailAsync([FromBody] ConfirmEmailModel model, CancellationToken cancellationToken)
     {
         return authService.ConfirmEmailAsync(model, cancellationToken);
@@ -73,7 +74,7 @@ public class AuthController(IAuthService authService) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Код состояния HTTP.</returns>
     [HttpPost("RequestForRecoveryPassword")]
-    [ProducesResponseType(200)]
+    [ProducesResponseType(typeof(ApiResult<>), 200)]
     public Task RequestForRecoveryPassword([FromBody] RequestModel model, CancellationToken cancellationToken)
     {
         return authService.RequestForChangeAsync(model.Email, UserVerifyType.PasswordRecovery, cancellationToken);
@@ -86,7 +87,7 @@ public class AuthController(IAuthService authService) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Код состояния HTTP.</returns>
     [HttpPost("RecoveryPassword")]
-    [ProducesResponseType(200)]
+    [ProducesResponseType(typeof(ApiResult<>), 200)]
     public Task RecoveryPassword([FromBody] RecoveryPasswordModel model, CancellationToken cancellationToken)
     {
         return authService.RecoveryPasswordAsync(model, cancellationToken);

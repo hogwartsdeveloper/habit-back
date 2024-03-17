@@ -1,6 +1,7 @@
 using Habit.Api.Controllers.Abstractions;
 using Habit.Application.Habit.Interfaces;
 using Habit.Application.Habit.Models;
+using Habit.Application.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,7 @@ public class HabitController(IHabitService service) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Список моделей привычек.</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(List<HabitViewModel>), 200)]
+    [ProducesResponseType(typeof(ApiResult<List<HabitViewModel>>), 200)]
     public Task<List<HabitViewModel>> GetListAsync(CancellationToken cancellationToken)
     {
         return service.GetListAsync(GetCurrentUserId()!.Value, cancellationToken);
@@ -30,7 +31,7 @@ public class HabitController(IHabitService service) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Задача, представляющая группу привычек.</returns>
     [HttpGet("Group")]
-    [ProducesResponseType(typeof(HabitGroupViewsModel), 200)]
+    [ProducesResponseType(typeof(ApiResult<HabitGroupViewsModel>), 200)]
     public Task<HabitGroupViewsModel> GetListGroupAsync(CancellationToken cancellationToken)
     {
         return service.GetListGroupAsync(GetCurrentUserId()!.Value, cancellationToken);
@@ -43,7 +44,7 @@ public class HabitController(IHabitService service) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Модель привычки.</returns>
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(typeof(HabitViewModel), 200)]
+    [ProducesResponseType(typeof(ApiResult<HabitViewModel?>), 200)]
     public Task<HabitViewModel?> GetById(Guid id, CancellationToken cancellationToken)
     {
         return service.GetByIdAsync(id, cancellationToken);
@@ -56,7 +57,7 @@ public class HabitController(IHabitService service) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Идентификатор добавленной привычки.</returns>
     [HttpPost]
-    [ProducesResponseType(typeof(Guid), 200)]
+    [ProducesResponseType(typeof(ApiResult<Guid>), 200)]
     public Task<Guid> AddAsync([FromBody] AddHabitModel viewModel, CancellationToken cancellationToken)
     {
         return service.AddAsync(GetCurrentUserId()!.Value, viewModel, cancellationToken);
@@ -70,7 +71,7 @@ public class HabitController(IHabitService service) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Результат операции.</returns>
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(typeof(IResult), 200)]
+    [ProducesResponseType(typeof(ApiResult<>), 200)]
     public Task UpdateAsync(Guid id, [FromBody] UpdateHabitModel viewModel, CancellationToken cancellationToken)
     {
         return service.UpdateAsync(id, viewModel, cancellationToken);
@@ -84,7 +85,7 @@ public class HabitController(IHabitService service) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Результат операции.</returns>
     [HttpPatch("AddRecord/{habitId:guid}")]
-    [ProducesResponseType(typeof(IResult), 200)]
+    [ProducesResponseType(typeof(ApiResult<>), 200)]
     public Task AddRecord(Guid habitId, [FromBody] List<HabitRecordViewModel> models,
         CancellationToken cancellationToken)
     {
@@ -98,7 +99,7 @@ public class HabitController(IHabitService service) : BaseController
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Задача, представляющая операцию удаления.</returns>
     [HttpDelete("{habitId:guid}")]
-    [ProducesResponseType(typeof(IResult), 200)]
+    [ProducesResponseType(typeof(ApiResult<>), 200)]
     public Task Delete(Guid habitId, CancellationToken cancellationToken)
     {
         return service.DeleteAsync(habitId, cancellationToken);

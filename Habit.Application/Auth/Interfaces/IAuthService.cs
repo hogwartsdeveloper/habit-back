@@ -1,4 +1,5 @@
 using Habit.Application.Auth.Models;
+using Habit.Application.Results;
 using Habit.Domain.Enums;
 
 namespace Habit.Application.Auth.Interfaces;
@@ -14,7 +15,7 @@ public interface IAuthService
     /// <param name="model">Модель регистрации.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Модель аутентификации.</returns>
-    Task<AuthViewModel> SignUpAsync(RegistrationModel model, CancellationToken cancellationToken);
+    Task<ApiResult<AuthViewModel>> SignUpAsync(RegistrationModel model, CancellationToken cancellationToken);
 
     /// <summary>
     /// Вход пользователя.
@@ -22,7 +23,7 @@ public interface IAuthService
     /// <param name="model">Модель входа.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Модель аутентификации.</returns>
-    Task<AuthViewModel> SignInAsync(LoginModel model, CancellationToken cancellationToken);
+    Task<ApiResult<AuthViewModel>> SignInAsync(LoginModel model, CancellationToken cancellationToken);
     
     /// <summary>
     /// Обновление сессии пользователя.
@@ -30,7 +31,7 @@ public interface IAuthService
     /// <param name="email">Email пользователя.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Модель аутентификации.</returns>
-    Task<AuthViewModel> RefreshSessionAsync(string email, CancellationToken cancellationToken);
+    Task<ApiResult<AuthViewModel>> RefreshSessionAsync(string email, CancellationToken cancellationToken);
 
     /// <summary>
     /// Подтверждение email пользователя.
