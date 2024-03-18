@@ -1,7 +1,7 @@
 using Habit.Api.Extensions;
-using Habit.Api.Middleware;
 using Hangfire;
 using Infrastructure.Extensions;
+using Infrastructure.Middlewaries;
 
 var builder = WebApplication.CreateBuilder(args);
 

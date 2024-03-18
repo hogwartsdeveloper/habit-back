@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Habit.Application.BrokerMessage;
 using Habit.Application.FileStorage.Interfaces;
 using Habit.Application.Repositories;
@@ -10,6 +11,7 @@ using Infrastructure.BrokerMessage;
 using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
 using Infrastructure.FileStorage;
+using Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -96,5 +98,10 @@ public static class DependencyInjectionExtension
     {
         services.Configure<FileStorageSettings>(configuration.GetSection("MinIO"));
         services.AddSingleton<IFileStorageService, FileStorageService>();
+    }
+
+    public static void AddInterceptors(this IServiceCollection services)
+    {
+        services.AddTransient<IValidatorInterceptor, ValidatorInterceptor>();
     }
 }

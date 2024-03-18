@@ -1,8 +1,10 @@
 using System.Net;
 using Habit.Application.Errors;
 using Habit.Application.Results;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
-namespace Habit.Api.Middleware;
+namespace Infrastructure.Middlewaries;
 
 /// <summary>
 /// Промежуточное ПО для обработки исключений.

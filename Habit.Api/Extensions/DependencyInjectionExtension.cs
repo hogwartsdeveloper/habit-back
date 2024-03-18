@@ -22,6 +22,7 @@ public static class DependencyInjectionExtension
         service.AddBrokerMessageService(configuration);
         service.AddFileStorageServices(configuration);
         service.AddBackgroundJobs();
+        service.AddInterceptors();
     }
 
     /// <summary>
