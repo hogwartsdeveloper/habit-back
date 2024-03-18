@@ -180,7 +180,12 @@ public class AuthService(
     {
         if (await userRepository.AnyAsync(user => user.Email == email))
         {
-            throw new HttpException(HttpStatusCode.BadRequest, AuthConstants.UserAlreadyExists);
+            var tags = new Dictionary<string, string>{{ nameof(email), email }};
+            
+            throw new HttpException(
+                HttpStatusCode.BadRequest,
+                AuthConstants.UserAlreadyExists,
+                tags);
         }
     }
 
