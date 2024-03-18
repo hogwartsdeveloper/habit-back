@@ -2,17 +2,21 @@ using System.Text;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Habit.Application.Auth;
+using Habit.Application.Auth.Constants;
 using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Services;
 using Habit.Application.Auth.Validators;
+using Habit.Application.Errors;
 using Habit.Application.Habit.Interfaces;
 using Habit.Application.Habit.Services;
 using Habit.Application.Mail.Interfaces;
 using Habit.Application.Mail.Models;
 using Habit.Application.Mail.Services;
+using Habit.Application.Results;
 using Habit.Application.Users.Interfaces;
 using Habit.Application.Users.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -63,6 +67,19 @@ public static class DependencyInjectionExtension
                     ValidIssuer = jwtIssuer,
                     ValidAudience = jwtIssuer,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
+                };
+
+                opt.Events = new JwtBearerEvents
+                {
+                    OnChallenge = async context =>
+                    {
+                        context.HandleResponse();
+                        
+                        var error = new Error(401, AuthConstants.Unauthorized);
+                        
+                        context.Response.StatusCode = error.StatusCode;
+                        await context.Response.WriteAsJsonAsync(ApiResult.Failure(error));
+                    }
                 };
             });
     }

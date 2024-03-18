@@ -95,4 +95,5 @@ public static class AuthConstants
     /// </summary>
     public const string LastNameIsRequired = "Фамилия обязательна для заполнения.";
 
+    public const string Unauthorized = "Не авторизован!";
 }
