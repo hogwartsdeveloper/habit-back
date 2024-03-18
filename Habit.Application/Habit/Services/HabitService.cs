@@ -1,12 +1,12 @@
 using System.Net;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Habit.Application.Errors;
 using Habit.Application.Habit.Constants;
 using Habit.Application.Habit.Interfaces;
 using Habit.Application.Habit.Models;
 using Habit.Application.Repositories;
 using Habit.Domain.Entities;
-using Habit.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Habit.Application.Habit.Services;

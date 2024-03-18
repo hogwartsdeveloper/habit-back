@@ -5,11 +5,11 @@ using Habit.Application.Auth.Constants;
 using Habit.Application.Auth.Interfaces;
 using Habit.Application.Auth.Models;
 using Habit.Application.BrokerMessage;
+using Habit.Application.Errors;
 using Habit.Application.Mail.Models;
 using Habit.Application.Repositories;
 using Habit.Domain.Entities;
 using Habit.Domain.Enums;
-using Habit.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Habit.Application.Auth.Services;

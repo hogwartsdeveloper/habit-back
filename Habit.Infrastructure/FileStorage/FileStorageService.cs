@@ -1,8 +1,8 @@
 using System.Net;
+using Habit.Application.Errors;
 using Habit.Application.FileStorage;
 using Habit.Application.FileStorage.Interfaces;
 using Habit.Application.FileStorage.Models;
-using Habit.Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Minio;

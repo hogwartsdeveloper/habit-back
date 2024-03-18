@@ -1,8 +1,8 @@
 using System.Net;
 using Habit.Api.Controllers.Abstractions;
+using Habit.Application.Errors;
 using Habit.Application.FileStorage.Interfaces;
 using Habit.Application.Results;
-using Habit.Domain.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

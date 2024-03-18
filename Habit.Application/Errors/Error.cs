@@ -1,6 +1,6 @@
 namespace Habit.Application.Errors;
 
-public abstract class Error(
+public class Error(
     int statusCode,
     string message,
     Dictionary<string, string>? tags = null)

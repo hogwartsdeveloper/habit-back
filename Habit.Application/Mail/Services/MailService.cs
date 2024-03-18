@@ -1,8 +1,8 @@
 using System.Net;
 using Habit.Application.Constants;
+using Habit.Application.Errors;
 using Habit.Application.Mail.Interfaces;
 using Habit.Application.Mail.Models;
-using Habit.Domain.Exceptions;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;

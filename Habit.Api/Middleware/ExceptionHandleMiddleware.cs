@@ -1,6 +1,6 @@
 using System.Net;
-using Habit.Domain.Exceptions;
-using Microsoft.AspNetCore.Mvc;
+using Habit.Application.Errors;
+using Habit.Application.Results;
 
 namespace Habit.Api.Middleware;
 
@@ -38,7 +38,7 @@ public class ExceptionHandleMiddleware
         catch (HttpException e)
         {
             _logger.LogError(e, "Exception occurred: {Message}", e.Message);
-            await Handle(context, e.StatusCode, e.Message);
+            await Handle(context, e.StatusCode, e.Message, e.Tags);
         }
         catch (Exception e)
         {
@@ -50,15 +50,12 @@ public class ExceptionHandleMiddleware
     private async Task Handle(
         HttpContext context,
         HttpStatusCode statusCode = HttpStatusCode.InternalServerError,
-        string message = "Internal server error")
+        string message = "Internal server error",
+        Dictionary<string, string>? tags = null)
     {
-        var problemDetails = new ProblemDetails
-        {
-            Status = (int)statusCode,
-            Title = message
-        };
+        var error = new Error((int)statusCode, message, tags);
         
-        context.Response.StatusCode = (int)problemDetails.Status;
-        await context.Response.WriteAsJsonAsync(problemDetails);
+        context.Response.StatusCode = error.StatusCode;
+        await context.Response.WriteAsJsonAsync(ApiResult.Failure(error));
     }
 }

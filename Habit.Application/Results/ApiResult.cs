@@ -13,8 +13,12 @@ public class ApiResult(bool isSuccess, IEnumerable<Error>? errors = null)
         return new ApiResult(true);
     }
 
-    public static ApiResult Failure(IEnumerable<Error> errors)
+    public static ApiResult Failure(IEnumerable<Error>? errors = null)
     {
         return new ApiResult(false, errors);
+    } 
+    public static ApiResult Failure(Error error)
+    {
+        return new ApiResult(false, [error]);
     } 
 }
