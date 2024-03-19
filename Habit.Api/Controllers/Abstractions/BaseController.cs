@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Infrastructure.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Habit.Api.Controllers.Abstractions;
@@ -7,6 +8,7 @@ namespace Habit.Api.Controllers.Abstractions;
 /// Базовый контроллер для API.
 /// </summary>
 [ApiController]
+[ValidateModel]
 [Route("api/[controller]")]
 public class BaseController : ControllerBase
 {

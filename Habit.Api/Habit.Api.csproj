@@ -21,8 +21,4 @@
       <ProjectReference Include="..\Habit.Infrastructure\Habit.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Middleware\" />
-    </ItemGroup>
-
 </Project>

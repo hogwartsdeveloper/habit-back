@@ -35,7 +35,11 @@ public static class DependencyInjectionExtension
         service.ApplicationAuthenticationConfigure(configuration);
         service.AddApplicationServices(configuration);
         service.AddApplicationValidations();
-        service.AddControllers();
+        service.AddControllers()
+            .ConfigureApiBehaviorOptions(opt =>
+            {
+                opt.SuppressModelStateInvalidFilter = true;
+            });
         service.AddEndpointsApiExplorer();
         
         service.AddSwaggerGen(opt =>
