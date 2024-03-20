@@ -21,8 +21,8 @@ public class FileController(IFileStorageService fileStorageService) : BaseContro
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Модель файла.</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(ApiResult<FileStreamResult>), 200)]
-    public async Task<ApiResult<FileStreamResult>> GetAsync([FromQuery] string filePath, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(FileStreamResult), 200)]
+    public async Task<FileStreamResult> GetAsync([FromQuery] string filePath, CancellationToken cancellationToken)
     {
         var fileData = filePath.Split("/");
         var bucketName = fileData[0];
@@ -34,7 +34,6 @@ public class FileController(IFileStorageService fileStorageService) : BaseContro
             throw new HttpException(HttpStatusCode.NotFound, "File not found");
         }
         
-        var file = File(stream, "application/octet-stream", fileName);
-        return ApiResult<FileStreamResult>.Success(file);
+        return File(stream, "application/octet-stream", fileName);
     }
 }
