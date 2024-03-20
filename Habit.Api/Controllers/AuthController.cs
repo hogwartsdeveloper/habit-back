@@ -89,6 +89,22 @@ public class AuthController(IAuthService authService) : BaseController
     }
 
     /// <summary>
+    /// Запрос на подтверждения почты.
+    /// </summary>
+    /// <param name="model">Модель данных для запроса восстановления пароля.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Код состояния HTTP.</returns>
+    [HttpPost("RequestForVerifyEmail")]
+    [ProducesResponseType(typeof(ApiResult), 200)]
+    public async Task<ApiResult> RequestForVerifyEmail(
+        [FromBody] RequestModel model,
+        CancellationToken cancellationToken)
+    {
+        await authService.RequestForChangeAsync(model.Email, UserVerifyType.Email, cancellationToken);
+        return ApiResult.Success();
+    }
+
+    /// <summary>
     /// Восстановление пароля пользователя.
     /// </summary>
     /// <param name="model">Модель данных для восстановления пароля.</param>
