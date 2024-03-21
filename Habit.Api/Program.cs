@@ -9,6 +9,12 @@ builder.Services.InfrastructureConfigureServices(builder.Configuration);
 builder.Services.ApplicationConfigureServices(builder.Configuration);
 
 var app = builder.Build();
+app.UseCors(b =>
+{
+    b.AllowAnyOrigin();
+    b.AllowAnyMethod();
+    b.AllowAnyHeader();
+});
 
 if (app.Environment.IsDevelopment())
 {
