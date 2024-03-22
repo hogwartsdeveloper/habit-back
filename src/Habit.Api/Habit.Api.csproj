@@ -21,4 +21,9 @@
       <ProjectReference Include="..\Habit.Infrastructure\Habit.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="docker-compose.yml" />
+      <None Remove="Dockerfile" />
+    </ItemGroup>
+
 </Project>

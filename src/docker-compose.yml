@@ -1,0 +1,42 @@
+version: '3.8'
+
+services: 
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5001:80"
+      - "5002:443"
+    depends_on: 
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+  
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=habit
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  
+  minio:
+    image: minio/minio
+    command: server /data
+    ports:
+      - "9000:9000"
+    environment:
+      - MINIO_ACCESS_KEY=ofBo7Axzqli4AQssLN5l
+      - MINIO_SECRET_KEY=5gMJcLitNIOAyocrp8Y7dapU9b585fFeFbL8wU1n
+    volumes:
+      - ./.containers/minio:/data
+  
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
