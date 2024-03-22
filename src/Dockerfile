@@ -13,12 +13,9 @@ RUN dotnet publish Habit.Api/Habit.Api.csproj -c Release -o /app/publish /p:UseA
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS final
-EXPOSE 80
-EXPOSE 443
+EXPOSE 5001
 
 WORKDIR /app
 COPY --from=publish /app/publish .
-
-ENV ASPNETCORE_ENVIRONMENT="Development"
 
 ENTRYPOINT ["dotnet", "Habit.Api.dll"]

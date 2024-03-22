@@ -1,19 +1,24 @@
 version: '3.8'
 
-services: 
-  app:
+services:
+  habit.api:
+    container_name: habit.api
     build: 
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5001:80"
-      - "5002:443"
-    depends_on: 
-      - db
+      - "5001:5001"
+    depends_on:
+      - habit.db
+      - habit.minio
+      - habit.rabbitmq
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=5001
+    restart: on-failure
   
-  db:
+  habit.db:
+    container_name: habit.db
     image: postgres:latest
     environment:
       - POSTGRES_DB=habit
@@ -24,7 +29,8 @@ services:
     ports:
       - "5432:5432"
   
-  minio:
+  habit.minio:
+    container_name: habit.minio
     image: minio/minio
     command: server /data
     ports:
@@ -35,7 +41,8 @@ services:
     volumes:
       - ./.containers/minio:/data
   
-  rabbitmq:
+  habit.rabbitmq:
+    container_name: habit.rabbitmq
     image: rabbitmq
     ports:
       - "5672:5672"
