@@ -4,3 +4,4 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 /Habit.Api/appsettings.Development.json
+.containers/

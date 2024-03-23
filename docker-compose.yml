@@ -35,9 +35,12 @@ services:
     command: server /data
     ports:
       - "9000:9000"
+      - "9001:9001"
     environment:
       MINIO_ACCESS_KEY: "ofBo7Axzqli4AQssLN5l"
       MINIO_SECRET_KEY: "5gMJcLitNIOAyocrp8Y7dapU9b585fFeFbL8wU1n"
+      MINIO_ADDRESS: ":9000"
+      MINIO_CONSOLE_ADDRESS: ":9001"
     volumes:
       - ./.containers/minio:/data
   
