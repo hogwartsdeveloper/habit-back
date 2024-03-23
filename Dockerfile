@@ -13,7 +13,8 @@ RUN dotnet publish src/Habit.Api/Habit.Api.csproj -c Release -o /app/publish /p:
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS final
-EXPOSE 5001
+EXPOSE 443
+EXPOSE 80
 
 WORKDIR /app
 COPY --from=publish /app/publish .

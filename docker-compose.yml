@@ -7,16 +7,20 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5001:5001"
+      - "8081:80"
+      - "8082:443"
     depends_on:
       - habit.db
       - habit.minio
       - habit.rabbitmq
     environment:
       ASPNETCORE_ENVIRONMENT: "Production"
-      ASPNETCORE_HTTP_PORTS: "5001"
-    restart: on-failure
-  
+      ASPNETCORE_URLS: "https://+:443;http://+:80"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "Pass@habit"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/habit.pfx"
+    volumes:
+      - ${HOME}/.aspnet/https:/https:ro
+    
   habit.db:
     container_name: habit.db
     image: postgres:latest
