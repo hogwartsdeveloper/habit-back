@@ -1,6 +1,9 @@
 using Hangfire;
 using Infrastructure.BackgroundJobs.Interfaces;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Extensions;
 
@@ -26,5 +29,12 @@ public static class ApplicationBuilderExtension
 
         BackgroundJob
             .Enqueue<IBrokerMessageListenerJob>(listener => listener.UserVerifyStartListening());
+    }
+    
+    public static async Task MigrationAsync(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        await using var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        await dbContext.Database.MigrateAsync();
     }
 }

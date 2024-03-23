@@ -13,17 +13,17 @@ services:
       - habit.minio
       - habit.rabbitmq
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_HTTP_PORTS=5001
+      ASPNETCORE_ENVIRONMENT: "Production"
+      ASPNETCORE_HTTP_PORTS: "5001"
     restart: on-failure
   
   habit.db:
     container_name: habit.db
     image: postgres:latest
     environment:
-      - POSTGRES_DB=habit
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_DB: "habit"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
     volumes:
       - ./.containers/db:/var/lib/postgresql/data
     ports:
@@ -31,19 +31,24 @@ services:
   
   habit.minio:
     container_name: habit.minio
-    image: minio/minio
+    image: minio/minio:latest
     command: server /data
     ports:
       - "9000:9000"
     environment:
-      - MINIO_ACCESS_KEY=ofBo7Axzqli4AQssLN5l
-      - MINIO_SECRET_KEY=5gMJcLitNIOAyocrp8Y7dapU9b585fFeFbL8wU1n
+      MINIO_ACCESS_KEY: "ofBo7Axzqli4AQssLN5l"
+      MINIO_SECRET_KEY: "5gMJcLitNIOAyocrp8Y7dapU9b585fFeFbL8wU1n"
     volumes:
       - ./.containers/minio:/data
   
   habit.rabbitmq:
     container_name: habit.rabbitmq
-    image: rabbitmq
+    image: rabbitmq:3-management
     ports:
       - "5672:5672"
       - "15672:15672"
+    environment:
+        RABBITMQ_DEFAULT_USER: "guest"
+        RABBITMQ_DEFAULT_PASS: "guest"
+    volumes:
+      - ./.containers/rabbitmq:/var/lib/rabbitmq

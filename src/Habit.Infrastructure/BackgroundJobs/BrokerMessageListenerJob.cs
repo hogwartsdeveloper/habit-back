@@ -45,8 +45,9 @@ public class BrokerMessageListenerJob : IBrokerMessageListenerJob
     {
         var consumer = new EventingBasicConsumer(_channel);
         consumer.Received += UserVerifyConsume;
-
-        _channel.BasicConsume("AuthQue", false, consumer);
+        
+        _channel.QueueDeclare(queue: _settings.Queue, true, false, false, null);
+        _channel.BasicConsume(_settings.Queue, false, consumer);
     }
 
     private void UserVerifyConsume(object? _, BasicDeliverEventArgs eventArgs)

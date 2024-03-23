@@ -9,6 +9,8 @@ builder.Services.InfrastructureConfigureServices(builder.Configuration);
 builder.Services.ApplicationConfigureServices(builder.Configuration);
 
 var app = builder.Build();
+await app.MigrationAsync();
+
 app.UseCors(b =>
 {
     b.AllowAnyOrigin();
@@ -30,4 +32,5 @@ app.MapControllers();
 
 app.UseHangfireDashboard();
 app.AddBackgroundJobs();
+
 app.Run();
