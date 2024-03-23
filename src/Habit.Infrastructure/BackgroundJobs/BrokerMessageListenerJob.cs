@@ -33,10 +33,10 @@ public class BrokerMessageListenerJob : IBrokerMessageListenerJob
             Port = _settings.Port,
             UserName = _settings.UserName,
             Password = _settings.Password,
-            VirtualHost = _settings.VirtualHost
+            VirtualHost = _settings.VirtualHost,
         };
 
-        var connection = connectionFactory.CreateConnection();
+        using var connection = connectionFactory.CreateConnection();
         _channel = connection.CreateModel();
     }
 
@@ -47,6 +47,8 @@ public class BrokerMessageListenerJob : IBrokerMessageListenerJob
         consumer.Received += UserVerifyConsume;
         
         _channel.QueueDeclare(queue: _settings.Queue, true, false, false, null);
+        _channel.ExchangeDeclare(_settings.Exchange, "topic", false, false, null);
+        _channel.ExchangeBind(_settings.Queue, _settings.Exchange, _settings.RoutingKey, null);
         _channel.BasicConsume(_settings.Queue, false, consumer);
     }
 
