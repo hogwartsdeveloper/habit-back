@@ -14,7 +14,7 @@ namespace Infrastructure.BackgroundJobs;
 public class BrokerMessageListenerJob : IBrokerMessageListenerJob
 {
     private readonly BrokerMessageSettings _settings;
-    private readonly IModel _channel;
+    private readonly ConnectionFactory _connectionFactory;
     private readonly IMailService _mailService;
 
     /// <summary>
@@ -27,7 +27,7 @@ public class BrokerMessageListenerJob : IBrokerMessageListenerJob
         _settings = options.Value;
         _mailService = mailService;
 
-        var connectionFactory = new ConnectionFactory()
+        _connectionFactory = new ConnectionFactory()
         {
             HostName = _settings.HostName,
             Port = _settings.Port,
@@ -35,21 +35,25 @@ public class BrokerMessageListenerJob : IBrokerMessageListenerJob
             Password = _settings.Password,
             VirtualHost = _settings.VirtualHost,
         };
-
-        using var connection = connectionFactory.CreateConnection();
-        _channel = connection.CreateModel();
     }
 
     /// <inheritdoc />
     public void UserVerifyStartListening()
     {
-        var consumer = new EventingBasicConsumer(_channel);
-        consumer.Received += UserVerifyConsume;
+        using var connection = _connectionFactory.CreateConnection();
+        using var channel = connection.CreateModel();
+        var consumer = new EventingBasicConsumer(channel);
         
-        _channel.QueueDeclare(queue: _settings.Queue, true, false, false, null);
-        _channel.ExchangeDeclare(_settings.Exchange, "topic", false, false, null);
-        _channel.ExchangeBind(_settings.Queue, _settings.Exchange, _settings.RoutingKey, null);
-        _channel.BasicConsume(_settings.Queue, false, consumer);
+        consumer.Received += (model, ea) =>
+        {
+            UserVerifyConsume(model, ea);
+            channel.BasicAck(ea.DeliveryTag, false);
+        };
+        
+        channel.QueueDeclare(queue: _settings.Queue, true, false, false, null);
+        channel.ExchangeDeclare(_settings.Exchange, "topic", false, false, null);
+        channel.QueueBind(_settings.Queue, _settings.Exchange, _settings.RoutingKey, null);
+        channel.BasicConsume(_settings.Queue, false, consumer);
     }
 
     private void UserVerifyConsume(object? _, BasicDeliverEventArgs eventArgs)
@@ -62,7 +66,5 @@ public class BrokerMessageListenerJob : IBrokerMessageListenerJob
         {
             _mailService.SendMail(mailData);
         }
-        
-        _channel.BasicAck(eventArgs.DeliveryTag, false);
     }
 }

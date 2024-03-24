@@ -14,20 +14,21 @@ services:
       - habit.minio
       - habit.rabbitmq
     environment:
-      ASPNETCORE_ENVIRONMENT: "Production"
-      ASPNETCORE_URLS: "https://+:443;http://+:80"
-      ASPNETCORE_Kestrel__Certificates__Default__Password: "Pass@habit"
-      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/habit.pfx"
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      ASPNETCORE_Kestrel__Certificates__Default__Password: Pass@habit
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/habit.pfx
     volumes:
       - ${HOME}/.aspnet/https:/https:ro
+    restart: always
     
   habit.db:
     container_name: habit.db
     image: postgres:latest
     environment:
-      POSTGRES_DB: "habit"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: habit
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
       - ./.containers/db:/var/lib/postgresql/data
     ports:
@@ -41,10 +42,10 @@ services:
       - "9000:9000"
       - "9001:9001"
     environment:
-      MINIO_ACCESS_KEY: "ofBo7Axzqli4AQssLN5l"
-      MINIO_SECRET_KEY: "5gMJcLitNIOAyocrp8Y7dapU9b585fFeFbL8wU1n"
-      MINIO_ADDRESS: ":9000"
-      MINIO_CONSOLE_ADDRESS: ":9001"
+      MINIO_ACCESS_KEY: ofBo7Axzqli4AQssLN5l
+      MINIO_SECRET_KEY: 5gMJcLitNIOAyocrp8Y7dapU9b585fFeFbL8wU1n
+      MINIO_ADDRESS: :9000
+      MINIO_CONSOLE_ADDRESS: :9001
     volumes:
       - ./.containers/minio:/data
   
@@ -55,7 +56,7 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-        RABBITMQ_DEFAULT_USER: "guest"
-        RABBITMQ_DEFAULT_PASS: "guest"
+        RABBITMQ_DEFAULT_USER: esm3threeweb3
+        RABBITMQ_DEFAULT_PASS: L9cardrive
     volumes:
       - ./.containers/rabbitmq:/var/lib/rabbitmq
