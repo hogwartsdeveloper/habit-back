@@ -9,7 +9,9 @@ RUN dotnet restore src/Habit.Api/Habit.Api.csproj
 
 COPY . .
 
-RUN dotnet publish src/Habit.Api/Habit.Api.csproj -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet dev-certs https -ep /app/publish/.aspnet/https/habit.pfx -p Pass@habit  \
+    && dotnet dev-certs https --trust \
+    && dotnet publish src/Habit.Api/Habit.Api.csproj -c Release -o /app/publish /p:UseAppHost=false
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS final
