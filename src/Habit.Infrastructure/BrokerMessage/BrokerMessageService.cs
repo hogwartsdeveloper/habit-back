@@ -44,9 +44,7 @@ public class BrokerMessageService : IBrokerMessageService
         using var connection = _connectionFactory.CreateConnection();
         using var channel = connection.CreateModel();
         
-        channel.QueueDeclare(queue: _settings.Queue, true, false, false, null);
         channel.ExchangeDeclare(_settings.Exchange, "topic");
-        channel.ExchangeBind(_settings.Queue, _settings.Exchange, _settings.RoutingKey, null);
 
         var body = Encoding.UTF8.GetBytes(message);
             
