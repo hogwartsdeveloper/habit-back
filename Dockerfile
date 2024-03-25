@@ -9,14 +9,11 @@ RUN dotnet restore src/Habit.Api/Habit.Api.csproj
 
 COPY . .
 
-RUN dotnet dev-certs https -ep /app/publish/.aspnet/https/habit.pfx -p Pass@habit  \
-    && dotnet dev-certs https --trust \
-    && dotnet publish src/Habit.Api/Habit.Api.csproj -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish src/Habit.Api/Habit.Api.csproj -c Release -o /app/publish /p:UseAppHost=false
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS final
-EXPOSE 443
-EXPOSE 80
+EXPOSE 5001
 
 WORKDIR /app
 COPY --from=publish /app/publish .

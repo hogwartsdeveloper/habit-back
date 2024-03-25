@@ -7,18 +7,17 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "80:80"
-      - "443:443"
+      - "5001:5001"
     depends_on:
       - habit.db
       - habit.minio
       - habit.rabbitmq
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      ASPNETCORE_URLS: https://+:443;http://+:80
-      ASPNETCORE_Kestrel__Certificates__Default__Password: Pass@habit
-      ASPNETCORE_Kestrel__Certificates__Default__Path: .aspnet/https/habit.pfx
-    restart: always
+      ASPNETCORE_URLS: http://+:5001
+    networks:
+      - nginx-network
+    restart: unless-stopped
     
   habit.db:
     container_name: habit.db
@@ -31,6 +30,8 @@ services:
       - ./.containers/db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - nginx-network
   
   habit.minio:
     container_name: habit.minio
@@ -46,6 +47,8 @@ services:
       MINIO_CONSOLE_ADDRESS: :9001
     volumes:
       - ./.containers/minio:/data
+    networks:
+      - nginx-network
   
   habit.rabbitmq:
     container_name: habit.rabbitmq
@@ -58,3 +61,33 @@ services:
         RABBITMQ_DEFAULT_PASS: L9cardrive
     volumes:
       - ./.containers/rabbitmq:/var/lib/rabbitmq
+    networks:
+      - nginx-network
+  
+  nginx:
+    container_name: habit.nginx
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates
+      - ./.containers/certbot/conf:/etc/letsencrypt
+      - ./.containers/certbot/www:/var/www/certbot
+    environment:
+      - NGINX_HOST=hback.hbcode.kz
+    depends_on:
+      - habit.api
+    networks:
+      - nginx-network
+    restart: unless-stopped
+  
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./.containers/certbot/conf:/etc/letsencrypt
+      - ./.containers/certbot/www:/var/www/certbot
+    restart: unless-stopped
+    
+networks:
+  nginx-network:
+    driver: bridge
