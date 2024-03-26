@@ -44,7 +44,7 @@ public class BrokerMessageService : IBrokerMessageService
         using var connection = _connectionFactory.CreateConnection();
         using var channel = connection.CreateModel();
         
-        channel.ExchangeDeclare(_settings.Exchange, "topic");
+        channel.ExchangeDeclare(_settings.Exchange, "direct", true);
 
         var body = Encoding.UTF8.GetBytes(message);
             
