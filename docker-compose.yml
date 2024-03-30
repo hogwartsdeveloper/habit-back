@@ -87,7 +87,6 @@ services:
     volumes:
       - ./.containers/certbot/conf:/etc/letsencrypt
       - ./.containers/certbot/www:/var/www/certbot
-    restart: unless-stopped
     
 networks:
   nginx-network:
