@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 using Users.Application.Users.Models;
 
 namespace Users.Application.Users.Interfaces;
