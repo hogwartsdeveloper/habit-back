@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\BuildingBlocks.Entity\BuildingBlocks.Entity.csproj" />
+      <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Entity\BuildingBlocks.Entity.csproj" />
     </ItemGroup>
 
 </Project>

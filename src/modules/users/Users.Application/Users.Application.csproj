@@ -12,4 +12,9 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Validation\BuildingBlocks.Validation.csproj" />
+      <ProjectReference Include="..\Users.Domain\Users.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

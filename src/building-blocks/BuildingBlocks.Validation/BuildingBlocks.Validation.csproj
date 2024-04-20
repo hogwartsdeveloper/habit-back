@@ -5,9 +5,9 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-
+    
     <ItemGroup>
-      <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Entity\BuildingBlocks.Entity.csproj" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     </ItemGroup>
 
 </Project>
