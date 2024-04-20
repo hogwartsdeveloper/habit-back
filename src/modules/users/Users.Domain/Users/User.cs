@@ -1,3 +1,4 @@
+using BuildingBlocks.Entity.Abstraction;
 using Users.Domain.Auth;
 
 namespace Users.Domain.Users;
@@ -5,7 +6,7 @@ namespace Users.Domain.Users;
 /// <summary>
 /// Представляет сущность пользователя.
 /// </summary>
-public class User
+public class User : EntityBase
 {
     private User() {}
     

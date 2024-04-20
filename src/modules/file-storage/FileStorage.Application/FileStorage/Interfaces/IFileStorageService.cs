@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+
 namespace FileStorage.Application.FileStorage.Interfaces;
 
 /// <summary>

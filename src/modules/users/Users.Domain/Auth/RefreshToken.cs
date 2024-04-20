@@ -1,3 +1,4 @@
+using BuildingBlocks.Entity.Abstraction;
 using Users.Domain.Users;
 
 namespace Users.Domain.Auth;
@@ -5,7 +6,7 @@ namespace Users.Domain.Auth;
 /// <summary>
 /// Класс, представляющий токен обновления.
 /// </summary>
-public class RefreshToken
+public class RefreshToken : EntityBase
 {
     private RefreshToken() {}
     

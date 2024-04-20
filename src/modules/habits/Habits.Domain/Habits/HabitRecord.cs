@@ -1,9 +1,11 @@
+using BuildingBlocks.Entity.Abstraction;
+
 namespace Habits.Domain.Habits;
 
 /// <summary>
 /// Класс, представляющий запись о выполнении привычки.
 /// </summary>
-public class HabitRecord
+public class HabitRecord : EntityBase
 {
     private HabitRecord() {}
     
@@ -26,11 +28,6 @@ public class HabitRecord
     {
         HabitId = habitId;
     }
-    
-    /// <summary>
-    /// Получает или устанавливает уникальный идентификатор сущности.
-    /// </summary>
-    public Guid Id { get; set; }
     
     /// <summary>
     /// Возвращает идентификатор привычки, связанный с записью.

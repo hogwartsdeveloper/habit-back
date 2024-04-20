@@ -1,9 +1,11 @@
+using BuildingBlocks.Entity.Abstraction;
+
 namespace Habits.Domain.Habits;
 
 /// <summary>
 /// Класс, представляющий привычку пользователя.
 /// </summary>
-public class Habit
+public class Habit : EntityBase
 {
     private Habit() {}
     
@@ -37,11 +39,6 @@ public class Habit
     {
         IsOverdue = isOverdue;
     }
-    
-    /// <summary>
-    /// Получает или устанавливает уникальный идентификатор сущности.
-    /// </summary>
-    public Guid Id { get; set; }
     
     /// <summary>
     /// Возвращает идентификатор пользователя привычки.
