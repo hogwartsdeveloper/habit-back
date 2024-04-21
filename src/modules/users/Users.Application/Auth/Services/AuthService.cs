@@ -1,6 +1,8 @@
+using System.Net;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using BuildingBlocks.Entity.Interfaces;
+using BuildingBlocks.Errors.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Users.Application.Auth.Interfaces;
 using Users.Application.Auth.Models;
@@ -55,13 +57,13 @@ public class AuthService(
         
         if (user is null)
         {
-            // Exception
+            throw new HttpException(HttpStatusCode.BadRequest, UserConstants.EmailOrPasswordWrong);
         }
         
         var isPassValid = securityService.VerifyPassword(model.Password, user.PasswordHash);
         if (!isPassValid)
         {
-            // Exception
+            throw new HttpException(HttpStatusCode.BadRequest, UserConstants.EmailOrPasswordWrong);
         }
         
         var token = securityService.GenerateToken(user);
@@ -96,7 +98,7 @@ public class AuthService(
         
         if (user is null)
         {
-            // Exception
+            throw new HttpException(HttpStatusCode.Unauthorized, UserConstants.UserNotFound);
         }
 
         var refreshToken = await refreshTokenRepo
@@ -106,14 +108,14 @@ public class AuthService(
 
         if (refreshToken is null)
         {
-            // Exception
+            throw new HttpException(HttpStatusCode.Unauthorized, UserConstants.TokenInvalid);
         }
 
         var tokenIsValid = securityService.VerifyRefreshToken(refreshToken);
 
         if (!tokenIsValid)
         {
-            // Exception
+            throw new HttpException(HttpStatusCode.Unauthorized, UserConstants.TokenInvalid);
         }
 
 
@@ -179,7 +181,7 @@ public class AuthService(
 
         if (!isVerify)
         {
-            // Exception
+            throw new HttpException(HttpStatusCode.BadRequest, UserConstants.CodeIsNotCorrect);
         }
     }
     
@@ -189,7 +191,10 @@ public class AuthService(
         {
             var tags = new Dictionary<string, string>{{ nameof(email), email }};
             
-            // Exception
+            throw new HttpException(
+                HttpStatusCode.BadRequest,
+                UserConstants.UserAlreadyExists,
+                tags);
         }
     }
     
@@ -201,7 +206,7 @@ public class AuthService(
 
         if (user is null)
         {
-            // Exception
+            throw new HttpException(HttpStatusCode.Unauthorized, UserConstants.UserNotFound);
         }
 
         return user;

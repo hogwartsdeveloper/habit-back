@@ -1,8 +1,11 @@
+using System.Net;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using BuildingBlocks.Entity.Interfaces;
+using BuildingBlocks.Errors.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Users.Application.Constants;
 using Users.Application.Users.Interfaces;
 using Users.Application.Users.Models;
 using Users.Domain.Users;
@@ -25,7 +28,7 @@ public class UserService(
         
         if (user is null)
         {
-            // Exception
+            throw new HttpException(HttpStatusCode.NotFound, UserConstants.UserNotFound);
         }
 
         if (user.ImageUrl != null)
@@ -48,7 +51,7 @@ public class UserService(
         
         if (user is null)
         {
-            // Exception
+            throw new HttpException(HttpStatusCode.NotFound, UserConstants.UserNotFound);
         }
 
         // Grpc FileModule
@@ -65,7 +68,7 @@ public class UserService(
 
         if (user is null)
         {
-            // Exception
+            throw new HttpException(HttpStatusCode.NotFound, UserConstants.UserNotFound);
         }
 
         mapper.Map(model, user);
@@ -83,7 +86,7 @@ public class UserService(
         
         if (user is null)
         {
-            // Exception
+            throw new HttpException(HttpStatusCode.NotFound, UserConstants.UserNotFound);
         }
         
         user.ChangeEmail(model.Email);
@@ -100,7 +103,7 @@ public class UserService(
         
         if (user is null)
         {
-            // Exception
+            throw new HttpException(HttpStatusCode.NotFound, UserConstants.UserNotFound);
         }
 
         return user;
