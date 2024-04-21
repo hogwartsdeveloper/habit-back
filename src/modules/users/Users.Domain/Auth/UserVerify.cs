@@ -1,4 +1,5 @@
 using BuildingBlocks.Entity.Abstraction;
+using Users.Domain.Auth.Enums;
 using Users.Domain.Users;
 
 namespace Users.Domain.Auth;
@@ -29,4 +30,9 @@ public class UserVerify : EntityBase
     /// Возвращает дату истечения срока действия кода верификации.
     /// </summary>
     public DateTime Exp { get; private set; }
+    
+    /// <summary>
+    /// Возвращает тип верификации пользователя.
+    /// </summary>
+    public UserVerifyType VerifyType { get; private set; }
 }
