@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Entity", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Validation", "src\building-blocks\BuildingBlocks.Validation\BuildingBlocks.Validation.csproj", "{61532494-69B8-4BE2-A6D2-60DEF899FF04}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Mapping", "src\building-blocks\BuildingBlocks.Mapping\BuildingBlocks.Mapping.csproj", "{06143F6B-CAB9-4F74-A7BF-7FDC69E3CF00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +94,10 @@ Global
 		{61532494-69B8-4BE2-A6D2-60DEF899FF04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61532494-69B8-4BE2-A6D2-60DEF899FF04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61532494-69B8-4BE2-A6D2-60DEF899FF04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06143F6B-CAB9-4F74-A7BF-7FDC69E3CF00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06143F6B-CAB9-4F74-A7BF-7FDC69E3CF00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06143F6B-CAB9-4F74-A7BF-7FDC69E3CF00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06143F6B-CAB9-4F74-A7BF-7FDC69E3CF00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{027862DA-CF39-4499-926A-3ED436750A07} = {C01500DC-CE50-4901-B37D-849F2ABF89F5}
@@ -112,5 +118,6 @@ Global
 		{255CDD46-DCA6-4CCA-8627-303F9538BA26} = {C01500DC-CE50-4901-B37D-849F2ABF89F5}
 		{C7C440F5-AC7B-4940-B081-CEF8846F3A0B} = {255CDD46-DCA6-4CCA-8627-303F9538BA26}
 		{61532494-69B8-4BE2-A6D2-60DEF899FF04} = {255CDD46-DCA6-4CCA-8627-303F9538BA26}
+		{06143F6B-CAB9-4F74-A7BF-7FDC69E3CF00} = {255CDD46-DCA6-4CCA-8627-303F9538BA26}
 	EndGlobalSection
 EndGlobal
