@@ -1,5 +1,6 @@
 using BuildingBlocks.Presentation.Controllers.Abstraction;
 using BuildingBlocks.Presentation.Results;
+using BuildingBlocks.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Users.Application.Users.Models;
@@ -13,6 +14,20 @@ namespace Users.Endpoints.Controllers;
 [Authorize]
 public class UserController(IUserService service) : BaseController
 {
+    /// <summary>
+    /// Добавляет изображение пользователю.
+    /// </summary>
+    /// <param name="model">Модель файла изображения.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Результат операции.</returns>
+    [HttpPost("Image")]
+    [ProducesResponseType(typeof(ApiResult), 200)]
+    public async Task<ApiResult> AddImage([FromForm] FileModel model, CancellationToken cancellationToken)
+    {
+        await service.AddImageAsync(GetCurrentUserId()!.Value, model.File, cancellationToken);
+        return ApiResult.Success();
+    }
+    
     /// <summary>
     /// Получает данные пользователя асинхронно по идентификатору.
     /// </summary>

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace FileStorage.Application.FileStorage.Models;
+namespace BuildingBlocks.Shared.Models;
 
 /// <summary>
 /// Модель файла.
