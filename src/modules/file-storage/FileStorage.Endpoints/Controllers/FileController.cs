@@ -1,6 +1,6 @@
 using System.Net;
-using BuildingBlocks.Endpoints.Abstraction;
 using BuildingBlocks.Errors.Exceptions;
+using BuildingBlocks.Presentation.Controllers.Abstraction;
 using FileStorage.Application.FileStorage.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

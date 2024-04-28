@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BuildingBlocks.Endpoints.Abstraction;
+namespace BuildingBlocks.Presentation.Controllers.Abstraction;
 
 /// <summary>
 /// Базовый контроллер.

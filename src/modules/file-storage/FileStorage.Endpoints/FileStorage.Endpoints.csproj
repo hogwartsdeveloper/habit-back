@@ -7,9 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\building-blocks\BuildingBlocks.Endpoints\BuildingBlocks.Endpoints.csproj" />
-      <ProjectReference Include="..\..\building-blocks\BuildingBlocks.Errors\BuildingBlocks.Errors.csproj" />
+      <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Presentation\BuildingBlocks.Presentation.csproj" />
       <ProjectReference Include="..\file-storage\FileStorage.Application\FileStorage.Application.csproj" />
+      <ProjectReference Include="..\FileStorage.Application\FileStorage.Application.csproj" />
     </ItemGroup>
 
 </Project>

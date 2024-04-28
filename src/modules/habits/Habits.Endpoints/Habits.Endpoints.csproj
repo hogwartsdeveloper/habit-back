@@ -7,8 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Endpoints\BuildingBlocks.Endpoints.csproj" />
-      <ProjectReference Include="..\..\..\BuildingBlocks.Presentation\BuildingBlocks.Presentation.csproj" />
+      <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Presentation\BuildingBlocks.Presentation.csproj" />
       <ProjectReference Include="..\Habits.Application\Habits.Application.csproj" />
     </ItemGroup>
 

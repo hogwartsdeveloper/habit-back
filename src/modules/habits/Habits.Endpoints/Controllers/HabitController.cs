@@ -1,4 +1,4 @@
-using BuildingBlocks.Endpoints.Abstraction;
+using BuildingBlocks.Presentation.Controllers.Abstraction;
 using BuildingBlocks.Presentation.Results;
 using Habits.Application.Interfaces;
 using Habits.Application.Models;

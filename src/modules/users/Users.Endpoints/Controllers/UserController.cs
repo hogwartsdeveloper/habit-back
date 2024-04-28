@@ -1,4 +1,4 @@
-using BuildingBlocks.Endpoints.Abstraction;
+using BuildingBlocks.Presentation.Controllers.Abstraction;
 using BuildingBlocks.Presentation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
