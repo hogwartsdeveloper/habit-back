@@ -13,12 +13,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Endpoints\BuildingBlocks.Endpoints.csproj" />
       <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Errors\BuildingBlocks.Errors.csproj" />
       <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Mapping\BuildingBlocks.Mapping.csproj" />
       <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Validation\BuildingBlocks.Validation.csproj" />
       <ProjectReference Include="..\Users.Domain\Users.Domain.csproj" />
       <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />    
     </ItemGroup>
 
 </Project>
