@@ -1,5 +1,6 @@
 using BuildingBlocks.Presentation.Controllers.Abstraction;
 using BuildingBlocks.Presentation.Results;
+using BuildingBlocks.Validation.Attributes;
 using Habits.Application.Interfaces;
 using Habits.Application.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +12,7 @@ namespace Habits.Endpoints.Controllers;
 /// Контроллер для управления привычками.
 /// </summary>
 [Authorize]
+[ValidateModel]
 public class HabitController(IHabitService service) : BaseController
 {
     /// <summary>

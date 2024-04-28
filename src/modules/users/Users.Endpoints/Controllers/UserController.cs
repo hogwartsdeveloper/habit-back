@@ -1,6 +1,7 @@
 using BuildingBlocks.Presentation.Controllers.Abstraction;
 using BuildingBlocks.Presentation.Results;
 using BuildingBlocks.Shared.Models;
+using BuildingBlocks.Validation.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Users.Application.Users.Models;
@@ -11,6 +12,7 @@ namespace Users.Endpoints.Controllers;
 /// <summary>
 /// Контроллер для управления пользователями.
 /// </summary>
+[ValidateModel]
 [Authorize]
 public class UserController(IUserService service) : BaseController
 {

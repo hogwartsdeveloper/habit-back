@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Presentation\BuildingBlocks.Presentation.csproj" />
+      <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Validation\BuildingBlocks.Validation.csproj" />
       <ProjectReference Include="..\Habits.Application\Habits.Application.csproj" />
     </ItemGroup>
 

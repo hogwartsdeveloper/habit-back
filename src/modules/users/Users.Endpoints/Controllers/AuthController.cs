@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using BuildingBlocks.Presentation.Controllers.Abstraction;
+using BuildingBlocks.Validation.Attributes;
 using Habit.Application.Auth.Models;
 using Habit.Application.Results;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +18,7 @@ namespace Users.Endpoints.Controllers;
 /// <summary>
 /// Контроллер для аутентификации и авторизации пользователей.
 /// </summary>
+[ValidateModel]
 public class AuthController(IAuthService authService) : BaseController
 {
     /// <summary>
