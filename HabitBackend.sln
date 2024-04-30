@@ -52,7 +52,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.Endpoints", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Shared", "src\building-blocks\BuildingBlocks.Shared\BuildingBlocks.Shared.csproj", "{C054185D-F906-40EA-ABB0-1EC9743E8C86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.Infrastructure", "src\modules\FileStorage.Infrastructure\FileStorage.Infrastructure.csproj", "{BF2CB502-12A2-460C-9EFA-67A30C7F0352}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.Infrastructure", "src\modules\file-storage\FileStorage.Infrastructure\FileStorage.Infrastructure.csproj", "{B2257754-FB7B-4FEC-8951-B97077387FDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -136,10 +136,10 @@ Global
 		{C054185D-F906-40EA-ABB0-1EC9743E8C86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C054185D-F906-40EA-ABB0-1EC9743E8C86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C054185D-F906-40EA-ABB0-1EC9743E8C86}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BF2CB502-12A2-460C-9EFA-67A30C7F0352}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BF2CB502-12A2-460C-9EFA-67A30C7F0352}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BF2CB502-12A2-460C-9EFA-67A30C7F0352}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BF2CB502-12A2-460C-9EFA-67A30C7F0352}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2257754-FB7B-4FEC-8951-B97077387FDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2257754-FB7B-4FEC-8951-B97077387FDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2257754-FB7B-4FEC-8951-B97077387FDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2257754-FB7B-4FEC-8951-B97077387FDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{027862DA-CF39-4499-926A-3ED436750A07} = {C01500DC-CE50-4901-B37D-849F2ABF89F5}
@@ -167,6 +167,6 @@ Global
 		{D991B803-FE58-4930-8FCE-870FC11446C0} = {255CDD46-DCA6-4CCA-8627-303F9538BA26}
 		{60603818-7B91-4FDB-A107-38269AC2A89E} = {91674FE6-0D3D-43C6-8133-C274DE2FECEC}
 		{C054185D-F906-40EA-ABB0-1EC9743E8C86} = {255CDD46-DCA6-4CCA-8627-303F9538BA26}
-		{BF2CB502-12A2-460C-9EFA-67A30C7F0352} = {91674FE6-0D3D-43C6-8133-C274DE2FECEC}
+		{B2257754-FB7B-4FEC-8951-B97077387FDE} = {91674FE6-0D3D-43C6-8133-C274DE2FECEC}
 	EndGlobalSection
 EndGlobal
