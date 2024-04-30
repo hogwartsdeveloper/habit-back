@@ -1,18 +1,19 @@
 using System.Net;
-using Habit.Application.Errors;
-using Habit.Application.FileStorage.Interfaces;
+using BuildingBlocks.Errors.Exceptions;
+using FileStorage.Application.FileStorage.Interfaces;
+using FileStorage.Infrastructure.Settings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
 
-namespace Infrastructure.FileStorage;
+namespace FileStorage.Infrastructure.Services;
 
 /// <inheritdoc />
 public class FileStorageService : IFileStorageService
 {
     private readonly IMinioClient _client;
-    
+
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="FileStorageService"/>.
     /// </summary>
@@ -27,7 +28,6 @@ public class FileStorageService : IFileStorageService
             .Build();
     }
     
-    /// <inheritdoc />
     public async Task UploadAsync(string bucketName, IFormFile file, CancellationToken cancellationToken = default)
     {
         await CheckAndCreateBucketAsync(bucketName, cancellationToken);
@@ -49,8 +49,7 @@ public class FileStorageService : IFileStorageService
             throw new HttpException(HttpStatusCode.InternalServerError, e.Message);
         }
     }
-    
-    /// <inheritdoc />
+
     public async Task RemoveAsync(string bucketName, string fileName, CancellationToken cancellationToken = default)
     {
         try
@@ -66,8 +65,7 @@ public class FileStorageService : IFileStorageService
             throw new HttpException(HttpStatusCode.InternalServerError, e.Message);
         }
     }
-    
-    /// <inheritdoc />
+
     public async Task<Stream?> GetAsync(string bucketName, string fileName, CancellationToken cancellationToken = default)
     {
         try
@@ -91,7 +89,7 @@ public class FileStorageService : IFileStorageService
             throw new HttpException(HttpStatusCode.InternalServerError, e.Message);
         }
     }
-
+    
     private async Task CheckAndCreateBucketAsync(string bucketName, CancellationToken cancellationToken)
     {
         var found = await CheckBucketExistsAsync(bucketName, cancellationToken);
@@ -101,7 +99,7 @@ public class FileStorageService : IFileStorageService
             await CreateBucketAsync(bucketName, cancellationToken);
         }
     }
-
+    
     private async Task<bool> CheckBucketExistsAsync(string bucketName, CancellationToken cancellationToken)
     {
         try
@@ -114,7 +112,7 @@ public class FileStorageService : IFileStorageService
             throw new HttpException(HttpStatusCode.InternalServerError, e.Message);
         }
     }
-
+    
     private async Task CreateBucketAsync(string bucketName, CancellationToken cancellationToken)
     {
         try
