@@ -6,4 +6,11 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Mapping\BuildingBlocks.Mapping.csproj" />
+      <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Validation\BuildingBlocks.Validation.csproj" />
+      <ProjectReference Include="..\..\..\Habit.Domain\Habit.Domain.csproj" />
+      <ProjectReference Include="..\Habits.Domain\Habits.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
