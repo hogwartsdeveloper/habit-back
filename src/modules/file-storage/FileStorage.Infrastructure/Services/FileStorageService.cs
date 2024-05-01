@@ -28,6 +28,7 @@ public class FileStorageService : IFileStorageService
             .Build();
     }
     
+    /// <inheritdoc />
     public async Task UploadAsync(string bucketName, IFormFile file, CancellationToken cancellationToken = default)
     {
         await CheckAndCreateBucketAsync(bucketName, cancellationToken);
@@ -50,6 +51,7 @@ public class FileStorageService : IFileStorageService
         }
     }
 
+    /// <inheritdoc />
     public async Task RemoveAsync(string bucketName, string fileName, CancellationToken cancellationToken = default)
     {
         try
@@ -66,6 +68,7 @@ public class FileStorageService : IFileStorageService
         }
     }
 
+    /// <inheritdoc />
     public async Task<Stream?> GetAsync(string bucketName, string fileName, CancellationToken cancellationToken = default)
     {
         try
