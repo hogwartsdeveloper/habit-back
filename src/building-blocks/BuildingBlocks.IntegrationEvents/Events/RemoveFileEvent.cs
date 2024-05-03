@@ -1,17 +1,17 @@
 namespace BuildingBlocks.IntegrationEvents.Events;
 
 /// <summary>
-/// Класс события для удаления файла.
+/// Определяет интерфейс для события удаления файла из хранилища.
 /// </summary>
-public class RemoveFileEvent
+public interface IRemoveFileEvent
 {
     /// <summary>
     /// Название хранилища, из которого нужно удалить файл.
     /// </summary>
-    public required string BucketName { get; set; }
+    string BucketName { get; set; }
     
     /// <summary>
     /// Имя файла, который нужно удалить.
     /// </summary>
-    public required string FileName { get; set; }
+    string FileName { get; set; }
 }

@@ -3,6 +3,8 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using BuildingBlocks.Entity.Interfaces;
 using BuildingBlocks.Errors.Exceptions;
+using BuildingBlocks.IntegrationEvents.Events;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Users.Application.Constants;
@@ -15,9 +17,10 @@ namespace Users.Application.Users.Services;
 /// <inheritdoc />
 public class UserService(
     IRepository<User> userRepo,
-    IMapper mapper) : IUserService
+    IMapper mapper,
+    IPublishEndpoint publishEndpoint) : IUserService
 {
-    private string BucketName => "user";
+    private static string BucketName => "user";
     
     /// <inheritdoc />
     public async Task AddImageAsync(Guid id, IFormFile file, CancellationToken cancellationToken = default)
@@ -34,7 +37,11 @@ public class UserService(
         if (user.ImageUrl != null)
         {
             var userImageData = user.ImageUrl.Split("/");
-            // Integration Event
+            await publishEndpoint.Publish<IRemoveFileEvent>(new
+            {
+                BucketName = userImageData[0],
+                FileName = userImageData[1]
+            }, cancellationToken);
         }
         
         // Grpc
@@ -53,8 +60,13 @@ public class UserService(
         {
             throw new HttpException(HttpStatusCode.NotFound, UserConstants.UserNotFound);
         }
-
-        // Grpc FileModule
+        
+        await publishEndpoint.Publish<IRemoveFileEvent>(new
+        {
+            BucketName,
+            FileName = fileName
+        }, cancellationToken);
+        
         user.DeleteImage();
         await userRepo.UpdateAsync(user, cancellationToken);
     }
