@@ -7,4 +7,10 @@
         <RootNamespace>BuildingBlocks.IntegrationEvents</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MassTransit" Version="8.2.2" />
+      <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
+      <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.2" />
+    </ItemGroup>
+
 </Project>
