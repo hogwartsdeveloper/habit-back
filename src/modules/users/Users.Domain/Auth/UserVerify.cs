@@ -12,6 +12,26 @@ public class UserVerify : EntityBase
     private UserVerify() {}
     
     /// <summary>
+    /// Инициализирует новый экземпляр класса UserVerify с указанным идентификатором пользователя,
+    /// кодом верификации, датой истечения срока действия и типом верификации.
+    /// </summary>
+    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <param name="code">Код верификации.</param>
+    /// <param name="exp">Дата истечения срока действия.</param>
+    /// <param name="userVerifyType">Тип верификации пользователя.</param>
+    public UserVerify(
+        Guid userId,
+        string code,
+        DateTime exp,
+        UserVerifyType userVerifyType)
+    {
+        UserId = userId;
+        Code = code;
+        Exp = exp;
+        VerifyType = userVerifyType;
+    }
+    
+    /// <summary>
     /// Возвращает идентификатор пользователя, связанный с верификацией.
     /// </summary>
     public Guid UserId { get; private set; }

@@ -3,6 +3,8 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using BuildingBlocks.Entity.Interfaces;
 using BuildingBlocks.Errors.Exceptions;
+using BuildingBlocks.IntegrationEvents.Events;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Users.Application.Auth.Interfaces;
 using Users.Application.Auth.Models;
@@ -21,7 +23,8 @@ public class AuthService(
     IRepository<UserVerify> userVerifyRepo,
     IRepository<RefreshToken> refreshTokenRepo,
     ISecurityService securityService,
-    IMapper mapper) : IAuthService
+    IMapper mapper,
+    IPublishEndpoint publishEndpoint) : IAuthService
 {
     /// <inheritdoc />
     public async Task<ViewAuthModel> SignUpAsync(RegistrationModel model, CancellationToken cancellationToken)
@@ -42,9 +45,8 @@ public class AuthService(
             .AddAsync(
                 new RefreshToken(entity.Id, refreshToken.Token, refreshToken.Expires),
                 cancellationToken);
-
-        // IntegrationEvent
         
+        await SendVerifyMessage(entity, UserVerifyType.Email, UserConstants.ConfirmEmail);
         return new ViewAuthModel { AccessToken = token };
     }
     
@@ -154,7 +156,7 @@ public class AuthService(
 
         if (messageSubject is not null)
         {
-            // IntegrationEvent
+            await SendVerifyMessage(user, verifyType, messageSubject);
         }
     }
 
@@ -210,5 +212,24 @@ public class AuthService(
         }
 
         return user;
+    }
+    
+    private async Task SendVerifyMessage(User user, UserVerifyType userVerifyType, string subject)
+    {
+        var code = new Random().Next(1000, 9999).ToString();
+
+        await userVerifyRepo.AddAsync(new UserVerify(
+            user.Id,
+            code,
+            DateTime.UtcNow.AddMinutes(15),
+            userVerifyType));
+
+        await publishEndpoint.Publish<ISendMessageEvent>(new
+        {
+            Email = user.Email,
+            Name = $"{user.FirstName} {user.LastName}",
+            Subject = subject,
+            Body = code
+        });
     }
 }
