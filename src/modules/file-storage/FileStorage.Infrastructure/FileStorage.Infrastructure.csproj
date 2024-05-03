@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Errors\BuildingBlocks.Errors.csproj" />
+      <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.IntegrationEvents\BuildingBlocks.IntegrationEvents.csproj" />
       <ProjectReference Include="..\FileStorage.Application\FileStorage.Application.csproj" />
     </ItemGroup>
 
