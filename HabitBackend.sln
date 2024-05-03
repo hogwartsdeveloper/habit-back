@@ -54,6 +54,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Shared", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.Infrastructure", "src\modules\file-storage\FileStorage.Infrastructure\FileStorage.Infrastructure.csproj", "{B2257754-FB7B-4FEC-8951-B97077387FDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.IntegrationEvents", "src\BuildingBlocks.IntegrationEvents\BuildingBlocks.IntegrationEvents.csproj", "{05154432-46F4-4717-90FA-7A9EF3071487}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -140,6 +142,10 @@ Global
 		{B2257754-FB7B-4FEC-8951-B97077387FDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2257754-FB7B-4FEC-8951-B97077387FDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2257754-FB7B-4FEC-8951-B97077387FDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05154432-46F4-4717-90FA-7A9EF3071487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05154432-46F4-4717-90FA-7A9EF3071487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05154432-46F4-4717-90FA-7A9EF3071487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05154432-46F4-4717-90FA-7A9EF3071487}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{027862DA-CF39-4499-926A-3ED436750A07} = {C01500DC-CE50-4901-B37D-849F2ABF89F5}
@@ -168,5 +174,6 @@ Global
 		{60603818-7B91-4FDB-A107-38269AC2A89E} = {91674FE6-0D3D-43C6-8133-C274DE2FECEC}
 		{C054185D-F906-40EA-ABB0-1EC9743E8C86} = {255CDD46-DCA6-4CCA-8627-303F9538BA26}
 		{B2257754-FB7B-4FEC-8951-B97077387FDE} = {91674FE6-0D3D-43C6-8133-C274DE2FECEC}
+		{05154432-46F4-4717-90FA-7A9EF3071487} = {255CDD46-DCA6-4CCA-8627-303F9538BA26}
 	EndGlobalSection
 EndGlobal
