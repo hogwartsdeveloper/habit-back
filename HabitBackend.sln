@@ -62,6 +62,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications.Infrastructur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Habits.Infrastructure", "src\modules\habits\Habits.Infrastructure\Habits.Infrastructure.csproj", "{6389307D-9CA7-4EC0-84F3-11CC056C1B28}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Infrastructure", "src\modules\users\Users.Infrastructure\Users.Infrastructure.csproj", "{ADB5DC51-EEC2-48D4-B289-0603D079E887}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -164,6 +166,10 @@ Global
 		{6389307D-9CA7-4EC0-84F3-11CC056C1B28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6389307D-9CA7-4EC0-84F3-11CC056C1B28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6389307D-9CA7-4EC0-84F3-11CC056C1B28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADB5DC51-EEC2-48D4-B289-0603D079E887}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADB5DC51-EEC2-48D4-B289-0603D079E887}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADB5DC51-EEC2-48D4-B289-0603D079E887}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADB5DC51-EEC2-48D4-B289-0603D079E887}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{027862DA-CF39-4499-926A-3ED436750A07} = {C01500DC-CE50-4901-B37D-849F2ABF89F5}
@@ -196,5 +202,6 @@ Global
 		{942A91A6-6DA2-4D66-9AED-F7DC9BE830C5} = {255CDD46-DCA6-4CCA-8627-303F9538BA26}
 		{3ED318AA-A005-4E27-9C63-804C8D795978} = {E324F4AC-254A-4D3C-BF74-937C12AF9CCC}
 		{6389307D-9CA7-4EC0-84F3-11CC056C1B28} = {292D454F-6E40-4EF9-BAE9-3F9136DC0358}
+		{ADB5DC51-EEC2-48D4-B289-0603D079E887} = {309DFEFD-60E5-49B0-A809-0297080049C2}
 	EndGlobalSection
 EndGlobal
