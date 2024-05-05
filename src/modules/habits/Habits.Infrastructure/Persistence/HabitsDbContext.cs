@@ -30,6 +30,7 @@ public class HabitsDbContext : DbContext
     /// <param name="modelBuilder">Построитель модели.</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema("habits");
         modelBuilder.ApplyConfiguration(new HabitConfiguration());
         modelBuilder.ApplyConfiguration(new HabitRecordConfiguration());
     }
