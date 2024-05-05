@@ -1,4 +1,5 @@
 using BuildingBlocks.IntegrationEvents.Extensions;
+using Habits.Endpoints.Extensions;
 
 namespace App.Extensions;
 
@@ -17,5 +18,6 @@ public static class DependencyInjectionExtension
         IConfiguration configuration)
     {
         services.AddIntegrationEventBus(configuration.GetSection("RabbitMQ"));
+        services.AddHabitsModuleServices(configuration);
     }
 }

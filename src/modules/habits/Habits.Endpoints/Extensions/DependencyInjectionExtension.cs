@@ -1,4 +1,17 @@
+using BuildingBlocks.Entity.Interfaces;
+using BuildingBlocks.Entity.Repositories;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Habits.Application;
+using Habits.Application.Interfaces;
+using Habits.Application.Services;
+using Habits.Application.Validators;
+using Habits.Domain.Habits;
+using Habits.Infrastructure.BackgroundJobs;
+using Habits.Infrastructure.BackgroundJobs.Interfaces;
 using Habits.Infrastructure.Persistence;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,14 +32,39 @@ public static class DependencyInjectionExtension
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddHabitDbContext(configuration.GetConnectionString("HabitsDb")!);
+        services.InfrastructureConfigureServices(configuration);
+        services.AddApplicationConfigureServices();
     }
 
-    private static void AddHabitDbContext(this IServiceCollection services, string connectionString)
+    private static void InfrastructureConfigureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<HabitsDbContext>(opt =>
         {
-            opt.UseNpgsql(connectionString);
+            opt.UseNpgsql(configuration.GetConnectionString("HabitsDb"));
         });
+        
+        services.AddHangfire(opt =>
+        {
+            opt.SetDataCompatibilityLevel(CompatibilityLevel.Version_170);
+            opt.UseSimpleAssemblyNameTypeSerializer();
+            opt.UseRecommendedSerializerSettings();
+            opt.UseColouredConsoleLogProvider();
+            opt.UsePostgreSqlStorage(s => s.UseNpgsqlConnection(configuration.GetConnectionString("HabitsDb")));
+        });
+
+        services.AddHangfireServer();
+
+        services.AddScoped<IRepository<Domain.Habits.Habit>, Repository<Domain.Habits.Habit, HabitsDbContext>>();
+        services.AddScoped<IRepository<HabitRecord>, Repository<HabitRecord, HabitsDbContext>>();
+
+        services.AddScoped<IHabitJob, HabitJob>();
+    }
+
+    private static void AddApplicationConfigureServices(this IServiceCollection services)
+    {
+        services.AddAutoMapper(typeof(HabitMapperProfile).Assembly);
+        services.AddScoped<IHabitService, HabitService>();
+        services.AddFluentValidationAutoValidation();
+        services.AddValidatorsFromAssembly(typeof(AddHabitModelValidator).Assembly);
     }
 }
