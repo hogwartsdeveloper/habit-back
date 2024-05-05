@@ -10,8 +10,7 @@
       <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Presentation\BuildingBlocks.Presentation.csproj" />
       <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Shared\BuildingBlocks.Shared.csproj" />
       <ProjectReference Include="..\..\..\BuildingBlocks.Presentation\BuildingBlocks.Presentation.csproj" />
-      <ProjectReference Include="..\..\..\Habit.Application\Habit.Application.csproj" />
-      <ProjectReference Include="..\Users.Application\Users.Application.csproj" />
+      <ProjectReference Include="..\Users.Infrastructure\Users.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

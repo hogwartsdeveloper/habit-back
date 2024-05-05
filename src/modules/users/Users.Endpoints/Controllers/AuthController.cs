@@ -1,8 +1,7 @@
 using System.Security.Claims;
 using BuildingBlocks.Presentation.Controllers.Abstraction;
+using BuildingBlocks.Presentation.Results;
 using BuildingBlocks.Validation.Attributes;
-using Habit.Application.Auth.Models;
-using Habit.Application.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Users.Application.Auth.Interfaces;
