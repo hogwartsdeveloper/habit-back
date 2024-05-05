@@ -1,3 +1,4 @@
+using FileStorage.Endpoints.Extensions;
 using Habits.Endpoints.Extensions;
 using Users.Endpoints.Extensions;
 
@@ -19,5 +20,6 @@ public static class DependencyInjectionExtension
     {
         services.AddHabitsModuleServices(configuration);
         services.AddUsersModuleServices(configuration);
+        services.AddFileStorageModule(configuration);
     }
 }
