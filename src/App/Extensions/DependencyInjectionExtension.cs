@@ -1,6 +1,6 @@
 using FileStorage.Endpoints.Extensions;
 using Habits.Endpoints.Extensions;
-using Notifications.Application.Extensions;
+using Notifications.Infrastructure.Extensions;
 using Users.Endpoints.Extensions;
 
 namespace App.Extensions;

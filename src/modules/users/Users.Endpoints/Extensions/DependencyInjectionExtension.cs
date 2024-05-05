@@ -1,5 +1,6 @@
 using BuildingBlocks.Entity.Interfaces;
 using BuildingBlocks.Entity.Repositories;
+using BuildingBlocks.IntegrationEvents.Extensions;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IRepository<User>, Repository<User, UsersDbContext>>();
         services.AddScoped<IRepository<UserVerify>, Repository<UserVerify, UsersDbContext>>();
         services.AddScoped<IRepository<RefreshToken>, Repository<RefreshToken, UsersDbContext>>();
+        services.AddIntegrationEventBus(configuration.GetSection("RabbitMQ"));
     }
 
     private static void AddApplicationConfigureServices(this IServiceCollection services)
