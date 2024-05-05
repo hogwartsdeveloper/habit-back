@@ -1,5 +1,6 @@
 using FileStorage.Endpoints.Extensions;
 using Habits.Endpoints.Extensions;
+using Notifications.Application.Extensions;
 using Users.Endpoints.Extensions;
 
 namespace App.Extensions;
@@ -21,5 +22,6 @@ public static class DependencyInjectionExtension
         services.AddHabitsModuleServices(configuration);
         services.AddUsersModuleServices(configuration);
         services.AddFileStorageModule(configuration);
+        services.AddNotificationModule(configuration);
     }
 }

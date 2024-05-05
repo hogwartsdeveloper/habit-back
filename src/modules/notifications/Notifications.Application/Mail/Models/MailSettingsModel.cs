@@ -13,7 +13,7 @@ public class MailSettingsModel
     /// <summary>
     /// Порт SMTP-сервера.
     /// </summary>
-    public int Port { get; set; }
+    public required int Port { get; set; }
     
     /// <summary>
     /// Имя отправителя.

@@ -18,6 +18,7 @@
     
     <ItemGroup>
       <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Errors\BuildingBlocks.Errors.csproj" />
+      <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Presentation\BuildingBlocks.Presentation.csproj" />
     </ItemGroup>
 
 </Project>

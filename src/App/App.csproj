@@ -18,6 +18,7 @@
       <ProjectReference Include="..\building-blocks\BuildingBlocks.Presentation\BuildingBlocks.Presentation.csproj" />
       <ProjectReference Include="..\modules\file-storage\FileStorage.Endpoints\FileStorage.Endpoints.csproj" />
       <ProjectReference Include="..\modules\habits\Habits.Endpoints\Habits.Endpoints.csproj" />
+      <ProjectReference Include="..\modules\notifications\Notifications.Application\Notifications.Application.csproj" />
       <ProjectReference Include="..\modules\users\Users.Endpoints\Users.Endpoints.csproj" />
     </ItemGroup>
 
