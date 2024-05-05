@@ -40,7 +40,7 @@ public static class DependencyInjectionExtension
     {
         services.AddDbContext<HabitsDbContext>(opt =>
         {
-            opt.UseNpgsql(configuration.GetConnectionString("HabitsDb"));
+            opt.UseNpgsql(configuration.GetConnectionString("Database"));
         });
         
         services.AddHangfire(opt =>
@@ -49,7 +49,7 @@ public static class DependencyInjectionExtension
             opt.UseSimpleAssemblyNameTypeSerializer();
             opt.UseRecommendedSerializerSettings();
             opt.UseColouredConsoleLogProvider();
-            opt.UsePostgreSqlStorage(s => s.UseNpgsqlConnection(configuration.GetConnectionString("HabitsDb")));
+            opt.UsePostgreSqlStorage(s => s.UseNpgsqlConnection(configuration.GetConnectionString("Database")));
         });
 
         services.AddHangfireServer();

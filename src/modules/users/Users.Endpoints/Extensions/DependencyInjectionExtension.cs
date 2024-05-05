@@ -40,7 +40,7 @@ public static class DependencyInjectionExtension
     {
         services.AddDbContext<UsersDbContext>(opt =>
         {
-            opt.UseNpgsql(configuration.GetConnectionString("UsersDb")!);
+            opt.UseNpgsql(configuration.GetConnectionString("Database")!);
         });
 
         services.AddScoped<IRepository<User>, Repository<User, UsersDbContext>>();
