@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C01500DC-CE50-4901-B37D-849F2ABF89F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Habit.Api", "src\Habit.Api\Habit.Api.csproj", "{027862DA-CF39-4499-926A-3ED436750A07}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Habit.Application", "src\Habit.Application\Habit.Application.csproj", "{BD602828-CCCB-4BDD-9FC4-19254DDF08B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Habit.Domain", "src\Habit.Domain\Habit.Domain.csproj", "{48DFE6C1-DAD3-4DB7-8704-80F60456E531}"
@@ -68,10 +66,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{027862DA-CF39-4499-926A-3ED436750A07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{027862DA-CF39-4499-926A-3ED436750A07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{027862DA-CF39-4499-926A-3ED436750A07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{027862DA-CF39-4499-926A-3ED436750A07}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BD602828-CCCB-4BDD-9FC4-19254DDF08B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BD602828-CCCB-4BDD-9FC4-19254DDF08B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD602828-CCCB-4BDD-9FC4-19254DDF08B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -166,7 +160,6 @@ Global
 		{ADB5DC51-EEC2-48D4-B289-0603D079E887}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{027862DA-CF39-4499-926A-3ED436750A07} = {C01500DC-CE50-4901-B37D-849F2ABF89F5}
 		{BD602828-CCCB-4BDD-9FC4-19254DDF08B1} = {C01500DC-CE50-4901-B37D-849F2ABF89F5}
 		{48DFE6C1-DAD3-4DB7-8704-80F60456E531} = {C01500DC-CE50-4901-B37D-849F2ABF89F5}
 		{AADA5051-94F1-4437-91DA-49F59341EFF8} = {C01500DC-CE50-4901-B37D-849F2ABF89F5}

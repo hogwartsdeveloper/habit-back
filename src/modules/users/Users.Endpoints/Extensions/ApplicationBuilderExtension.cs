@@ -17,6 +17,8 @@ public static class ApplicationBuilderExtension
     /// <param name="app">Экземпляр приложения, к которому применяется расширение.</param>
     public static async Task UsersModuleInit(this WebApplication app)
     {
+        app.UseAuthentication();
+        app.UseAuthorization();
         await app.MigrationAsync();
     }
     

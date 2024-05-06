@@ -26,12 +26,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ExceptionHandleMiddleware>();
 
-app.UseAuthentication();
-app.UseAuthorization();
 app.MapControllers();
 app.UseHangfireDashboard();
 
-await app.HabitModuleInit();
 await app.UsersModuleInit();
+await app.HabitModuleInit();
 
 app.Run();
