@@ -24,27 +24,10 @@ public static class DependencyInjectionExtension
     {
         services.Configure<FileStorageSettings>(configuration.GetSection("MinIO"));
         services.AddSingleton<IFileStorageService, FileStorageService>();
-        services.InfrastructureConfigureServices(configuration.GetSection("RabbitMQ"));
     }
 
-    private static void InfrastructureConfigureServices(this IServiceCollection services, IConfiguration configuration)
+    public static void AddFileStorageConsumers(this IBusRegistrationConfigurator opt)
     {
-        services.AddMassTransit(opt =>
-        {
-            opt.AddConsumer<RemoveFileConsumer>();
-            
-            opt.UsingRabbitMq((ctx, cfg) =>
-            {
-                cfg.Host(
-                    configuration.GetSection("HostName").Value,
-                    configuration.GetSection("VirtualHost").Value, h =>
-                    {
-                        h.Username(configuration.GetSection("UserName").Value ?? "guest");
-                        h.Password(configuration.GetSection("Password").Value ?? "guest");
-                    });
-                
-                cfg.ConfigureEndpoints(ctx);
-            });
-        });
+        opt.AddConsumer<RemoveFileConsumer>();
     }
 }

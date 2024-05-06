@@ -46,7 +46,6 @@ public static class DependencyInjectionExtension
         services.AddScoped<IRepository<User>, Repository<User, UsersDbContext>>();
         services.AddScoped<IRepository<UserVerify>, Repository<UserVerify, UsersDbContext>>();
         services.AddScoped<IRepository<RefreshToken>, Repository<RefreshToken, UsersDbContext>>();
-        services.AddIntegrationEventBus(configuration.GetSection("RabbitMQ"));
     }
 
     private static void AddApplicationConfigureServices(this IServiceCollection services)

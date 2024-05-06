@@ -2,6 +2,7 @@ using BuildingBlocks.Validation.Interceptors;
 using FileStorage.Endpoints.Extensions;
 using FluentValidation.AspNetCore;
 using Habits.Endpoints.Extensions;
+using MassTransit;
 using Microsoft.OpenApi.Models;
 using Notifications.Infrastructure.Extensions;
 using Users.Endpoints.Extensions;
@@ -28,6 +29,25 @@ public static class DependencyInjectionExtension
         services.AddNotificationModule(configuration);
 
         services.AddTransient<IValidatorInterceptor, ValidatorInterceptor>();
+
+        services.AddMassTransit(opt =>
+        {
+            opt.AddFileStorageConsumers();
+            opt.AddNotificationConsumers();
+            opt.UsingRabbitMq((ctx, cfg) =>
+            {
+                var rabbitConfiguration = configuration.GetSection("RabbitMQ");
+                cfg.Host(
+                    rabbitConfiguration.GetSection("HostName").Value,
+                    rabbitConfiguration.GetSection("VirtualHost").Value, h =>
+                    {
+                        h.Username(rabbitConfiguration.GetSection("UserName").Value ?? "guest");
+                        h.Password(rabbitConfiguration.GetSection("Password").Value ?? "guest");
+                    });
+                
+                cfg.ConfigureEndpoints(ctx);
+            });
+        });
     }
 
     /// <summary>
