@@ -1,13 +1,21 @@
+using System.Runtime.InteropServices.JavaScript;
+using System.Text;
 using BuildingBlocks.Entity.Interfaces;
 using BuildingBlocks.Entity.Repositories;
+using BuildingBlocks.Errors.Models;
 using BuildingBlocks.IntegrationEvents.Extensions;
+using BuildingBlocks.Presentation.Results;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Users.Application.Auth.Interfaces;
 using Users.Application.Auth.Services;
+using Users.Application.Constants;
 using Users.Application.Users;
 using Users.Application.Users.Interfaces;
 using Users.Application.Users.Services;
@@ -33,7 +41,7 @@ public static class DependencyInjectionExtension
         IConfiguration configuration)
     {
         services.InfrastructureConfigureServices(configuration);
-        services.AddApplicationConfigureServices();
+        services.AddApplicationConfigureServices(configuration);
     }
 
     private static void InfrastructureConfigureServices(this IServiceCollection services, IConfiguration configuration)
@@ -48,7 +56,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IRepository<RefreshToken>, Repository<RefreshToken, UsersDbContext>>();
     }
 
-    private static void AddApplicationConfigureServices(this IServiceCollection services)
+    private static void AddApplicationConfigureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAutoMapper(typeof(UserMapperProfile).Assembly);
         services.AddScoped<IAuthService, AuthService>();
@@ -56,5 +64,37 @@ public static class DependencyInjectionExtension
         services.AddSingleton<ISecurityService, SecurityService>();
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssembly(typeof(UpdateUserModelValidator).Assembly);
+        
+        var jwtIssuer = configuration.GetSection("Jwt:Issuer").Get<string>();
+
+        services.AddAuthorization();
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    RequireExpirationTime = true,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtIssuer,
+                    ValidAudience = jwtIssuer,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
+                };
+
+                opt.Events = new JwtBearerEvents
+                {
+                    OnChallenge = async context =>
+                    {
+                        context.HandleResponse();
+                        
+                        var error = new ErrorModel(401, UserConstants.Unauthorized);
+                        
+                        context.Response.StatusCode = error.StatusCode;
+                        await context.Response.WriteAsJsonAsync(ApiResult.Failure(error));
+                    }
+                };
+            });
     }
 }
