@@ -9,7 +9,6 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Shared\BuildingBlocks.Shared.csproj" />
       <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Validation\BuildingBlocks.Validation.csproj" />
-      <ProjectReference Include="..\..\..\Habit.Domain\Habit.Domain.csproj" />
       <ProjectReference Include="..\Habits.Domain\Habits.Domain.csproj" />
     </ItemGroup>
 
