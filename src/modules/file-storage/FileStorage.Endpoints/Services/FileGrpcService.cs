@@ -51,7 +51,8 @@ public class FileGrpcService(IFileStorageService storageService) : FileStorageGr
                 initialMessage.FileName,
                 initialMessage.ContentType,
                 initialMessage.Length,
-                memoryStream);
+                memoryStream,
+                context.CancellationToken);
         }
         catch (Exception e)
         {

@@ -8,10 +8,21 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Users.Application\Users.Application.csproj" />
+      <Protobuf Include="Protos\file-storage.proto" GrpcServices="Client" />
+        
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Persistence\Migrations\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.Net.ClientFactory" Version="2.62.0" />
+        <PackageReference Include="Google.Protobuf" Version="3.26.1" />
+        <PackageReference Include="Grpc.Tools" Version="2.63.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
 </Project>

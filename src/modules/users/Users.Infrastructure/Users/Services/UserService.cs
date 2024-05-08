@@ -12,13 +12,14 @@ using Users.Application.Users.Interfaces;
 using Users.Application.Users.Models;
 using Users.Domain.Users;
 
-namespace Users.Application.Users.Services;
+namespace Users.Infrastructure.Users.Services;
 
 /// <inheritdoc />
 public class UserService(
     IRepository<User> userRepo,
     IMapper mapper,
-    IPublishEndpoint publishEndpoint) : IUserService
+    IPublishEndpoint publishEndpoint,
+    FileStorageGrpcService.FileStorageGrpcServiceClient fileStorageClient) : IUserService
 {
     private static string BucketName => "user";
     
@@ -43,8 +44,8 @@ public class UserService(
                 FileName = userImageData[1]
             }, cancellationToken);
         }
-        
-        // Grpc
+
+        await UploadImage(file, cancellationToken);
         user.ChangeImage($"{BucketName}/{file.FileName}");
         await userRepo.UpdateAsync(user, cancellationToken);
     }
@@ -119,5 +120,35 @@ public class UserService(
         }
 
         return user;
+    }
+
+    private async Task UploadImage(IFormFile file, CancellationToken cancellationToken)
+    {
+        const int bufferSize = 64 * 1024;
+        var buffer = new byte[bufferSize];
+
+        using var call = fileStorageClient.Upload(cancellationToken: cancellationToken);
+        var metadata = new FileUploadRequest
+        {
+            BucketName = BucketName,
+            FileName = file.FileName,
+            ContentType = file.ContentType,
+            Length = file.Length
+        };
+        
+        await call.RequestStream.WriteAsync(metadata, cancellationToken);
+
+        await using var stream = file.OpenReadStream();
+        int bytesRead;
+        while ((bytesRead = await stream.ReadAsync(buffer, cancellationToken)) > 0)
+        {
+            var request = new FileUploadRequest
+            {
+                Content = Google.Protobuf.ByteString.CopyFrom(buffer, 0, bytesRead)
+            };
+
+            await call.RequestStream.WriteAsync(request, cancellationToken);
+        }
+        await call.RequestStream.CompleteAsync();
     }
 }

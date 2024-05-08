@@ -1,9 +1,7 @@
-using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using BuildingBlocks.Entity.Interfaces;
 using BuildingBlocks.Entity.Repositories;
 using BuildingBlocks.Errors.Models;
-using BuildingBlocks.IntegrationEvents.Extensions;
 using BuildingBlocks.Presentation.Results;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -18,11 +16,11 @@ using Users.Application.Auth.Services;
 using Users.Application.Constants;
 using Users.Application.Users;
 using Users.Application.Users.Interfaces;
-using Users.Application.Users.Services;
 using Users.Application.Users.Validators;
 using Users.Domain.Auth;
 using Users.Domain.Users;
 using Users.Infrastructure.Persistence;
+using Users.Infrastructure.Users.Services;
 
 namespace Users.Endpoints.Extensions;
 
@@ -46,9 +44,28 @@ public static class DependencyInjectionExtension
 
     private static void InfrastructureConfigureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        var uriDatabase = configuration.GetConnectionString("Database");
+        var uriGrpcFileStorage = configuration.GetConnectionString("GrpcFileStorage");
+
+        if (uriDatabase == null)
+        {
+            throw new ArgumentException("ConnectionString Database cannot be empty");
+        }
+
+        if (uriGrpcFileStorage == null)
+        {
+            throw new ArgumentException("ConnectionString GrpcFileStorage cannot be empty");
+        }
+        
+        
         services.AddDbContext<UsersDbContext>(opt =>
         {
-            opt.UseNpgsql(configuration.GetConnectionString("Database")!);
+            opt.UseNpgsql(uriDatabase);
+        });
+
+        services.AddGrpcClient<FileStorageGrpcService.FileStorageGrpcServiceClient>(opt =>
+        {
+            opt.Address = new Uri(uriGrpcFileStorage);
         });
 
         services.AddScoped<IRepository<User>, Repository<User, UsersDbContext>>();
