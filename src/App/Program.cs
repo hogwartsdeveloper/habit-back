@@ -7,6 +7,12 @@ using Users.Endpoints.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel((context, opt) =>
+{
+    var kestrelSection = context.Configuration.GetSection("Kestrel");
+    opt.Configure(kestrelSection);
+});
+
 
 builder.Services.InfrastructureConfigureServices(builder.Configuration);
 builder.Services.ApplicationConfigureServices(builder.Configuration);

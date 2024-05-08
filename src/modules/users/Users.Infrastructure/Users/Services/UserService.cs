@@ -127,7 +127,7 @@ public class UserService(
         const int bufferSize = 64 * 1024;
         var buffer = new byte[bufferSize];
 
-        using var call = fileStorageClient.Upload(cancellationToken: cancellationToken);
+        var call = fileStorageClient.Upload(cancellationToken: cancellationToken);
         var metadata = new FileUploadRequest
         {
             BucketName = BucketName,

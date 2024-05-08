@@ -44,6 +44,7 @@ public class FileGrpcService(IFileStorageService storageService) : FileStorageGr
             await memoryStream.WriteAsync(requestStream.Current.Content.ToArray());
         } while (await requestStream.MoveNext());
 
+        memoryStream.Seek(0, SeekOrigin.Begin);
         try
         {
             await storageService.UploadAsync(
