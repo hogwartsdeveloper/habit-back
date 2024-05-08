@@ -1,5 +1,6 @@
 using App.Extensions;
 using App.Middleware;
+using FileStorage.Endpoints.Extensions;
 using Habits.Endpoints.Extensions;
 using Hangfire;
 using Users.Endpoints.Extensions;
@@ -31,5 +32,6 @@ app.UseHangfireDashboard();
 
 await app.UsersModuleInit();
 await app.HabitModuleInit();
+app.FileStorageModuleInit();
 
 app.Run();

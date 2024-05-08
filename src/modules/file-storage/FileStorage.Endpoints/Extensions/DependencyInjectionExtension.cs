@@ -22,6 +22,7 @@ public static class DependencyInjectionExtension
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddGrpc();
         services.Configure<FileStorageSettings>(configuration.GetSection("MinIO"));
         services.AddSingleton<IFileStorageService, FileStorageService>();
     }

@@ -52,6 +52,35 @@ public class FileStorageService : IFileStorageService
     }
 
     /// <inheritdoc />
+    public async Task UploadAsync(
+        string bucketName,
+        string fileName,
+        string contentType,
+        long length,
+        Stream stream,
+        CancellationToken cancellationToken = default)
+    {
+        await CheckAndCreateBucketAsync(bucketName, cancellationToken);
+        
+        try
+        {
+            var args = new PutObjectArgs()
+                .WithBucket(bucketName)
+                .WithObject(fileName)
+                .WithContentType(contentType)
+                .WithStreamData(stream)
+                .WithObjectSize(length);
+            
+            await _client.PutObjectAsync(args, cancellationToken);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    /// <inheritdoc />
     public async Task RemoveAsync(string bucketName, string fileName, CancellationToken cancellationToken = default)
     {
         try
