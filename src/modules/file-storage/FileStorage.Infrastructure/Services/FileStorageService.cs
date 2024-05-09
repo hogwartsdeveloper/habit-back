@@ -2,7 +2,6 @@ using System.Net;
 using BuildingBlocks.Errors.Exceptions;
 using FileStorage.Application.FileStorage.Interfaces;
 using FileStorage.Infrastructure.Settings;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
@@ -26,29 +25,6 @@ public class FileStorageService : IFileStorageService
             .WithEndpoint(settings.Endpoint)
             .WithCredentials(settings.AccessKey, settings.SecretKey)
             .Build();
-    }
-    
-    /// <inheritdoc />
-    public async Task UploadAsync(string bucketName, IFormFile file, CancellationToken cancellationToken = default)
-    {
-        await CheckAndCreateBucketAsync(bucketName, cancellationToken);
-        
-        try
-        {
-            await using var stream = file.OpenReadStream();
-            var args = new PutObjectArgs()
-                .WithBucket(bucketName)
-                .WithObject(file.FileName)
-                .WithContentType(file.ContentType)
-                .WithStreamData(stream)
-                .WithObjectSize(file.Length);
-
-            await _client.PutObjectAsync(args, cancellationToken);
-        }
-        catch (Exception e)
-        {
-            throw new HttpException(HttpStatusCode.InternalServerError, e.Message);
-        }
     }
 
     /// <inheritdoc />

@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Http;
-
 namespace FileStorage.Application.FileStorage.Interfaces;
 
 /// <summary>
@@ -7,15 +5,6 @@ namespace FileStorage.Application.FileStorage.Interfaces;
 /// </summary>
 public interface IFileStorageService
 {
-    /// <summary>
-    /// Выполняет загрузку файла в указанное хранилище.
-    /// </summary>
-    /// <param name="bucketName">Имя хранилища.</param>
-    /// <param name="file">Загружаемый файл.</param>
-    /// <param name="cancellationToken">Токен отмены операции.</param>
-    /// <returns>Задача, представляющая асинхронную операцию загрузки.</returns>
-    Task UploadAsync(string bucketName, IFormFile file, CancellationToken cancellationToken = default);
-
     /// <summary>
     /// Выполняет загрузку файла в указанное хранилище.
     /// </summary>
