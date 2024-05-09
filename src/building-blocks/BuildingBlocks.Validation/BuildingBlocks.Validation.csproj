@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\BuildingBlocks.Errors\BuildingBlocks.Errors.csproj" />
+      <ProjectReference Include="..\BuildingBlocks.Presentation\BuildingBlocks.Presentation.csproj" />
+    </ItemGroup>
+
+</Project>

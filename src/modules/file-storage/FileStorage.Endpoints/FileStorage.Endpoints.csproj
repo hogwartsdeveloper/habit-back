@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Presentation\BuildingBlocks.Presentation.csproj" />
+      <ProjectReference Include="..\FileStorage.Infrastructure\FileStorage.Infrastructure.csproj" />
+      <Protobuf Include="Protos\file-storage.proto" GrpcServices="Server" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Grpc.AspNetCore" Version="2.62.0" />
+    </ItemGroup>
+
+</Project>

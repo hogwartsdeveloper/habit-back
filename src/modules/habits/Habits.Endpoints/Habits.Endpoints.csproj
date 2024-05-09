@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Presentation\BuildingBlocks.Presentation.csproj" />
+      <ProjectReference Include="..\..\..\building-blocks\BuildingBlocks.Validation\BuildingBlocks.Validation.csproj" />
+      <ProjectReference Include="..\Habits.Infrastructure\Habits.Infrastructure.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Hangfire" Version="1.8.9" />
+        <PackageReference Include="Hangfire.PostgreSql" Version="1.20.5" />
+    </ItemGroup>
+
+</Project>

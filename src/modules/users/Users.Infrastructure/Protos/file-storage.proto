@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "Users";
+
+service FileStorageGrpcService {
+  rpc Upload(stream FileUploadRequest) returns (google.protobuf.Empty);
+}
+
+message FileUploadRequest {
+  bytes content = 1;
+  string bucketName = 2;
+  string fileName = 3;
+  string contentType = 4;
+  int64 length = 5;
+}
